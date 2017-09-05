@@ -25,10 +25,10 @@
         
     </head>
     <body>
-    <inkd-ml bookmark debug>     
+    <inkd-ml bookmark>     
         <header class="header">
-<!--            <h1 class="header__title">DGM 6108, Week 1</h1>-->
-            <h1 class="header__title"><inkd-value prop = "main.currentNodeTitle"></inkd-value></h1>
+                <h1 class="header__title"><inkd-value prop = "main.currentNodeTitle"></inkd-value></h1>
+                <a class="header__burgermenu" href="#menu">&#9776;</a>  
         </header>
         <main class="main-container">
             <section class="main-sidebar">
@@ -39,6 +39,11 @@
                 </ul>
 -->
             </section>
+            <nav class="navbar">
+                <li class="navbar__item">Text</li>
+                <li class="navbar__item">Video</li>
+                <li class="navbar__item">Code</li>
+            </nav>
             <section class="main-content">
                 <inkd-cyoa name = "main">
                     <inkd-include content = "nodes"></inkd-include>
