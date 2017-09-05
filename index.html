@@ -25,19 +25,24 @@
         
     </head>
     <body>
-    <inkd-ml bookmark>     
+    <inkd-ml bookmark debug>     
         <header class="header">
-            <h1 class="header__title"><inkd-value prop = "main.currentNode"></inkd-value></h1>
+<!--            <h1 class="header__title">DGM 6108, Week 1</h1>-->
+            <h1 class="header__title"><inkd-value prop = "main.currentNodeTitle"></inkd-value></h1>
         </header>
         <main class="main-container">
             <section class="main-sidebar">
+                <inkd-outline cyoa = "main"></inkd-outline>
+<!--
                 <ul class="main-sidebar__list">
                     <li class="main-sidebar__list-item"><inkd-action goto="why">Why JavaScript?</inkd-action></li>
                 </ul>
+-->
             </section>
             <section class="main-content">
-                <inkd-include content = "cyoa">
-                </inkd-include>
+                <inkd-cyoa name = "main">
+                    <inkd-include content = "nodes"></inkd-include>
+                </inkd-cyoa>
             </section>
         </main>
     </inkd-ml>
