@@ -33,22 +33,17 @@
         <main class="main-container">
             <section class="main-sidebar">
                 <inkd-outline cyoa = "main"></inkd-outline>
-<!--
-                <ul class="main-sidebar__list">
-                    <li class="main-sidebar__list-item"><inkd-action goto="why">Why JavaScript?</inkd-action></li>
-                </ul>
--->
             </section>
-            <nav class="navbar">
-                <li class="navbar__item">Text</li>
-                <li class="navbar__item">Video</li>
-                <li class="navbar__item">Code</li>
-            </nav>
             <section class="main-content">
                 <inkd-cyoa name = "main">
                     <inkd-include content = "nodes"></inkd-include>
                 </inkd-cyoa>
             </section>
+            <nav class="navbar">
+                    <li class="navbar__item">Text</li>
+                    <li class="navbar__item">Video</li>
+                    <li class="navbar__item">Code</li>
+            </nav>
         </main>
     </inkd-ml>
     </body>

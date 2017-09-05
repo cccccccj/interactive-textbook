@@ -91,12 +91,12 @@
         font-family: sans-serif;
     }
     
-    p {
+    /* p {
         line-height: 1.2em;
         padding-top: .5em;
         padding-bottom: .5em;
         font-size: medium;
-    }
+    } */
 
     /* New code */
 
@@ -168,10 +168,10 @@
         overflow: scroll;
     }
     .interactive-column--text h2 {
-        font-size: 1.4em;
+        font-size: 1.4rem;
     }
     .interactive-column--text p {
-        font-size: 1em;
+        font-size: 1rem;
         line-height: 1.2em;
         padding-top: .5em;
         padding-bottom: .5em;
@@ -207,6 +207,10 @@
 
 
     @media (max-width: 700px) and (orientation: portrait) {
+        html, body {
+            font-size: 14px;
+            overflow: auto;
+        }
         .main-sidebar {
             display: none;
         }
