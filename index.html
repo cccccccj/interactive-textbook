@@ -26,24 +26,27 @@
     </head>
     <body>
     <inkd-ml bookmark>     
-        <header class="header">
-                <h1 class="header__title"><inkd-value prop = "main.currentNodeTitle"></inkd-value></h1>
-                <a class="header__burgermenu" href="#menu">&#9776;</a>  
-        </header>
         <main class="main-container">
-            <section class="main-sidebar">
-                <inkd-outline cyoa = "main"></inkd-outline>
-            </section>
+            <aside class="sidebar">
+                <header class="sidebar__header">
+                    <h1 class="sidebar__title"><inkd-value prop = "main.currentNodeTitle"></inkd-value></h1>
+                </header>
+                <nav class="sidebar__nav">
+                    <h2>TOC</h2>
+                    <li class="sidebar__nav-item">Introduction</li>
+                    <li class="sidebar__nav-item">Examples</li>
+                    <li class="sidebar__nav-item">Test</li>
+                </nav>
+                <footer>
+                    <section>Progress</section>
+                </footer>        
+            </aside>
             <section class="main-content">
+       
                 <inkd-cyoa name = "main">
                     <inkd-include content = "nodes"></inkd-include>
                 </inkd-cyoa>
             </section>
-            <nav class="navbar">
-                    <li class="navbar__item">Text</li>
-                    <li class="navbar__item">Video</li>
-                    <li class="navbar__item">Code</li>
-            </nav>
         </main>
     </inkd-ml>
     </body>
