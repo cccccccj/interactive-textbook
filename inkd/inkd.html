@@ -12794,9 +12794,18 @@ return {
     
     <template>   
         <style>
-            .panorama {
+            :host {
+                display: block;
+                position: relative;
+                width: var(--width);
+                height: var(--height);
+            }
+            
+            #panorama {
                 position: relative;
                 z-index: 0;
+                width: 100%;
+                height: 100%;
             }
             
             .errorWrapper {
@@ -13298,9 +13307,7 @@ return {
 </script><dom-module id="google-youtube" assetpath="libraries/youtube-api/">
   <style>
     :host {
-        /******* MODIFIED *******/
-/*      display: block;*/
-        /******* MODIFIED *******/
+      display: block;
     }
 
     :host([fluid]) {
@@ -16156,25 +16163,50 @@ return Player;
     <template>
         <style>
             :host {
-                display: inline-block;
+                display: block;
+                position: relative;
+                width: var(--width);
+                height: var(--height);
             }
-            video {
+            
+            #html5Element, #youtubeElement, #vimeoElement {
                 background-color: black;
+                width: 100%;
+                height: 100%;
+            }
+            
+            .vimeo-wrapper {
+                width: 100%;
+                height: auto;
+                padding-top: var(--vimeo-padding-top);
+                max-height: 100%;
+                max-width: 100%;
+            }
+            
+            #vimeoElement {
+                vertical-align: bottom;
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                height: 100%;
             }
         </style>
         
         <template is="dom-if" if="[[_typeIsHtml5]]">
-            <video id="html5Element" controls="[[controls]]" loop="[[loop]]" style$="width: {{width}}; height: {{height}};" preload="[[preload]]" on-loadeddata="_handleHtml5Load" on-play="_handlePlay" on-pause="_handlePause" on-volumechange="_handleVolumeChange">
+            <video id="html5Element" controls="[[controls]]" loop="[[loop]]" preload="[[preload]]" on-loadeddata="_handleHtml5Load" on-play="_handlePlay" on-pause="_handlePause" on-volumechange="_handleVolumeChange">
                 <source src="[[src]]" type="[[_html5MediaType]]" on-error="_handleError">
             </video>
         </template>
         
         <template is="dom-if" if="[[_typeIsYoutube]]">
-            <google-youtube id="youtubeElement" video-id="[[_youtubeVideoId]]" width$="[[width]]" height$="[[height]]" controls="[[controls]]" loop="[[loop]]" autoplay="[[autoplay]]" chromeless=""></google-youtube>
+            <google-youtube id="youtubeElement" video-id="[[_youtubeVideoId]]" controls="[[controls]]" loop="[[loop]]" autoplay="[[autoplay]]" chromeless="" fluid=""></google-youtube>
         </template>
         
         <template is="dom-if" if="[[_vimeoAttach]]" restamp="">
-            <iframe id="vimeoElement" src="[[src]]" style$="width: {{width}}; height: {{height}};" frameborder="0" allowfullscreen=""></iframe>
+            <div class="vimeo-wrapper">
+                <iframe id="vimeoElement" src="[[src]]" frameborder="0" allowfullscreen=""></iframe>
+            </div>
         </template>
     </template>
     
@@ -19322,14 +19354,21 @@ return Player;
                 z-index: 0;
             }
             
-            #overlayContent {
+            #overlayContent, #slideContent {
                 position: absolute;
+                width: 100%;
+                height: 100%;
                 z-index: 1;
                 pointer-events: none;
+            }
+            
+            #slideContent {
+                overflow: hidden;
             }
         </style>
         
         <span id="overlayContent"></span>
+        <span id="slideContent"></span>
         
         <inkd-style id="defaultContent" effect="[[effect]]" animation="[[animation]]">
             <content></content>
@@ -19860,16 +19899,24 @@ return Player;
 
     </dom-module><dom-module id="inkd-feedback" assetpath="inkd-elements/">
 
-    </dom-module><dom-module id="inkd-list" assetpath="inkd-elements/">
-
+    </dom-module><dom-module id="inkd-list-styles" assetpath="inkd-styles/">
     <template>
         <style>
             .list {
+                list-style: none;
+                cursor: default;
+                padding-left: 1.5em;
+                
                 @apply --list;
             }
             
-            .list-item {                
+            .list-item {   
+                display: block;
                 @apply --list-item;
+            }
+            
+            .number {
+                @apply --number;
             }
             
             .link {
@@ -19890,7 +19937,7 @@ return Player;
             .link.active {
                 color: green;
                 pointer-events: none;
-                text-decoration: none;
+
                 @apply --list-link-active;
             }
             
@@ -19898,20 +19945,30 @@ return Player;
                 @apply --list-text;
             }
             
-            .toggle-button {
-                background: url("inkd-images/up.svg");
-                /* By Google Inc., CC BY 4.0, https://commons.wikimedia.org/w/index.php?curid=36333583 */
+            .number {
+                padding-left: 23px;
+                margin: 0;
             }
             
-            .toggle-button.hide-list {
+            .toggle-button ~ .number {
+                padding-left: 0;
+            }
+            
+            .toggle-button {
                 background: url("inkd-images/down.svg");
                 /* By Google Inc., CC BY 4.0, https://commons.wikimedia.org/w/index.php?curid=36333571 */
             }
             
-            .toggle-button, .toggle-button.hide-list {
+            .hide-list .toggle-button {
+                background: url("inkd-images/right.svg");
+                /* By Google Inc., CC BY 4.0, https://commons.wikimedia.org/w/index.php?curid=36333583 */
+            }
+            
+            .toggle-button, .hide-list .toggle-button {
                 position: relative;
                 border: none;
                 padding: 0;
+                margin: 0;
                 top: 5px;
                 width: 20px;
                 height: 20px;
@@ -19920,23 +19977,34 @@ return Player;
                 background-repeat: no-repeat;
             }
             
-            .hide-list ~ .sublist {
+            .hide-list .sublist {
                 display: none;
             }
         </style>
-        
+    </template>
+</dom-module><dom-module id="inkd-list" assetpath="inkd-elements/">
+
+    <template>
+        <style include="inkd-list-styles"></style>
+
         <ol class="list">
             <template is="dom-repeat" items="[[data]]">
-                <li class="list-item">
+                <li class="list-item" on-tap="_handleTap">
+                    <template is="dom-if" if="[[item.list]]">
+                        <button type="button" class="toggle-button"></button>
+                    </template>
+                    
+                    <span class="number">[[_getNumber(index)]]</span>
+                    
                     <template is="dom-if" if="[[item.link]]">
                         <a href="#" on-tap="_handleLinkTap" class$="[[_getLinkClasses(item.active, item.visited)]]" data-index$="[[index]]" tabindex="0">[[item.text]]</a>
                     </template>
                     <template is="dom-if" if="[[!item.link]]">
                         <span class="text">[[item.text]]</span>
                     </template>
+                    
                     <template is="dom-if" if="[[item.list]]">
-                        <button type="button" on-tap="_handleIconTap" class="toggle-button hide-list"></button>
-                        <inkd-list data="[[item.list]]" class="sublist"></inkd-list>
+                        <inkd-list data="[[item.list]]" subindex="[[_getNumber(index)]]" class="sublist"></inkd-list>
                     </template>
                 </li>
             </template>
@@ -20132,7 +20200,7 @@ var GlobalBehavior = {
                 window.history.pushState({ path: newurl, node: nodeName }, '', newurl);
             }
 
-            document.title = this.globalElement.title + ' - ' + nodeName;
+            document.title = this.globalElement.topic + ' - ' + nodeName;
         }
     },
 
@@ -20466,7 +20534,7 @@ var TrackBehavior = {
                 this.trackData = dataObject;
             }
 
-            this.onGlobalReady('_pushTempTrack');
+            this.onGlobalReady('_handleGlobalReadyTrack');
         }
     },
 
@@ -20523,13 +20591,19 @@ var TrackBehavior = {
         }
     },
 
+    addTrackDetail: function addTrackDetail(detail, type) {
+        if (this.trackOn) {
+            this.globalElement.trackDetail[type].push(detail);
+        }
+    },
+
     fireSaveTrack: function fireSaveTrack() {
         if (this.trackOn) {
             this.fire('save-track');
         }
     },
 
-    _pushTempTrack: function _pushTempTrack() {
+    _handleGlobalReadyTrack: function _handleGlobalReadyTrack() {
         if (this.tempTrackList.length > 0) {
             var _globalElement$tracke;
 
@@ -20540,6 +20614,12 @@ var TrackBehavior = {
 
                 (_globalElement = this.globalElement).push.apply(_globalElement, ['trackLogList'].concat(_toConsumableArray(this.tempTrackLogList)));
             }
+        }
+        if (this.trackTag) {
+            this.addTrackDetail(this.trackTag, 'tags');
+        }
+        if (this.trackData) {
+            this.addTrackDetail(this.trackData, 'data');
         }
     }
 };
@@ -20637,11 +20717,11 @@ Polymer({
     is: 'inkd-ml',
 
     properties: {
-        title: String,
+        topic: String,
         debug: Boolean,
 
         track: Boolean,
-        trackId: String,
+        userId: String,
         bookmark: Boolean,
         noExitWarn: Boolean
     },
@@ -20651,7 +20731,10 @@ Polymer({
     listeners: {
         'goto': '_handleGoto',
         'restart': '_handleRestart',
-        'save-track': '_handleSaveTrack'
+        'track-structure': '_handleTrackStructure',
+        'save-track': '_handleSaveTrack',
+        'save-remote': '_handleSaveRemote',
+        'get-remote': '_handleGetRemote'
     },
 
     ready: function ready() {
@@ -20661,8 +20744,8 @@ Polymer({
 
         this._initiateQueryString();
 
-        if (this.title === undefined) {
-            this.title = document.title;
+        if (this.topic === undefined) {
+            this.topic = document.title;
         }
 
         if (this.debug) {
@@ -20676,6 +20759,10 @@ Polymer({
                 this._trackLog = true;
                 this.trackLogList = [];
             }
+        }
+
+        if (this.userId) {
+            this._initiateUserId();
         }
 
         if (this.bookmark) {
@@ -20766,14 +20853,7 @@ Polymer({
         localStorage.removeItem('inkd-tracking-data');
 
         this._trackSessionID = new Date();
-        this._trackUserID = null;
-        if (this.trackId) {
-            var match = this.trackId.replace(/\s/g, '').match(/^query:(.+)/);
-            if (match) {
-                this._trackUserID = this._queryData[match[1]];
-            }
-        }
-
+        this.trackDetail = { structures: [], tags: [], data: [] };
         this.trackedEvents = [{ event: 'tracking-initiated', time: new Date() }];
 
         this._pageActive = document.visibilityState === 'visible' && document.hasFocus();
@@ -20797,6 +20877,16 @@ Polymer({
             if (document.visibilityState === 'visible' || document.hasFocus()) {
                 this._pageActive = true;
                 this.addTrackEvent('page-active');
+            }
+        }
+    },
+
+    _initiateUserId: function _initiateUserId() {
+        this._userID = null;
+        if (this.userId) {
+            var match = this.userId.replace(/\s/g, '').match(/^query:(.+)/);
+            if (match) {
+                this._userID = this._queryData[match[1]];
             }
         }
     },
@@ -20976,24 +21066,78 @@ Polymer({
         this._resolveGoto(node);
     },
 
-    _handleSaveTrack: function _handleSaveTrack() {
-        if (this.debug) {
-            console.log(this.trackedEvents);
-        }
+    _handleTrackStructure: function _handleTrackStructure(event) {
+        event.stopPropagation();
+        this.addTrackDetail(event.detail, 'structures');
+    },
 
-        var data = JSON.stringify({
+    _handleSaveTrack: function _handleSaveTrack(event) {
+        event.stopPropagation();
+        var data = {
             sessionID: this._trackSessionID,
-            userID: this._trackUserID,
+            userID: this._userID,
             userAgent: navigator.userAgent,
+            detail: this.trackDetail,
             events: this.trackedEvents
-        });
+        };
+        this._sendPostRequest('/saveInkdmlTracking', data);
 
-        var url = '/saveInkdmlTracking';
+        if (this.debug) {
+            console.log(data);
+        }
+    },
 
+    _handleSaveRemote: function _handleSaveRemote(event) {
+        event.stopPropagation();
+        var detail = event.detail,
+            target = event.target;
+
+
+        if (this._userID) {
+            var data = { userID: this._userID, data: detail };
+            this._sendPostRequest('/saveInkdmlData', data);
+        } else {
+            this.addDebugWarn('save-remote', 'User ID required for remote saving', target);
+            target.saveRemote = false;
+        }
+    },
+
+    _handleGetRemote: function _handleGetRemote(event) {
+        event.stopPropagation();
+        var _event$detail = event.detail,
+            keys = _event$detail.keys,
+            callback = _event$detail.callback,
+            target = event.target;
+
+
+        if (this._userID) {
+            var data = { userID: this._userID, keys: [].concat(keys) };
+            this._sendPostRequest('/getInkdmlData', data, target[callback].bind(target));
+        } else {
+            this.addDebugWarn('save-remote', 'User ID required for remote saving', target);
+            target.saveRemote = false;
+        }
+    },
+
+    _sendPostRequest: function _sendPostRequest(url, dataObject, callback) {
         var xhr = new XMLHttpRequest();
         xhr.open('POST', url);
         xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-        xhr.send(data);
+
+        if (callback) {
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                    callback(JSON.parse(xhr.responseText));
+                }
+            };
+        }
+        xhr.send(JSON.stringify(dataObject));
+    },
+
+    _handleCyoa: function _handleCyoa(_ref3) {
+        var detail = _ref3.detail;
+
+        console.log(detail);
     }
 });
 var NameAttribute = {
@@ -21341,8 +21485,8 @@ Polymer({
         }
     },
 
-    _getContent: function _getContent(_ref3) {
-        var content = _ref3.detail.content;
+    _getContent: function _getContent(_ref4) {
+        var content = _ref4.detail.content;
 
         this._contentElement = content;
         this._appendContent();
@@ -21708,8 +21852,8 @@ Polymer({
         }
     },
 
-    _updateValue: function _updateValue(_ref4) {
-        var value = _ref4.detail.value;
+    _updateValue: function _updateValue(_ref5) {
+        var value = _ref5.detail.value;
 
         this._value = value;
     }
@@ -22180,8 +22324,8 @@ Polymer({
         this.click(this._clickCallback);
     },
 
-    _handleKeypress: function _handleKeypress(_ref5) {
-        var keyCode = _ref5.keyCode;
+    _handleKeypress: function _handleKeypress(_ref6) {
+        var keyCode = _ref6.keyCode;
 
         if (keyCode === 13) {
             this.click(this._clickCallback);
@@ -22206,8 +22350,8 @@ Polymer({
         this.click(this._clickCallback);
     },
 
-    _handleKeypress: function _handleKeypress(_ref6) {
-        var keyCode = _ref6.keyCode;
+    _handleKeypress: function _handleKeypress(_ref7) {
+        var keyCode = _ref7.keyCode;
 
         if (keyCode === 13) {
             this.click(this._clickCallback);
@@ -22238,6 +22382,12 @@ var NavigateHandler = {
         this._restartElementName = restartElementName;
 
         this._nestedStructures = Polymer.dom(this).querySelectorAll(nestedTagsArray.join(', '));
+
+        var data = {},
+            names = Object.keys(gotoElements);
+        data[this.tagName.toLowerCase().match(/[a-z]+$/)[0]] = this.name;
+        data[gotoElements[names[0]].tagName.toLowerCase().match(/[a-z]+$/)[0] + 's'] = names;
+        this.fire('track-structure', data);
     },
 
     handleInkdmlRestart: function handleInkdmlRestart() {
@@ -22560,7 +22710,8 @@ var ThemeAttribute = {
 var GotoElement = {
 
     listeners: {
-        'detached-navigate': '_handleDetachedNavigate'
+        'detached-navigate': '_handleDetachedNavigate',
+        'track-structure': '_handleTrackStructure'
     },
 
     handleInkdmlGoto: function handleInkdmlGoto(gotoData) {
@@ -22570,6 +22721,16 @@ var GotoElement = {
     _handleDetachedNavigate: function _handleDetachedNavigate(event) {
         this.fire('goto', { gotoData: [{ element: this.globalElement, gotos: [this.name] }] });
         event.stopPropagation();
+    },
+
+    _handleTrackStructure: function _handleTrackStructure(event) {
+        event.stopPropagation();
+        var detail = event.detail;
+
+        if (!detail.parent) {
+            detail.parent = this.name;
+        }
+        this.addTrackDetail(detail, 'structures');
     }
 };
 Polymer({
@@ -22577,7 +22738,7 @@ Polymer({
 
     properties: {
         start: Boolean,
-        title: String,
+        topic: String,
         number: String,
         editorData: Object
     },
@@ -22587,7 +22748,7 @@ Polymer({
     ready: function ready() {
         this.enforceDirectAncestor('inkd-cyoa');
 
-        this.title = this.title || this.name;
+        this.topic = this.topic || this.name;
         if (this.number !== undefined && /[^\s\d.]/g.test(this.number)) {
             this.addDebugError('number', '\'' + this.number + '\' is not a valid outline number (can only contain numbers separated by decimal points)');
         }
@@ -22624,7 +22785,7 @@ Polymer({
     observers: ['_updateNodesVisited(_activeNode)'],
 
     ready: function ready() {
-        this.setBuiltinProps({ prevNode: null, prevNodeTitle: null, currentNode: null, currentNodeTitle: null, allNodesVisited: false });
+        this.setBuiltinProps({ prevNode: null, prevNodeTopic: null, currentNode: null, currentNodeTopic: null, allNodesVisited: false });
 
         this._startNodeName = null;
         this._nodes = {};
@@ -22641,7 +22802,7 @@ Polymer({
     },
 
     start: function start() {
-        this.setBuiltinProps({ prevNode: null, prevNodeTitle: null });
+        this.setBuiltinProps({ prevNode: null, prevNodeTopic: null });
         this._resetNodesVisited();
 
         this.handleSetProp();
@@ -22670,8 +22831,8 @@ Polymer({
         return nodeArray;
     },
 
-    _handleChildrenChange: function _handleChildrenChange(_ref7) {
-        var newChildren = _ref7.addedNodes;
+    _handleChildrenChange: function _handleChildrenChange(_ref8) {
+        var newChildren = _ref8.addedNodes;
         var _iteratorNormalCompletion26 = true;
         var _didIteratorError26 = false;
         var _iteratorError26 = undefined;
@@ -22734,14 +22895,14 @@ Polymer({
             if (this._activeNode !== undefined) {
                 var _node = this._nodes[this._activeNode];
                 Polymer.dom(_node).removeAttribute('active-node');
-                this.setBuiltinProps({ prevNode: this._activeNode, prevNodeTitle: _node.title });
+                this.setBuiltinProps({ prevNode: this._activeNode, prevNodeTopic: _node.topic });
             }
 
             this._activeNode = nodeName;
             var node = this._nodes[nodeName];
 
             Polymer.dom(node).setAttribute('active-node', '');
-            this.setBuiltinProps({ currentNode: nodeName, currentNodeTitle: node.title });
+            this.setBuiltinProps({ currentNode: nodeName, currentNodeTopic: node.topic });
 
             this.addTrackEvent('cyoa-node-change', { cyoa: this.name, node: nodeName }, node);
 
@@ -23001,8 +23162,8 @@ Polymer({
         }
     },
 
-    _handleChildrenChange: function _handleChildrenChange(_ref8) {
-        var newChildren = _ref8.addedNodes;
+    _handleChildrenChange: function _handleChildrenChange(_ref9) {
+        var newChildren = _ref9.addedNodes;
         var _iteratorNormalCompletion28 = true;
         var _didIteratorError28 = false;
         var _iteratorError28 = undefined;
@@ -23101,9 +23262,9 @@ Polymer({
 
     _handleHotspotChange: function _handleHotspotChange(event) {
         event.stopPropagation();
-        var _event$detail = event.detail,
-            eventType = _event$detail.eventType,
-            hotspotElement = _event$detail.hotspotElement;
+        var _event$detail2 = event.detail,
+            eventType = _event$detail2.eventType,
+            hotspotElement = _event$detail2.hotspotElement;
 
 
         if (hotspotElement.hotspotObject.id === undefined) {
@@ -23127,8 +23288,8 @@ Polymer({
         }
     },
 
-    _handleHotspotClick: function _handleHotspotClick(_ref9) {
-        var detail = _ref9.detail;
+    _handleHotspotClick: function _handleHotspotClick(_ref10) {
+        var detail = _ref10.detail;
 
         detail.sceneElement = this;
     }
@@ -23249,8 +23410,8 @@ Polymer({
     ready: function ready() {
         this.setBuiltinProps({ prevScene: null, currentScene: null, allScenesVisited: false });
 
-        this.$.panorama.style.width = this.width = '' + this.width + (isNaN(this.width) ? '' : 'px');
-        this.$.panorama.style.height = this.height = '' + this.height + (isNaN(this.height) ? '' : 'px');
+        this.customStyle['--width'] = '' + this.width + (isNaN(this.width) ? '' : 'px');
+        this.customStyle['--height'] = '' + this.height + (isNaN(this.height) ? '' : 'px');
 
         this._configuration = {
             'default': {},
@@ -23298,8 +23459,8 @@ Polymer({
         }
     },
 
-    _handleChildrenChange: function _handleChildrenChange(_ref10) {
-        var newChildren = _ref10.addedNodes;
+    _handleChildrenChange: function _handleChildrenChange(_ref11) {
+        var newChildren = _ref11.addedNodes;
         var _iteratorNormalCompletion32 = true;
         var _didIteratorError32 = false;
         var _iteratorError32 = undefined;
@@ -23357,8 +23518,7 @@ Polymer({
             this.initiateNavigate(this._scenes, this._startSceneName, ['inkd-pano', 'inkd-cyoa']);
 
             var defaultConfig = this._configuration.default;
-
-            var match = this.fadeTime.replace(/\s/g, '').match(/(\d+)(m?s)?$/);
+            var match = this.fadeTime.replace(/\s/g, '').match(/^(\d+(?:\.\d+)?)(m?s)?$/);
             if (match) {
                 var _time = Number(match[1]);
                 var unit = match[2];
@@ -23421,10 +23581,10 @@ Polymer({
         this.setBuiltinProp('allScenesVisited', false);
     },
 
-    _updateHotspot: function _updateHotspot(_ref11) {
-        var eventType = _ref11.eventType,
-            hotspotElement = _ref11.hotspotElement,
-            sceneElement = _ref11.sceneElement;
+    _updateHotspot: function _updateHotspot(_ref12) {
+        var eventType = _ref12.eventType,
+            hotspotElement = _ref12.hotspotElement,
+            sceneElement = _ref12.sceneElement;
 
         if (eventType === 'add') {
             this._panorama.addHotSpot(hotspotElement.hotspotObject, sceneElement.name);
@@ -23483,9 +23643,9 @@ Polymer({
 
     _handleHotspotClick: function _handleHotspotClick(event) {
         event.stopPropagation();
-        var _event$detail2 = event.detail,
-            hotspotElement = _event$detail2.hotspotElement,
-            sceneElement = _event$detail2.sceneElement;
+        var _event$detail3 = event.detail,
+            hotspotElement = _event$detail3.hotspotElement,
+            sceneElement = _event$detail3.sceneElement;
 
         this.addTrackEvent('pano-hotspot-click', {
             pano: this.name,
@@ -23722,7 +23882,7 @@ Polymer({
         },
         width: {
             type: String,
-            value: 'auto'
+            value: '500px'
         },
         height: {
             type: String,
@@ -23745,11 +23905,8 @@ Polymer({
     ready: function ready() {
         this.setBuiltinProps({ playing: false, volume: this.volume });
 
-        var _arr3 = ['width', 'height'];
-        for (var _i3 = 0; _i3 < _arr3.length; _i3++) {
-            var _prop4 = _arr3[_i3];
-            this[_prop4] = '' + this[_prop4] + (isNaN(this[_prop4]) ? '' : 'px');
-        }
+        this.customStyle['--width'] = '' + this.width + (isNaN(this.width) ? '' : 'px');
+        this.customStyle['--height'] = '' + this.height + (isNaN(this.height) ? '' : 'px');
 
         this._typeIsHtml5 = false;
         this._typeIsYoutube = false;
@@ -23915,6 +24072,11 @@ Polymer({
             _this9._vimeoElement.on('volumechange', _this9._handleVolumeChange.bind(_this9));
 
             _this9._vimeoElement.on('timeupdate', _this9._handleVimeoTimeUpdate.bind(_this9));
+
+            Promise.all([_this9._vimeoElement.getVideoWidth(), _this9._vimeoElement.getVideoHeight()]).then(function (dimensions) {
+                _this9.customStyle['--vimeo-padding-top'] = 100 * dimensions[1] / dimensions[0] + '%';
+                _this9.updateStyles();
+            });
         });
     },
 
@@ -23996,8 +24158,8 @@ Polymer({
         }
     },
 
-    _handleYoutubeStateChange: function _handleYoutubeStateChange(_ref12) {
-        var state = _ref12.detail.data;
+    _handleYoutubeStateChange: function _handleYoutubeStateChange(_ref13) {
+        var state = _ref13.detail.data;
 
         if (state === 1) {
             if (this._youtubeSavedTime) {
@@ -24027,8 +24189,8 @@ Polymer({
         this._handlePlay();
     },
 
-    _handleVimeoTimeUpdate: function _handleVimeoTimeUpdate(_ref13) {
-        var seconds = _ref13.seconds;
+    _handleVimeoTimeUpdate: function _handleVimeoTimeUpdate(_ref14) {
+        var seconds = _ref14.seconds;
 
         this._vimeoCurrentTime = seconds;
     }
@@ -24056,14 +24218,14 @@ var EffectAttribute = {
         this.effectsObject = {};
         this._currentEffects = {};
         this._parseEffects();
-
-        this.style['transition'] = '.3s ease-in-out';
     },
 
     addEffects: function addEffects() {
         var attrElement = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this;
+        var transition = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '0.3s';
 
         var addData = attrElement.effectsObject;
+        this.style['transition'] = transition + ' ease-in-out';
 
         if (Object.keys(addData).length > 0) {
             for (var key in addData) {
@@ -24078,8 +24240,10 @@ var EffectAttribute = {
 
     removeEffects: function removeEffects() {
         var attrElement = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this;
+        var transition = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '0.3s';
 
         var removeData = attrElement.effectsObject;
+        this.style['transition'] = transition + ' ease-in-out';
 
         if (Object.keys(removeData).length > 0) {
             for (var key in removeData) {
@@ -24387,16 +24551,24 @@ Polymer({
     },
 
     handleEvent: function handleEvent(eventElement) {
-        this.$.defaultContent.addEffects(eventElement);
+        var transitionData = eventElement.transitionData,
+            overlayElement = eventElement.overlayElement;
+
+        this.$.defaultContent.addEffects(eventElement, transitionData.fadeTime);
         this.$.defaultContent.addAnimations(eventElement);
 
-        var overlayElement = eventElement.overlayElement;
         if (overlayElement) {
             clearTimeout(overlayElement.fadeTimer);
 
-            this.$.overlayContent.appendChild(overlayElement);
+            if (transitionData.slideDirection) {
+                this.$.slideContent.appendChild(overlayElement);
+            } else {
+                this.$.overlayContent.appendChild(overlayElement);
+            }
 
             window.getComputedStyle(overlayElement).opacity;
+            overlayElement.style.left = eventElement.x;
+            overlayElement.style.top = eventElement.y;
             overlayElement.style.opacity = 1;
 
             if (eventElement.swap) {
@@ -24412,16 +24584,38 @@ Polymer({
     handleToggleEvent: function handleToggleEvent(eventElement) {
         var _this10 = this;
 
-        this.$.defaultContent.removeEffects(eventElement);
+        var transitionData = eventElement.transitionData,
+            overlayElement = eventElement.overlayElement;
+
+        this.$.defaultContent.removeEffects(eventElement, transitionData.fadeTime);
         this.$.defaultContent.removeAnimations(eventElement);
 
-        var overlayElement = eventElement.overlayElement;
         if (overlayElement) {
             overlayElement.style.opacity = 0;
+            switch (transitionData.slideDirection) {
+                case 'right':
+                    overlayElement.style.left = '-100%';
+                    break;
+                case 'left':
+                    overlayElement.style.left = '100%';
+                    break;
+                case 'up':
+                    overlayElement.style.top = '100%';
+                    break;
+                case 'down':
+                    overlayElement.style.top = '-100%';
+                    break;
+            }
+            var match = transitionData.fadeTime.match(/^(.+)(m?s)$/);
+            var _time2 = match[2] === 'ms' ? Number(match[1]) : Number(match[1]) * 1000;
 
             overlayElement.fadeTimer = setTimeout(function () {
-                _this10.$.overlayContent.removeChild(overlayElement);
-            }, 1000);
+                if (transitionData.slideDirection) {
+                    _this10.$.slideContent.removeChild(overlayElement);
+                } else {
+                    _this10.$.overlayContent.removeChild(overlayElement);
+                }
+            }, _time2);
 
             if (eventElement.swap) {
                 this._eventSwapTracker--;
@@ -24439,30 +24633,36 @@ var EventBehaviorImpl = {
         on: String,
         swap: Boolean,
         x: {
-            type: Number,
-            value: 0,
-            desc: 'horizontal position'
+            type: String,
+            value: '0px'
         },
         y: {
-            type: Number,
-            value: 0,
-            desc: 'vertical position'
+            type: String,
+            value: '0px'
         },
+        transition: String,
 
         noToggle: Boolean
     },
 
-    attached: function attached() {
-        if (!this._initiated) {
-            this._initiate();
-            this._initiated = true;
-        }
+    ready: function ready() {
+        this.onGlobalAttach('_initiate');
+
+        this.x = '' + this.x + (isNaN(this.x) ? '' : 'px');
+        this.y = '' + this.y + (isNaN(this.y) ? '' : 'px');
+
+        this._initiateTransition();
     },
 
     detached: function detached() {
         if (this._eventOn) {
             this._handleToggleEvent();
         }
+    },
+
+    initiateEvents: function initiateEvents(event, toggleEvent) {
+        this.event = event;
+        this.toggleEvent = toggleEvent;
     },
 
     _initiate: function _initiate() {
@@ -24506,12 +24706,86 @@ var EventBehaviorImpl = {
             if (Polymer.dom(this).childNodes.length > 0) {
                 this.overlayElement = document.createElement('span');
                 this.overlayElement.className = this.className;
-                this.overlayElement.style.cssText = 'position: absolute;\n                                                         left: ' + this.x + (isNaN(this.x) ? '' : 'px') + ';\n                                                         top: ' + this.y + (isNaN(this.y) ? '' : 'px') + ';\n                                                         opacity: 0;\n                                                         transition: .3s ease-in-out;';
+                this.overlayElement.style.cssText = 'position: absolute; opacity: 0;    \n                        transition: opacity ' + this.transitionData.fadeTime + ' ease-in-out, top ' + this.transitionData.slideTime + ', left ' + this.transitionData.slideTime + ';';
+
+                switch (this.transitionData.slideDirection) {
+                    case 'right':
+                        this.overlayElement.style.left = '-100%';
+                        break;
+                    case 'left':
+                        this.overlayElement.style.left = '100%';
+                        break;
+                    case 'up':
+                        this.overlayElement.style.top = '100%';
+                        break;
+                    case 'down':
+                        this.overlayElement.style.top = '-100%';
+                        break;
+                }
                 Polymer.dom(this.overlayElement).innerHTML = Polymer.dom(this).innerHTML;
             }
         }
 
         this.style.display = 'none';
+    },
+
+    _initiateTransition: function _initiateTransition() {
+        var defaultTime = '0.3s';
+        this.transitionData = { fadeTime: defaultTime, slideTime: defaultTime };
+
+        if (this.transition) {
+            var splitResult = this.transition.replace(/\s/g, '').split(',');
+            var _iteratorNormalCompletion38 = true;
+            var _didIteratorError38 = false;
+            var _iteratorError38 = undefined;
+
+            try {
+                for (var _iterator38 = splitResult[Symbol.iterator](), _step38; !(_iteratorNormalCompletion38 = (_step38 = _iterator38.next()).done); _iteratorNormalCompletion38 = true) {
+                    var splitPart = _step38.value;
+
+                    var match = splitPart.match(/^([^:]+):(.+)$/);
+                    if (match) {
+                        var _match3 = _slicedToArray(match, 3),
+                            key = _match3[1],
+                            value = _match3[2];
+
+                        if (key === 'fade') {
+                            var valueMatch = value.match(/^\d+(?:\.\d+)?((?:m?s)?)$/);
+                            if (valueMatch) {
+                                this.transitionData.fadeTime = value + (valueMatch[1] ? '' : 's');
+                            } else {
+                                this.addDebugError('transition', '\'' + value + '\' is not valid transition fade value');
+                            }
+                        } else if (key === 'slide') {
+                            var _valueMatch = value.match(/^(right|left|up|down):(\d+(?:\.\d+)?((?:m?s)?))?$/);
+                            if (_valueMatch) {
+                                this.transitionData.slideDirection = _valueMatch[1];
+                                this.transitionData.slideTime = _valueMatch[2] ? _valueMatch[2] + (_valueMatch[3] ? '' : 's') : defaultTime;
+                            } else {
+                                this.addDebugError('transition', '\'' + value + '\' is not valid transition slide value');
+                            }
+                        } else {
+                            this.addDebugError('transition', '\'' + key + '\' is not a valid transition property (Supported properties: fade, slide)');
+                        }
+                    } else {
+                        this.addDebugError('transition', '\'' + splitPart + '\' is not a valid transition property declaration');
+                    }
+                }
+            } catch (err) {
+                _didIteratorError38 = true;
+                _iteratorError38 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion38 && _iterator38.return) {
+                        _iterator38.return();
+                    }
+                } finally {
+                    if (_didIteratorError38) {
+                        throw _iteratorError38;
+                    }
+                }
+            }
+        }
     },
 
     _handleEvent: function _handleEvent() {
@@ -24548,8 +24822,7 @@ Polymer({
     behaviors: [EventBehavior],
 
     ready: function ready() {
-        this.event = 'tap';
-        this.toggleEvent = 'tap';
+        this.initiateEvents('tap', 'tap');
     }
 });
 Polymer({
@@ -24558,8 +24831,7 @@ Polymer({
     behaviors: [EventBehavior],
 
     ready: function ready() {
-        this.event = 'mouseover';
-        this.toggleEvent = 'mouseout';
+        this.initiateEvents('mouseover', 'mouseout');
     }
 });
 Polymer({
@@ -24568,8 +24840,7 @@ Polymer({
     behaviors: [EventBehavior],
 
     ready: function ready() {
-        this.event = 'down';
-        this.toggleEvent = 'up';
+        this.initiateEvents('down', 'up');
     }
 });
 Polymer({
@@ -24609,13 +24880,13 @@ Polymer({
     },
 
     _updatePropsData: function _updatePropsData() {
-        var _iteratorNormalCompletion38 = true;
-        var _didIteratorError38 = false;
-        var _iteratorError38 = undefined;
+        var _iteratorNormalCompletion39 = true;
+        var _didIteratorError39 = false;
+        var _iteratorError39 = undefined;
 
         try {
-            for (var _iterator38 = this.props[Symbol.iterator](), _step38; !(_iteratorNormalCompletion38 = (_step38 = _iterator38.next()).done); _iteratorNormalCompletion38 = true) {
-                var key = _step38.value;
+            for (var _iterator39 = this.props[Symbol.iterator](), _step39; !(_iteratorNormalCompletion39 = (_step39 = _iterator39.next()).done); _iteratorNormalCompletion39 = true) {
+                var key = _step39.value;
 
                 var data = this.getGlobalProp(key);
                 if (data === undefined) {
@@ -24627,16 +24898,16 @@ Polymer({
                 }
             }
         } catch (err) {
-            _didIteratorError38 = true;
-            _iteratorError38 = err;
+            _didIteratorError39 = true;
+            _iteratorError39 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion38 && _iterator38.return) {
-                    _iterator38.return();
+                if (!_iteratorNormalCompletion39 && _iterator39.return) {
+                    _iterator39.return();
                 }
             } finally {
-                if (_didIteratorError38) {
-                    throw _iteratorError38;
+                if (_didIteratorError39) {
+                    throw _iteratorError39;
                 }
             }
         }
@@ -24684,10 +24955,10 @@ Polymer({
     ready: function ready() {
         this.setBuiltinProp('showing', false);
 
-        var _arr4 = ['width', 'height', 'x', 'y'];
-        for (var _i4 = 0; _i4 < _arr4.length; _i4++) {
-            var _prop5 = _arr4[_i4];
-            this[_prop5] = '' + this[_prop5] + (isNaN(this[_prop5]) ? '' : 'px');
+        var _arr3 = ['width', 'height', 'x', 'y'];
+        for (var _i3 = 0; _i3 < _arr3.length; _i3++) {
+            var _prop4 = _arr3[_i3];
+            this[_prop4] = '' + this[_prop4] + (isNaN(this[_prop4]) ? '' : 'px');
         }
 
         this._showModal = true;
@@ -24746,7 +25017,8 @@ Polymer({
             max: 32767,
             value: 0,
             desc: 'tab order'
-        }
+        },
+        saveRemote: Boolean
     },
 
     behaviors: [InkdBehavior, NameAttribute],
@@ -24758,12 +25030,21 @@ Polymer({
 
         this.setBuiltinProps({ value: this._initialValue, focused: false });
 
+        if (this.saveRemote && this.name === undefined) {
+            this.addDebugError('save-remote', 'Textarea needs a \'name\' for remote saving');
+            this.saveRemote = false;
+        }
+
         this.async(function () {
             _this11._textareaElement = _this11.$$('#textareaElement');
         });
     },
 
     attached: function attached() {
+        if (!this._initiated && this.saveRemote) {
+            this.fire('get-remote', { keys: this.name, callback: '_getValue' });
+            this._initiated = true;
+        }
         if (this.autofocus) {
             this._textareaElement.focus();
             Polymer.dom(this).classList.add('focused');
@@ -24781,7 +25062,16 @@ Polymer({
         this._saveValue();
     },
 
+    _getValue: function _getValue(data) {
+        this._textareaElement.value = data[this.name] || '';
+    },
+
     _saveValue: function _saveValue() {
+        if (this.saveRemote) {
+            var data = {};
+            data[this.name] = this._textareaElement.value.trim();
+            this.fire('save-remote', data);
+        }
         this.addTrackEvent('textarea-save', { textarea: this.name, value: this._textareaElement.value.trim() });
     },
 
@@ -24822,29 +25112,29 @@ var TaskBehaviorImpl = {
 
     setTaskDependents: function setTaskDependents(elementArray) {
         this._taskDependents = elementArray;
-        var _iteratorNormalCompletion39 = true;
-        var _didIteratorError39 = false;
-        var _iteratorError39 = undefined;
+        var _iteratorNormalCompletion40 = true;
+        var _didIteratorError40 = false;
+        var _iteratorError40 = undefined;
 
         try {
-            for (var _iterator39 = elementArray[Symbol.iterator](), _step39; !(_iteratorNormalCompletion39 = (_step39 = _iterator39.next()).done); _iteratorNormalCompletion39 = true) {
-                var element = _step39.value;
+            for (var _iterator40 = elementArray[Symbol.iterator](), _step40; !(_iteratorNormalCompletion40 = (_step40 = _iterator40.next()).done); _iteratorNormalCompletion40 = true) {
+                var element = _step40.value;
 
                 this.listen(element, 'done-changed', '_handleDoneChange');
                 this.listen(element, 'correct-changed', '_handleCorrectChange');
                 this.listen(element, 'task-goto', '_handleTaskGoto');
             }
         } catch (err) {
-            _didIteratorError39 = true;
-            _iteratorError39 = err;
+            _didIteratorError40 = true;
+            _iteratorError40 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion39 && _iterator39.return) {
-                    _iterator39.return();
+                if (!_iteratorNormalCompletion40 && _iterator40.return) {
+                    _iterator40.return();
                 }
             } finally {
-                if (_didIteratorError39) {
-                    throw _iteratorError39;
+                if (_didIteratorError40) {
+                    throw _iteratorError40;
                 }
             }
         }
@@ -24862,9 +25152,9 @@ var TaskBehaviorImpl = {
                 }
 
                 if (this.goto || this._unresolvedGotoData) {
-                    var _ref14;
+                    var _ref15;
 
-                    var gotoData = (_ref14 = []).concat.apply(_ref14, _toConsumableArray(this._unresolvedGotos || []).concat(_toConsumableArray(this.goto ? [{ element: this, gotos: this.goto }] : [])));
+                    var gotoData = (_ref15 = []).concat.apply(_ref15, _toConsumableArray(this._unresolvedGotos || []).concat(_toConsumableArray(this.goto ? [{ element: this, gotos: this.goto }] : [])));
                     if (this.handleTaskGoto) {
                         var unresolvedData = this.handleTaskGoto(gotoData);
                         if (unresolvedData) {
@@ -24915,37 +25205,6 @@ var TaskBehaviorImpl = {
 
     validateTask: function validateTask() {
         if (this._taskDependents) {
-            var _iteratorNormalCompletion40 = true;
-            var _didIteratorError40 = false;
-            var _iteratorError40 = undefined;
-
-            try {
-                for (var _iterator40 = this._taskDependents[Symbol.iterator](), _step40; !(_iteratorNormalCompletion40 = (_step40 = _iterator40.next()).done); _iteratorNormalCompletion40 = true) {
-                    var element = _step40.value;
-
-                    element.validateTask();
-                }
-            } catch (err) {
-                _didIteratorError40 = true;
-                _iteratorError40 = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion40 && _iterator40.return) {
-                        _iterator40.return();
-                    }
-                } finally {
-                    if (_didIteratorError40) {
-                        throw _iteratorError40;
-                    }
-                }
-            }
-        } else {
-            this.validate();
-        }
-    },
-
-    resetTask: function resetTask() {
-        if (this._taskDependents) {
             var _iteratorNormalCompletion41 = true;
             var _didIteratorError41 = false;
             var _iteratorError41 = undefined;
@@ -24954,7 +25213,7 @@ var TaskBehaviorImpl = {
                 for (var _iterator41 = this._taskDependents[Symbol.iterator](), _step41; !(_iteratorNormalCompletion41 = (_step41 = _iterator41.next()).done); _iteratorNormalCompletion41 = true) {
                     var element = _step41.value;
 
-                    element.resetTask();
+                    element.validateTask();
                 }
             } catch (err) {
                 _didIteratorError41 = true;
@@ -24971,6 +25230,37 @@ var TaskBehaviorImpl = {
                 }
             }
         } else {
+            this.validate();
+        }
+    },
+
+    resetTask: function resetTask() {
+        if (this._taskDependents) {
+            var _iteratorNormalCompletion42 = true;
+            var _didIteratorError42 = false;
+            var _iteratorError42 = undefined;
+
+            try {
+                for (var _iterator42 = this._taskDependents[Symbol.iterator](), _step42; !(_iteratorNormalCompletion42 = (_step42 = _iterator42.next()).done); _iteratorNormalCompletion42 = true) {
+                    var element = _step42.value;
+
+                    element.resetTask();
+                }
+            } catch (err) {
+                _didIteratorError42 = true;
+                _iteratorError42 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion42 && _iterator42.return) {
+                        _iterator42.return();
+                    }
+                } finally {
+                    if (_didIteratorError42) {
+                        throw _iteratorError42;
+                    }
+                }
+            }
+        } else {
             this.reset(false);
         }
     },
@@ -24982,45 +25272,6 @@ var TaskBehaviorImpl = {
         this._feedbackElements = Polymer.dom(this).children.filter(function (el) {
             return el.tagName === 'INKD-FEEDBACK';
         });
-        var _iteratorNormalCompletion42 = true;
-        var _didIteratorError42 = false;
-        var _iteratorError42 = undefined;
-
-        try {
-            for (var _iterator42 = this._feedbackElements[Symbol.iterator](), _step42; !(_iteratorNormalCompletion42 = (_step42 = _iterator42.next()).done); _iteratorNormalCompletion42 = true) {
-                var element = _step42.value;
-
-                if (element.hasAttribute('wrong')) {
-                    this._wrongFeedback += element.outerHTML;
-                } else {
-                    this._correctFeedback += element.outerHTML;
-                }
-            }
-        } catch (err) {
-            _didIteratorError42 = true;
-            _iteratorError42 = err;
-        } finally {
-            try {
-                if (!_iteratorNormalCompletion42 && _iterator42.return) {
-                    _iterator42.return();
-                }
-            } finally {
-                if (_didIteratorError42) {
-                    throw _iteratorError42;
-                }
-            }
-        }
-
-        if (this._feedbackElements.length > 0) {
-            this.onGlobalAttach('_removeFeedback');
-        }
-
-        if (this.taskDone) {
-            this.taskFeedback = this.taskCorrect ? this._correctFeedback : this._wrongFeedback;
-        }
-    },
-
-    _removeFeedback: function _removeFeedback() {
         var _iteratorNormalCompletion43 = true;
         var _didIteratorError43 = false;
         var _iteratorError43 = undefined;
@@ -25029,7 +25280,11 @@ var TaskBehaviorImpl = {
             for (var _iterator43 = this._feedbackElements[Symbol.iterator](), _step43; !(_iteratorNormalCompletion43 = (_step43 = _iterator43.next()).done); _iteratorNormalCompletion43 = true) {
                 var element = _step43.value;
 
-                element.domRemove();
+                if (element.hasAttribute('wrong')) {
+                    this._wrongFeedback += element.outerHTML;
+                } else {
+                    this._correctFeedback += element.outerHTML;
+                }
             }
         } catch (err) {
             _didIteratorError43 = true;
@@ -25045,13 +25300,48 @@ var TaskBehaviorImpl = {
                 }
             }
         }
+
+        if (this._feedbackElements.length > 0) {
+            this.onGlobalAttach('_removeFeedback');
+        }
+
+        if (this.taskDone) {
+            this.taskFeedback = this.taskCorrect ? this._correctFeedback : this._wrongFeedback;
+        }
+    },
+
+    _removeFeedback: function _removeFeedback() {
+        var _iteratorNormalCompletion44 = true;
+        var _didIteratorError44 = false;
+        var _iteratorError44 = undefined;
+
+        try {
+            for (var _iterator44 = this._feedbackElements[Symbol.iterator](), _step44; !(_iteratorNormalCompletion44 = (_step44 = _iterator44.next()).done); _iteratorNormalCompletion44 = true) {
+                var element = _step44.value;
+
+                element.domRemove();
+            }
+        } catch (err) {
+            _didIteratorError44 = true;
+            _iteratorError44 = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion44 && _iterator44.return) {
+                    _iterator44.return();
+                }
+            } finally {
+                if (_didIteratorError44) {
+                    throw _iteratorError44;
+                }
+            }
+        }
     },
 
     _handleDoneChange: function _handleDoneChange(event) {
         event.stopPropagation();
-        var _event$detail3 = event.detail,
-            value = _event$detail3.value,
-            gotoData = _event$detail3.gotoData;
+        var _event$detail4 = event.detail,
+            value = _event$detail4.value,
+            gotoData = _event$detail4.gotoData;
 
 
         if (gotoData) {
@@ -25125,27 +25415,27 @@ Polymer({
     },
 
     _initiateChildren: function _initiateChildren() {
-        var _iteratorNormalCompletion44 = true;
-        var _didIteratorError44 = false;
-        var _iteratorError44 = undefined;
+        var _iteratorNormalCompletion45 = true;
+        var _didIteratorError45 = false;
+        var _iteratorError45 = undefined;
 
         try {
-            for (var _iterator44 = this._dragElements[Symbol.iterator](), _step44; !(_iteratorNormalCompletion44 = (_step44 = _iterator44.next()).done); _iteratorNormalCompletion44 = true) {
-                var element = _step44.value;
+            for (var _iterator45 = this._dragElements[Symbol.iterator](), _step45; !(_iteratorNormalCompletion45 = (_step45 = _iterator45.next()).done); _iteratorNormalCompletion45 = true) {
+                var element = _step45.value;
 
                 element.dragSectionParent = this;
             }
         } catch (err) {
-            _didIteratorError44 = true;
-            _iteratorError44 = err;
+            _didIteratorError45 = true;
+            _iteratorError45 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion44 && _iterator44.return) {
-                    _iterator44.return();
+                if (!_iteratorNormalCompletion45 && _iterator45.return) {
+                    _iterator45.return();
                 }
             } finally {
-                if (_didIteratorError44) {
-                    throw _iteratorError44;
+                if (_didIteratorError45) {
+                    throw _iteratorError45;
                 }
             }
         }
@@ -25205,15 +25495,15 @@ Polymer({
     _initiateChildren: function _initiateChildren() {
         var _this12 = this;
 
-        var _iteratorNormalCompletion45 = true;
-        var _didIteratorError45 = false;
-        var _iteratorError45 = undefined;
+        var _iteratorNormalCompletion46 = true;
+        var _didIteratorError46 = false;
+        var _iteratorError46 = undefined;
 
         try {
             var _loop4 = function _loop4() {
                 var _element$correct;
 
-                var element = _step45.value;
+                var element = _step46.value;
 
                 element.dropSectionParent = _this12;
                 element.allowMultiple = element.allowMultiple || _this12.allowMultiple;
@@ -25233,27 +25523,27 @@ Polymer({
                 }
             };
 
-            for (var _iterator45 = this._dropElements[Symbol.iterator](), _step45; !(_iteratorNormalCompletion45 = (_step45 = _iterator45.next()).done); _iteratorNormalCompletion45 = true) {
+            for (var _iterator46 = this._dropElements[Symbol.iterator](), _step46; !(_iteratorNormalCompletion46 = (_step46 = _iterator46.next()).done); _iteratorNormalCompletion46 = true) {
                 _loop4();
             }
         } catch (err) {
-            _didIteratorError45 = true;
-            _iteratorError45 = err;
+            _didIteratorError46 = true;
+            _iteratorError46 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion45 && _iterator45.return) {
-                    _iterator45.return();
+                if (!_iteratorNormalCompletion46 && _iterator46.return) {
+                    _iterator46.return();
                 }
             } finally {
-                if (_didIteratorError45) {
-                    throw _iteratorError45;
+                if (_didIteratorError46) {
+                    throw _iteratorError46;
                 }
             }
         }
     },
 
-    _handleReset: function _handleReset(_ref15) {
-        var detail = _ref15.detail;
+    _handleReset: function _handleReset(_ref16) {
+        var detail = _ref16.detail;
 
         detail.sectionElement = this;
     }
@@ -25369,8 +25659,8 @@ Polymer({
         this.splice('dragChildren', index, 1);
     },
 
-    checkIfAllowed: function checkIfAllowed(_ref16) {
-        var name = _ref16.name;
+    checkIfAllowed: function checkIfAllowed(_ref17) {
+        var name = _ref17.name;
 
         if (this.allow.length > 0) {
             return name && this.allow.includes(name);
@@ -25387,44 +25677,15 @@ Polymer({
         if (track) {
             this.fire('reset', { dropElement: this });
         }
-        var _iteratorNormalCompletion46 = true;
-        var _didIteratorError46 = false;
-        var _iteratorError46 = undefined;
-
-        try {
-            for (var _iterator46 = this.dragChildren[Symbol.iterator](), _step46; !(_iteratorNormalCompletion46 = (_step46 = _iterator46.next()).done); _iteratorNormalCompletion46 = true) {
-                var _element3 = _step46.value;
-
-                this.removeDraggable(_element3);
-            }
-        } catch (err) {
-            _didIteratorError46 = true;
-            _iteratorError46 = err;
-        } finally {
-            try {
-                if (!_iteratorNormalCompletion46 && _iterator46.return) {
-                    _iterator46.return();
-                }
-            } finally {
-                if (_didIteratorError46) {
-                    throw _iteratorError46;
-                }
-            }
-        }
-    },
-
-    _initiateChildren: function _initiateChildren() {
         var _iteratorNormalCompletion47 = true;
         var _didIteratorError47 = false;
         var _iteratorError47 = undefined;
 
         try {
-            for (var _iterator47 = this.dragChildren.entries()[Symbol.iterator](), _step47; !(_iteratorNormalCompletion47 = (_step47 = _iterator47.next()).done); _iteratorNormalCompletion47 = true) {
-                var _step47$value = _slicedToArray(_step47.value, 2),
-                    index = _step47$value[0],
-                    _element4 = _step47$value[1];
+            for (var _iterator47 = this.dragChildren[Symbol.iterator](), _step47; !(_iteratorNormalCompletion47 = (_step47 = _iterator47.next()).done); _iteratorNormalCompletion47 = true) {
+                var _element3 = _step47.value;
 
-                _element4.dropParent = this;
+                this.removeDraggable(_element3);
             }
         } catch (err) {
             _didIteratorError47 = true;
@@ -25437,6 +25698,35 @@ Polymer({
             } finally {
                 if (_didIteratorError47) {
                     throw _iteratorError47;
+                }
+            }
+        }
+    },
+
+    _initiateChildren: function _initiateChildren() {
+        var _iteratorNormalCompletion48 = true;
+        var _didIteratorError48 = false;
+        var _iteratorError48 = undefined;
+
+        try {
+            for (var _iterator48 = this.dragChildren.entries()[Symbol.iterator](), _step48; !(_iteratorNormalCompletion48 = (_step48 = _iterator48.next()).done); _iteratorNormalCompletion48 = true) {
+                var _step48$value = _slicedToArray(_step48.value, 2),
+                    index = _step48$value[0],
+                    _element4 = _step48$value[1];
+
+                _element4.dropParent = this;
+            }
+        } catch (err) {
+            _didIteratorError48 = true;
+            _iteratorError48 = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion48 && _iterator48.return) {
+                    _iterator48.return();
+                }
+            } finally {
+                if (_didIteratorError48) {
+                    throw _iteratorError48;
                 }
             }
         }
@@ -25468,29 +25758,29 @@ Polymer({
         }, '');
         this.setBuiltinProp('draggableFeedback', value);
 
-        var _iteratorNormalCompletion48 = true;
-        var _didIteratorError48 = false;
-        var _iteratorError48 = undefined;
+        var _iteratorNormalCompletion49 = true;
+        var _didIteratorError49 = false;
+        var _iteratorError49 = undefined;
 
         try {
-            for (var _iterator48 = this.dragChildren.entries()[Symbol.iterator](), _step48; !(_iteratorNormalCompletion48 = (_step48 = _iterator48.next()).done); _iteratorNormalCompletion48 = true) {
-                var _step48$value = _slicedToArray(_step48.value, 2),
-                    index = _step48$value[0],
-                    _element5 = _step48$value[1];
+            for (var _iterator49 = this.dragChildren.entries()[Symbol.iterator](), _step49; !(_iteratorNormalCompletion49 = (_step49 = _iterator49.next()).done); _iteratorNormalCompletion49 = true) {
+                var _step49$value = _slicedToArray(_step49.value, 2),
+                    index = _step49$value[0],
+                    _element5 = _step49$value[1];
 
                 Polymer.dom(_element5).setAttribute('data-index', index);
             }
         } catch (err) {
-            _didIteratorError48 = true;
-            _iteratorError48 = err;
+            _didIteratorError49 = true;
+            _iteratorError49 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion48 && _iterator48.return) {
-                    _iterator48.return();
+                if (!_iteratorNormalCompletion49 && _iterator49.return) {
+                    _iterator49.return();
                 }
             } finally {
-                if (_didIteratorError48) {
-                    throw _iteratorError48;
+                if (_didIteratorError49) {
+                    throw _iteratorError49;
                 }
             }
         }
@@ -25517,8 +25807,8 @@ Polymer({
         this.fire('dragged-out', { dropElement: this });
     },
 
-    _handleRemove: function _handleRemove(_ref17) {
-        var index = _ref17.target.dataset.index;
+    _handleRemove: function _handleRemove(_ref18) {
+        var index = _ref18.target.dataset.index;
 
         var element = this.dragChildren[index];
         this.removeDraggable(element);
@@ -25577,15 +25867,15 @@ Polymer({
             this.setTaskDependents(dropSections);
 
             if (dragSections.length > 0) {
-                var _iteratorNormalCompletion49 = true;
-                var _didIteratorError49 = false;
-                var _iteratorError49 = undefined;
+                var _iteratorNormalCompletion50 = true;
+                var _didIteratorError50 = false;
+                var _iteratorError50 = undefined;
 
                 try {
-                    for (var _iterator49 = dragSections.entries()[Symbol.iterator](), _step49; !(_iteratorNormalCompletion49 = (_step49 = _iterator49.next()).done); _iteratorNormalCompletion49 = true) {
-                        var _step49$value = _slicedToArray(_step49.value, 2),
-                            index = _step49$value[0],
-                            section = _step49$value[1];
+                    for (var _iterator50 = dragSections.entries()[Symbol.iterator](), _step50; !(_iteratorNormalCompletion50 = (_step50 = _iterator50.next()).done); _iteratorNormalCompletion50 = true) {
+                        var _step50$value = _slicedToArray(_step50.value, 2),
+                            index = _step50$value[0],
+                            section = _step50$value[1];
 
                         Polymer.dom(section).setAttribute('active-section', 'false');
                         if (section.name) {
@@ -25593,16 +25883,16 @@ Polymer({
                         }
                     }
                 } catch (err) {
-                    _didIteratorError49 = true;
-                    _iteratorError49 = err;
+                    _didIteratorError50 = true;
+                    _iteratorError50 = err;
                 } finally {
                     try {
-                        if (!_iteratorNormalCompletion49 && _iterator49.return) {
-                            _iterator49.return();
+                        if (!_iteratorNormalCompletion50 && _iterator50.return) {
+                            _iterator50.return();
                         }
                     } finally {
-                        if (_didIteratorError49) {
-                            throw _iteratorError49;
+                        if (_didIteratorError50) {
+                            throw _iteratorError50;
                         }
                     }
                 }
@@ -25612,15 +25902,15 @@ Polymer({
                 this._sectionsLinked = dragSections.length === dropSections.length;
             }
 
-            var _iteratorNormalCompletion50 = true;
-            var _didIteratorError50 = false;
-            var _iteratorError50 = undefined;
+            var _iteratorNormalCompletion51 = true;
+            var _didIteratorError51 = false;
+            var _iteratorError51 = undefined;
 
             try {
-                for (var _iterator50 = dropSections.entries()[Symbol.iterator](), _step50; !(_iteratorNormalCompletion50 = (_step50 = _iterator50.next()).done); _iteratorNormalCompletion50 = true) {
-                    var _step50$value = _slicedToArray(_step50.value, 2),
-                        index = _step50$value[0],
-                        section = _step50$value[1];
+                for (var _iterator51 = dropSections.entries()[Symbol.iterator](), _step51; !(_iteratorNormalCompletion51 = (_step51 = _iterator51.next()).done); _iteratorNormalCompletion51 = true) {
+                    var _step51$value = _slicedToArray(_step51.value, 2),
+                        index = _step51$value[0],
+                        section = _step51$value[1];
 
                     Polymer.dom(section).setAttribute('active-section', 'false');
                     if (section.name) {
@@ -25628,16 +25918,16 @@ Polymer({
                     }
                 }
             } catch (err) {
-                _didIteratorError50 = true;
-                _iteratorError50 = err;
+                _didIteratorError51 = true;
+                _iteratorError51 = err;
             } finally {
                 try {
-                    if (!_iteratorNormalCompletion50 && _iterator50.return) {
-                        _iterator50.return();
+                    if (!_iteratorNormalCompletion51 && _iterator51.return) {
+                        _iterator51.return();
                     }
                 } finally {
-                    if (_didIteratorError50) {
-                        throw _iteratorError50;
+                    if (_didIteratorError51) {
+                        throw _iteratorError51;
                     }
                 }
             }
@@ -25664,24 +25954,24 @@ Polymer({
         };
 
         var taskGotoData = { drag: null, drop: null, unresolved: [] };
-        var _iteratorNormalCompletion51 = true;
-        var _didIteratorError51 = false;
-        var _iteratorError51 = undefined;
+        var _iteratorNormalCompletion52 = true;
+        var _didIteratorError52 = false;
+        var _iteratorError52 = undefined;
 
         try {
-            for (var _iterator51 = gotoData[Symbol.iterator](), _step51; !(_iteratorNormalCompletion51 = (_step51 = _iterator51.next()).done); _iteratorNormalCompletion51 = true) {
-                var _step51$value = _step51.value,
-                    _element6 = _step51$value.element,
-                    gotos = _step51$value.gotos;
+            for (var _iterator52 = gotoData[Symbol.iterator](), _step52; !(_iteratorNormalCompletion52 = (_step52 = _iterator52.next()).done); _iteratorNormalCompletion52 = true) {
+                var _step52$value = _step52.value,
+                    _element6 = _step52$value.element,
+                    gotos = _step52$value.gotos;
 
                 var elementData = { element: _element6, drag: null, drop: null, unresolved: [] };
-                var _iteratorNormalCompletion52 = true;
-                var _didIteratorError52 = false;
-                var _iteratorError52 = undefined;
+                var _iteratorNormalCompletion53 = true;
+                var _didIteratorError53 = false;
+                var _iteratorError53 = undefined;
 
                 try {
-                    for (var _iterator52 = gotos[Symbol.iterator](), _step52; !(_iteratorNormalCompletion52 = (_step52 = _iterator52.next()).done); _iteratorNormalCompletion52 = true) {
-                        var _goto2 = _step52.value;
+                    for (var _iterator53 = gotos[Symbol.iterator](), _step53; !(_iteratorNormalCompletion53 = (_step53 = _iterator53.next()).done); _iteratorNormalCompletion53 = true) {
+                        var _goto2 = _step53.value;
 
                         var value = this.getGlobalPropValue(_goto2);
                         var gotoName = typeof value === 'string' || value === null ? value : _goto2;
@@ -25722,16 +26012,16 @@ Polymer({
                         }
                     }
                 } catch (err) {
-                    _didIteratorError52 = true;
-                    _iteratorError52 = err;
+                    _didIteratorError53 = true;
+                    _iteratorError53 = err;
                 } finally {
                     try {
-                        if (!_iteratorNormalCompletion52 && _iterator52.return) {
-                            _iterator52.return();
+                        if (!_iteratorNormalCompletion53 && _iterator53.return) {
+                            _iterator53.return();
                         }
                     } finally {
-                        if (_didIteratorError52) {
-                            throw _iteratorError52;
+                        if (_didIteratorError53) {
+                            throw _iteratorError53;
                         }
                     }
                 }
@@ -25747,16 +26037,16 @@ Polymer({
                 }
             }
         } catch (err) {
-            _didIteratorError51 = true;
-            _iteratorError51 = err;
+            _didIteratorError52 = true;
+            _iteratorError52 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion51 && _iterator51.return) {
-                    _iterator51.return();
+                if (!_iteratorNormalCompletion52 && _iterator52.return) {
+                    _iterator52.return();
                 }
             } finally {
-                if (_didIteratorError51) {
-                    throw _iteratorError51;
+                if (_didIteratorError52) {
+                    throw _iteratorError52;
                 }
             }
         }
@@ -25837,10 +26127,10 @@ Polymer({
     },
 
 
-    _handleMenuTap: function _handleMenuTap(_ref18) {
-        var _ref18$currentTarget$ = _ref18.currentTarget.dataset,
-            type = _ref18$currentTarget$.type,
-            index = _ref18$currentTarget$.index;
+    _handleMenuTap: function _handleMenuTap(_ref19) {
+        var _ref19$currentTarget$ = _ref19.currentTarget.dataset,
+            type = _ref19$currentTarget$.type,
+            index = _ref19$currentTarget$.index;
 
         this._updateSection(type, Number(index));
         if (this._sectionsLinked) {
@@ -25848,14 +26138,14 @@ Polymer({
         }
     },
 
-    _handleDrag: function _handleDrag(_ref19) {
-        var dragElement = _ref19.detail.dragElement;
+    _handleDrag: function _handleDrag(_ref20) {
+        var dragElement = _ref20.detail.dragElement;
 
         this._draggedElement = dragElement;
     },
 
-    _handleDraggedOver: function _handleDraggedOver(_ref20) {
-        var dropElement = _ref20.detail.dropElement;
+    _handleDraggedOver: function _handleDraggedOver(_ref21) {
+        var dropElement = _ref21.detail.dropElement;
 
         if (!dropElement.checkIfAllowed(this._draggedElement)) {
             Polymer.dom(this._draggedElement).classList.add('not-allowed');
@@ -25863,15 +26153,15 @@ Polymer({
         }
     },
 
-    _handleDraggedOut: function _handleDraggedOut(_ref21) {
-        var dropElement = _ref21.detail.dropElement;
+    _handleDraggedOut: function _handleDraggedOut(_ref22) {
+        var dropElement = _ref22.detail.dropElement;
 
         Polymer.dom(this._draggedElement).classList.remove('not-allowed');
         Polymer.dom(dropElement).classList.remove('not-allowed');
     },
 
-    _handleDrop: function _handleDrop(_ref22) {
-        var dropElement = _ref22.detail.dropElement;
+    _handleDrop: function _handleDrop(_ref23) {
+        var dropElement = _ref23.detail.dropElement;
 
         Polymer.dom(this._draggedElement).classList.remove('not-allowed');
         Polymer.dom(dropElement).classList.remove('not-allowed');
@@ -25908,10 +26198,10 @@ Polymer({
         }
     },
 
-    _handleRemove: function _handleRemove(_ref23) {
-        var _ref23$detail = _ref23.detail,
-            dragElement = _ref23$detail.dragElement,
-            dropElement = _ref23$detail.dropElement;
+    _handleRemove: function _handleRemove(_ref24) {
+        var _ref24$detail = _ref24.detail,
+            dragElement = _ref24$detail.dragElement,
+            dropElement = _ref24$detail.dropElement;
 
         var index = this._dragData.sections.indexOf(dragElement.dragSectionParent);
         this._updateSection('drag', index);
@@ -25939,9 +26229,9 @@ Polymer({
 
     _handleReset: function _handleReset(event) {
         event.stopPropagation();
-        var _event$detail4 = event.detail,
-            sectionElement = _event$detail4.sectionElement,
-            dropElement = _event$detail4.dropElement;
+        var _event$detail5 = event.detail,
+            sectionElement = _event$detail5.sectionElement,
+            dropElement = _event$detail5.dropElement;
 
         var data = {
             dd: this.name,
@@ -26005,35 +26295,35 @@ Polymer({
     },
 
     _initiateChildren: function _initiateChildren() {
-        var _iteratorNormalCompletion53 = true;
-        var _didIteratorError53 = false;
-        var _iteratorError53 = undefined;
+        var _iteratorNormalCompletion54 = true;
+        var _didIteratorError54 = false;
+        var _iteratorError54 = undefined;
 
         try {
-            for (var _iterator53 = this._questions[Symbol.iterator](), _step53; !(_iteratorNormalCompletion53 = (_step53 = _iterator53.next()).done); _iteratorNormalCompletion53 = true) {
-                var _element7 = _step53.value;
+            for (var _iterator54 = this._questions[Symbol.iterator](), _step54; !(_iteratorNormalCompletion54 = (_step54 = _iterator54.next()).done); _iteratorNormalCompletion54 = true) {
+                var _element7 = _step54.value;
 
                 _element7.allowMultiple = _element7.allowMultiple || this.allowMultiple;
                 _element7.required = _element7.required || this.required;
             }
         } catch (err) {
-            _didIteratorError53 = true;
-            _iteratorError53 = err;
+            _didIteratorError54 = true;
+            _iteratorError54 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion53 && _iterator53.return) {
-                    _iterator53.return();
+                if (!_iteratorNormalCompletion54 && _iterator54.return) {
+                    _iterator54.return();
                 }
             } finally {
-                if (_didIteratorError53) {
-                    throw _iteratorError53;
+                if (_didIteratorError54) {
+                    throw _iteratorError54;
                 }
             }
         }
     },
 
-    _handleReset: function _handleReset(_ref24) {
-        var detail = _ref24.detail;
+    _handleReset: function _handleReset(_ref25) {
+        var detail = _ref25.detail;
 
         detail.sectionElement = this;
     }
@@ -26079,27 +26369,27 @@ Polymer({
         if (track) {
             this.fire('reset', { questionElement: this });
         }
-        var _iteratorNormalCompletion54 = true;
-        var _didIteratorError54 = false;
-        var _iteratorError54 = undefined;
+        var _iteratorNormalCompletion55 = true;
+        var _didIteratorError55 = false;
+        var _iteratorError55 = undefined;
 
         try {
-            for (var _iterator54 = this._options[Symbol.iterator](), _step54; !(_iteratorNormalCompletion54 = (_step54 = _iterator54.next()).done); _iteratorNormalCompletion54 = true) {
-                var _element8 = _step54.value;
+            for (var _iterator55 = this._options[Symbol.iterator](), _step55; !(_iteratorNormalCompletion55 = (_step55 = _iterator55.next()).done); _iteratorNormalCompletion55 = true) {
+                var _element8 = _step55.value;
 
                 _element8.reset();
             }
         } catch (err) {
-            _didIteratorError54 = true;
-            _iteratorError54 = err;
+            _didIteratorError55 = true;
+            _iteratorError55 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion54 && _iterator54.return) {
-                    _iterator54.return();
+                if (!_iteratorNormalCompletion55 && _iterator55.return) {
+                    _iterator55.return();
                 }
             } finally {
-                if (_didIteratorError54) {
-                    throw _iteratorError54;
+                if (_didIteratorError55) {
+                    throw _iteratorError55;
                 }
             }
         }
@@ -26111,15 +26401,15 @@ Polymer({
 
     _initiateChildren: function _initiateChildren() {
         var id = 'mc-' + this.getGlobalUniqueId();
-        var _iteratorNormalCompletion55 = true;
-        var _didIteratorError55 = false;
-        var _iteratorError55 = undefined;
+        var _iteratorNormalCompletion56 = true;
+        var _didIteratorError56 = false;
+        var _iteratorError56 = undefined;
 
         try {
-            for (var _iterator55 = this._options.entries()[Symbol.iterator](), _step55; !(_iteratorNormalCompletion55 = (_step55 = _iterator55.next()).done); _iteratorNormalCompletion55 = true) {
-                var _step55$value = _slicedToArray(_step55.value, 2),
-                    index = _step55$value[0],
-                    _element9 = _step55$value[1];
+            for (var _iterator56 = this._options.entries()[Symbol.iterator](), _step56; !(_iteratorNormalCompletion56 = (_step56 = _iterator56.next()).done); _iteratorNormalCompletion56 = true) {
+                var _step56$value = _slicedToArray(_step56.value, 2),
+                    index = _step56$value[0],
+                    _element9 = _step56$value[1];
 
                 Object.assign(_element9, { multiple: this.allowMultiple, questionId: id, index: index });
 
@@ -26133,16 +26423,16 @@ Polymer({
                 }
             }
         } catch (err) {
-            _didIteratorError55 = true;
-            _iteratorError55 = err;
+            _didIteratorError56 = true;
+            _iteratorError56 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion55 && _iterator55.return) {
-                    _iterator55.return();
+                if (!_iteratorNormalCompletion56 && _iterator56.return) {
+                    _iterator56.return();
                 }
             } finally {
-                if (_didIteratorError55) {
-                    throw _iteratorError55;
+                if (_didIteratorError56) {
+                    throw _iteratorError56;
                 }
             }
         }
@@ -26220,27 +26510,27 @@ Polymer({
         this._multimediaElements = Polymer.dom(this).querySelectorAll('inkd-mc-multimedia');
 
         this.multimedia = '';
-        var _iteratorNormalCompletion56 = true;
-        var _didIteratorError56 = false;
-        var _iteratorError56 = undefined;
+        var _iteratorNormalCompletion57 = true;
+        var _didIteratorError57 = false;
+        var _iteratorError57 = undefined;
 
         try {
-            for (var _iterator56 = this._multimediaElements[Symbol.iterator](), _step56; !(_iteratorNormalCompletion56 = (_step56 = _iterator56.next()).done); _iteratorNormalCompletion56 = true) {
-                var _element10 = _step56.value;
+            for (var _iterator57 = this._multimediaElements[Symbol.iterator](), _step57; !(_iteratorNormalCompletion57 = (_step57 = _iterator57.next()).done); _iteratorNormalCompletion57 = true) {
+                var _element10 = _step57.value;
 
                 this.multimedia += _element10.outerHTML;
             }
         } catch (err) {
-            _didIteratorError56 = true;
-            _iteratorError56 = err;
+            _didIteratorError57 = true;
+            _iteratorError57 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion56 && _iterator56.return) {
-                    _iterator56.return();
+                if (!_iteratorNormalCompletion57 && _iterator57.return) {
+                    _iterator57.return();
                 }
             } finally {
-                if (_didIteratorError56) {
-                    throw _iteratorError56;
+                if (_didIteratorError57) {
+                    throw _iteratorError57;
                 }
             }
         }
@@ -26255,27 +26545,27 @@ Polymer({
     },
 
     _removeMultimedia: function _removeMultimedia() {
-        var _iteratorNormalCompletion57 = true;
-        var _didIteratorError57 = false;
-        var _iteratorError57 = undefined;
+        var _iteratorNormalCompletion58 = true;
+        var _didIteratorError58 = false;
+        var _iteratorError58 = undefined;
 
         try {
-            for (var _iterator57 = this._multimediaElements[Symbol.iterator](), _step57; !(_iteratorNormalCompletion57 = (_step57 = _iterator57.next()).done); _iteratorNormalCompletion57 = true) {
-                var _element11 = _step57.value;
+            for (var _iterator58 = this._multimediaElements[Symbol.iterator](), _step58; !(_iteratorNormalCompletion58 = (_step58 = _iterator58.next()).done); _iteratorNormalCompletion58 = true) {
+                var _element11 = _step58.value;
 
                 _element11.domRemove();
             }
         } catch (err) {
-            _didIteratorError57 = true;
-            _iteratorError57 = err;
+            _didIteratorError58 = true;
+            _iteratorError58 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion57 && _iterator57.return) {
-                    _iterator57.return();
+                if (!_iteratorNormalCompletion58 && _iterator58.return) {
+                    _iterator58.return();
                 }
             } finally {
-                if (_didIteratorError57) {
-                    throw _iteratorError57;
+                if (_didIteratorError58) {
+                    throw _iteratorError58;
                 }
             }
         }
@@ -26329,15 +26619,15 @@ Polymer({
         } else {
             this.setTaskDependents(this._sections);
 
-            var _iteratorNormalCompletion58 = true;
-            var _didIteratorError58 = false;
-            var _iteratorError58 = undefined;
+            var _iteratorNormalCompletion59 = true;
+            var _didIteratorError59 = false;
+            var _iteratorError59 = undefined;
 
             try {
-                for (var _iterator58 = this._sections.entries()[Symbol.iterator](), _step58; !(_iteratorNormalCompletion58 = (_step58 = _iterator58.next()).done); _iteratorNormalCompletion58 = true) {
-                    var _step58$value = _slicedToArray(_step58.value, 2),
-                        index = _step58$value[0],
-                        _element12 = _step58$value[1];
+                for (var _iterator59 = this._sections.entries()[Symbol.iterator](), _step59; !(_iteratorNormalCompletion59 = (_step59 = _iterator59.next()).done); _iteratorNormalCompletion59 = true) {
+                    var _step59$value = _slicedToArray(_step59.value, 2),
+                        index = _step59$value[0],
+                        _element12 = _step59$value[1];
 
                     Polymer.dom(_element12).setAttribute('active-section', 'false');
                     if (_element12.name) {
@@ -26345,16 +26635,16 @@ Polymer({
                     }
                 }
             } catch (err) {
-                _didIteratorError58 = true;
-                _iteratorError58 = err;
+                _didIteratorError59 = true;
+                _iteratorError59 = err;
             } finally {
                 try {
-                    if (!_iteratorNormalCompletion58 && _iterator58.return) {
-                        _iterator58.return();
+                    if (!_iteratorNormalCompletion59 && _iterator59.return) {
+                        _iterator59.return();
                     }
                 } finally {
-                    if (_didIteratorError58) {
-                        throw _iteratorError58;
+                    if (_didIteratorError59) {
+                        throw _iteratorError59;
                     }
                 }
             }
@@ -26375,24 +26665,24 @@ Polymer({
 
     handleTaskGoto: function handleTaskGoto(gotoData) {
         var taskGotoData = { section: null, unresolved: [] };
-        var _iteratorNormalCompletion59 = true;
-        var _didIteratorError59 = false;
-        var _iteratorError59 = undefined;
+        var _iteratorNormalCompletion60 = true;
+        var _didIteratorError60 = false;
+        var _iteratorError60 = undefined;
 
         try {
-            for (var _iterator59 = gotoData[Symbol.iterator](), _step59; !(_iteratorNormalCompletion59 = (_step59 = _iterator59.next()).done); _iteratorNormalCompletion59 = true) {
-                var _step59$value = _step59.value,
-                    _element13 = _step59$value.element,
-                    gotos = _step59$value.gotos;
+            for (var _iterator60 = gotoData[Symbol.iterator](), _step60; !(_iteratorNormalCompletion60 = (_step60 = _iterator60.next()).done); _iteratorNormalCompletion60 = true) {
+                var _step60$value = _step60.value,
+                    _element13 = _step60$value.element,
+                    gotos = _step60$value.gotos;
 
                 var elementData = { section: null, unresolved: [] };
-                var _iteratorNormalCompletion60 = true;
-                var _didIteratorError60 = false;
-                var _iteratorError60 = undefined;
+                var _iteratorNormalCompletion61 = true;
+                var _didIteratorError61 = false;
+                var _iteratorError61 = undefined;
 
                 try {
-                    for (var _iterator60 = gotos[Symbol.iterator](), _step60; !(_iteratorNormalCompletion60 = (_step60 = _iterator60.next()).done); _iteratorNormalCompletion60 = true) {
-                        var _goto3 = _step60.value;
+                    for (var _iterator61 = gotos[Symbol.iterator](), _step61; !(_iteratorNormalCompletion61 = (_step61 = _iterator61.next()).done); _iteratorNormalCompletion61 = true) {
+                        var _goto3 = _step61.value;
 
                         var value = this.getGlobalPropValue(_goto3);
                         var gotoName = typeof value === 'string' || value === null ? value : _goto3;
@@ -26415,16 +26705,16 @@ Polymer({
                         }
                     }
                 } catch (err) {
-                    _didIteratorError60 = true;
-                    _iteratorError60 = err;
+                    _didIteratorError61 = true;
+                    _iteratorError61 = err;
                 } finally {
                     try {
-                        if (!_iteratorNormalCompletion60 && _iterator60.return) {
-                            _iterator60.return();
+                        if (!_iteratorNormalCompletion61 && _iterator61.return) {
+                            _iterator61.return();
                         }
                     } finally {
-                        if (_didIteratorError60) {
-                            throw _iteratorError60;
+                        if (_didIteratorError61) {
+                            throw _iteratorError61;
                         }
                     }
                 }
@@ -26437,16 +26727,16 @@ Polymer({
                 }
             }
         } catch (err) {
-            _didIteratorError59 = true;
-            _iteratorError59 = err;
+            _didIteratorError60 = true;
+            _iteratorError60 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion59 && _iterator59.return) {
-                    _iterator59.return();
+                if (!_iteratorNormalCompletion60 && _iterator60.return) {
+                    _iterator60.return();
                 }
             } finally {
-                if (_didIteratorError59) {
-                    throw _iteratorError59;
+                if (_didIteratorError60) {
+                    throw _iteratorError60;
                 }
             }
         }
@@ -26508,10 +26798,10 @@ Polymer({
         event.stopPropagation();
         this._checkDisableNext();
 
-        var _event$detail5 = event.detail,
-            optionElement = _event$detail5.optionElement,
-            questionElement = _event$detail5.questionElement,
-            track = _event$detail5.track;
+        var _event$detail6 = event.detail,
+            optionElement = _event$detail6.optionElement,
+            questionElement = _event$detail6.questionElement,
+            track = _event$detail6.track;
 
         if (track) {
             var eventName = optionElement.checked ? 'mc-option-select' : 'mc-option-unselect';
@@ -26539,9 +26829,9 @@ Polymer({
 
     _handleReset: function _handleReset(event) {
         event.stopPropagation();
-        var _event$detail6 = event.detail,
-            sectionElement = _event$detail6.sectionElement,
-            questionElement = _event$detail6.questionElement;
+        var _event$detail7 = event.detail,
+            sectionElement = _event$detail7.sectionElement,
+            questionElement = _event$detail7.questionElement;
 
         var data = {
             mc: this.name,
@@ -26572,7 +26862,11 @@ Polymer({
     is: 'inkd-list',
 
     properties: {
-        data: Array
+        data: Array,
+        subindex: {
+            type: String,
+            value: ''
+        }
     },
 
     behaviors: [InkdBehavior],
@@ -26581,8 +26875,13 @@ Polymer({
         return 'link ' + (active ? 'active' : '') + ' ' + (visited ? 'visited' : '');
     },
 
+    _getNumber: function _getNumber(index) {
+        return '' + this.subindex + (index + 1) + '.';
+    },
+
     _handleLinkTap: function _handleLinkTap(event) {
         event.preventDefault();
+        event.stopPropagation();
         var index = event.currentTarget.dataset.index;
         var _data$index$link = this.data[index].link,
             eventName = _data$index$link.event,
@@ -26591,10 +26890,14 @@ Polymer({
         this.fire(eventName, detail);
     },
 
-    _handleIconTap: function _handleIconTap(_ref25) {
-        var target = _ref25.target;
+    _handleTap: function _handleTap(event) {
+        event.stopPropagation();
+        var target = event.target,
+            currentTarget = event.currentTarget;
 
-        target.classList.toggle('hide-list');
+        if (!['INKD-LIST', 'LI'].includes(target.tagName)) {
+            currentTarget.classList.toggle('hide-list');
+        }
     }
 });
 Polymer({
@@ -26611,15 +26914,15 @@ Polymer({
 
     ready: function ready() {
         this.data = this.data ? this.data.match(/(?:\\,|[^,])+/g) : [];
-        var _iteratorNormalCompletion61 = true;
-        var _didIteratorError61 = false;
-        var _iteratorError61 = undefined;
+        var _iteratorNormalCompletion62 = true;
+        var _didIteratorError62 = false;
+        var _iteratorError62 = undefined;
 
         try {
-            for (var _iterator61 = this.data.entries()[Symbol.iterator](), _step61; !(_iteratorNormalCompletion61 = (_step61 = _iterator61.next()).done); _iteratorNormalCompletion61 = true) {
-                var _step61$value = _slicedToArray(_step61.value, 2),
-                    index = _step61$value[0],
-                    datum = _step61$value[1];
+            for (var _iterator62 = this.data.entries()[Symbol.iterator](), _step62; !(_iteratorNormalCompletion62 = (_step62 = _iterator62.next()).done); _iteratorNormalCompletion62 = true) {
+                var _step62$value = _slicedToArray(_step62.value, 2),
+                    index = _step62$value[0],
+                    datum = _step62$value[1];
 
                 var match = datum.match(/((?:[\s\d.])+):((?:\\:|[^:])+)/);
                 if (match) {
@@ -26629,84 +26932,7 @@ Polymer({
                         element: this
                     };
                 } else {
-                    this.addDebugError('data', '\'' + datum + '\' is not valid outline data (has to be in the form \'outline-number: title\')');
-                }
-            }
-        } catch (err) {
-            _didIteratorError61 = true;
-            _iteratorError61 = err;
-        } finally {
-            try {
-                if (!_iteratorNormalCompletion61 && _iterator61.return) {
-                    _iterator61.return();
-                }
-            } finally {
-                if (_didIteratorError61) {
-                    throw _iteratorError61;
-                }
-            }
-        }
-
-        this._listData = [];
-
-        this.onGlobalAttach('_initiate');
-    },
-
-    _initiate: function _initiate() {
-        this.cyoa = this.cyoa.replace(/\s/g, '').split(',');
-        this.nodeLevelMap = {};
-        var _iteratorNormalCompletion62 = true;
-        var _didIteratorError62 = false;
-        var _iteratorError62 = undefined;
-
-        try {
-            for (var _iterator62 = this.cyoa[Symbol.iterator](), _step62; !(_iteratorNormalCompletion62 = (_step62 = _iterator62.next()).done); _iteratorNormalCompletion62 = true) {
-                var cyoaName = _step62.value;
-
-                var cyoaElement = this.getGlobalNameElement(cyoaName, 'inkd-cyoa', 'cyoa');
-                if (cyoaElement !== undefined) {
-                    var data = [];
-                    var _iteratorNormalCompletion63 = true;
-                    var _didIteratorError63 = false;
-                    var _iteratorError63 = undefined;
-
-                    try {
-                        for (var _iterator63 = cyoaElement.nodes[Symbol.iterator](), _step63; !(_iteratorNormalCompletion63 = (_step63 = _iterator63.next()).done); _iteratorNormalCompletion63 = true) {
-                            var node = _step63.value;
-
-                            if (node.number) {
-                                var name = node.name,
-                                    title = node.title,
-                                    number = node.number;
-
-                                var levels = this._getOutlineLevels(number);
-                                data.push({ element: node, levels: levels, text: title.trim(),
-                                    link: {
-                                        event: 'goto',
-                                        detail: { gotoData: [{ element: this, gotos: [name] }] }
-                                    }
-                                });
-                                this.nodeLevelMap[name] = levels;
-                            }
-                        }
-                    } catch (err) {
-                        _didIteratorError63 = true;
-                        _iteratorError63 = err;
-                    } finally {
-                        try {
-                            if (!_iteratorNormalCompletion63 && _iterator63.return) {
-                                _iterator63.return();
-                            }
-                        } finally {
-                            if (_didIteratorError63) {
-                                throw _iteratorError63;
-                            }
-                        }
-                    }
-
-                    this._addListData(data, 'number');
-                    this.onGlobalChange(cyoaName + '.currentNode', '_handleCurrentNodeChange');
-                    this.onGlobalChange(cyoaName + '.prevNode', '_handlePrevNodeChange');
+                    this.addDebugError('data', '\'' + datum + '\' is not valid outline data (has to be in the form \'outline-number: topic\')');
                 }
             }
         } catch (err) {
@@ -26724,29 +26950,106 @@ Polymer({
             }
         }
 
+        this._listData = [];
+
+        this.onGlobalAttach('_initiate');
+    },
+
+    _initiate: function _initiate() {
+        this.cyoa = this.cyoa.replace(/\s/g, '').split(',');
+        this.nodeLevelMap = {};
+        var _iteratorNormalCompletion63 = true;
+        var _didIteratorError63 = false;
+        var _iteratorError63 = undefined;
+
+        try {
+            for (var _iterator63 = this.cyoa[Symbol.iterator](), _step63; !(_iteratorNormalCompletion63 = (_step63 = _iterator63.next()).done); _iteratorNormalCompletion63 = true) {
+                var cyoaName = _step63.value;
+
+                var cyoaElement = this.getGlobalNameElement(cyoaName, 'inkd-cyoa', 'cyoa');
+                if (cyoaElement !== undefined) {
+                    var data = [];
+                    var _iteratorNormalCompletion64 = true;
+                    var _didIteratorError64 = false;
+                    var _iteratorError64 = undefined;
+
+                    try {
+                        for (var _iterator64 = cyoaElement.nodes[Symbol.iterator](), _step64; !(_iteratorNormalCompletion64 = (_step64 = _iterator64.next()).done); _iteratorNormalCompletion64 = true) {
+                            var node = _step64.value;
+
+                            if (node.number) {
+                                var name = node.name,
+                                    topic = node.topic,
+                                    number = node.number;
+
+                                var levels = this._getOutlineLevels(number);
+                                data.push({ element: node, levels: levels, text: topic.trim(),
+                                    link: {
+                                        event: 'goto',
+                                        detail: { gotoData: [{ element: this, gotos: [name] }] }
+                                    }
+                                });
+                                this.nodeLevelMap[name] = levels;
+                            }
+                        }
+                    } catch (err) {
+                        _didIteratorError64 = true;
+                        _iteratorError64 = err;
+                    } finally {
+                        try {
+                            if (!_iteratorNormalCompletion64 && _iterator64.return) {
+                                _iterator64.return();
+                            }
+                        } finally {
+                            if (_didIteratorError64) {
+                                throw _iteratorError64;
+                            }
+                        }
+                    }
+
+                    this._addListData(data, 'number');
+                    this.onGlobalChange(cyoaName + '.currentNode', '_handleCurrentNodeChange');
+                    this.onGlobalChange(cyoaName + '.prevNode', '_handlePrevNodeChange');
+                }
+            }
+        } catch (err) {
+            _didIteratorError63 = true;
+            _iteratorError63 = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion63 && _iterator63.return) {
+                    _iterator63.return();
+                }
+            } finally {
+                if (_didIteratorError63) {
+                    throw _iteratorError63;
+                }
+            }
+        }
+
         this._addListData(this.data, 'data');
     },
 
     _addListData: function _addListData(data, attr) {
-        var _iteratorNormalCompletion64 = true;
-        var _didIteratorError64 = false;
-        var _iteratorError64 = undefined;
+        var _iteratorNormalCompletion65 = true;
+        var _didIteratorError65 = false;
+        var _iteratorError65 = undefined;
 
         try {
-            for (var _iterator64 = data[Symbol.iterator](), _step64; !(_iteratorNormalCompletion64 = (_step64 = _iterator64.next()).done); _iteratorNormalCompletion64 = true) {
-                var datum = _step64.value;
+            for (var _iterator65 = data[Symbol.iterator](), _step65; !(_iteratorNormalCompletion65 = (_step65 = _iterator65.next()).done); _iteratorNormalCompletion65 = true) {
+                var datum = _step65.value;
 
                 var levelData = this._listData;
                 var lastIndex = datum.levels.length - 1;
-                var _iteratorNormalCompletion65 = true;
-                var _didIteratorError65 = false;
-                var _iteratorError65 = undefined;
+                var _iteratorNormalCompletion66 = true;
+                var _didIteratorError66 = false;
+                var _iteratorError66 = undefined;
 
                 try {
-                    for (var _iterator65 = datum.levels.entries()[Symbol.iterator](), _step65; !(_iteratorNormalCompletion65 = (_step65 = _iterator65.next()).done); _iteratorNormalCompletion65 = true) {
-                        var _step65$value = _slicedToArray(_step65.value, 2),
-                            index = _step65$value[0],
-                            num = _step65$value[1];
+                    for (var _iterator66 = datum.levels.entries()[Symbol.iterator](), _step66; !(_iteratorNormalCompletion66 = (_step66 = _iterator66.next()).done); _iteratorNormalCompletion66 = true) {
+                        var _step66$value = _slicedToArray(_step66.value, 2),
+                            index = _step66$value[0],
+                            num = _step66$value[1];
 
                         num = num - 1;
                         if (index === lastIndex) {
@@ -26764,31 +27067,31 @@ Polymer({
                         }
                     }
                 } catch (err) {
-                    _didIteratorError65 = true;
-                    _iteratorError65 = err;
+                    _didIteratorError66 = true;
+                    _iteratorError66 = err;
                 } finally {
                     try {
-                        if (!_iteratorNormalCompletion65 && _iterator65.return) {
-                            _iterator65.return();
+                        if (!_iteratorNormalCompletion66 && _iterator66.return) {
+                            _iterator66.return();
                         }
                     } finally {
-                        if (_didIteratorError65) {
-                            throw _iteratorError65;
+                        if (_didIteratorError66) {
+                            throw _iteratorError66;
                         }
                     }
                 }
             }
         } catch (err) {
-            _didIteratorError64 = true;
-            _iteratorError64 = err;
+            _didIteratorError65 = true;
+            _iteratorError65 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion64 && _iterator64.return) {
-                    _iterator64.return();
+                if (!_iteratorNormalCompletion65 && _iterator65.return) {
+                    _iterator65.return();
                 }
             } finally {
-                if (_didIteratorError64) {
-                    throw _iteratorError64;
+                if (_didIteratorError65) {
+                    throw _iteratorError65;
                 }
             }
         }
@@ -26809,15 +27112,15 @@ Polymer({
         if (levels !== undefined) {
             var path = ['_listData'];
             var lastIndex = levels.length - 1;
-            var _iteratorNormalCompletion66 = true;
-            var _didIteratorError66 = false;
-            var _iteratorError66 = undefined;
+            var _iteratorNormalCompletion67 = true;
+            var _didIteratorError67 = false;
+            var _iteratorError67 = undefined;
 
             try {
-                for (var _iterator66 = levels.entries()[Symbol.iterator](), _step66; !(_iteratorNormalCompletion66 = (_step66 = _iterator66.next()).done); _iteratorNormalCompletion66 = true) {
-                    var _step66$value = _slicedToArray(_step66.value, 2),
-                        index = _step66$value[0],
-                        num = _step66$value[1];
+                for (var _iterator67 = levels.entries()[Symbol.iterator](), _step67; !(_iteratorNormalCompletion67 = (_step67 = _iterator67.next()).done); _iteratorNormalCompletion67 = true) {
+                    var _step67$value = _slicedToArray(_step67.value, 2),
+                        index = _step67$value[0],
+                        num = _step67$value[1];
 
                     path.push(num - 1);
                     if (index !== lastIndex) {
@@ -26825,16 +27128,16 @@ Polymer({
                     }
                 }
             } catch (err) {
-                _didIteratorError66 = true;
-                _iteratorError66 = err;
+                _didIteratorError67 = true;
+                _iteratorError67 = err;
             } finally {
                 try {
-                    if (!_iteratorNormalCompletion66 && _iterator66.return) {
-                        _iterator66.return();
+                    if (!_iteratorNormalCompletion67 && _iterator67.return) {
+                        _iterator67.return();
                     }
                 } finally {
-                    if (_didIteratorError66) {
-                        throw _iteratorError66;
+                    if (_didIteratorError67) {
+                        throw _iteratorError67;
                     }
                 }
             }
