@@ -117,6 +117,21 @@
         display: none;
         color: #fff;
         font-size: 1.2rem;
+        cursor: pointer;
+    }
+    .menu:hover .header__menu {
+        display: block;
+    }
+    .header__menu {
+        display: none;
+        position: absolute;
+        top: 5em;
+        left: 0;
+        bottom: 3em;
+        width: 100%;
+        height: 100%;
+        background: #222222;
+        z-index: 100;
     }
     .main-container {
         display: flex;
@@ -192,19 +207,21 @@
     .navbar {
         display: none;
         width: 100%;
-        background: green;
         list-style: none;
         position: fixed;
         bottom: 0;
         left: 0;
         height: 3em;
-        z-index: 1;
+        z-index: 120;
+        background: green;
     }
     .navbar__item {
         font-size: 1rem;
         cursor: pointer;
     }
-
+    .navbar__item:hover {
+        color: #000;
+    }
     .tipper {
         text-decoration:underline;
         text-decoration-style:double;

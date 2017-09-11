@@ -28,7 +28,12 @@
     <inkd-ml bookmark no-exit-warn>     
         <header class="header">
                 <h1 class="header__title"><inkd-value prop = "main.currentNodeTopic"></inkd-value></h1>
-                <a class="header__burgermenu" href="#menu">&#9776;</a>  
+                <section class="menu">
+                    <a class="header__burgermenu" href="#menu">&#9776;</a>
+                    <nav class="header__menu">
+                        <inkd-outline cyoa = "main"></inkd-outline>                        
+                    </nav>
+                </section>  
         </header>
         <main class="main-container">
             <section class="main-sidebar">
