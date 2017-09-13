@@ -12836,7 +12836,19 @@ return {
         <content></content>
     </template>
     
-    </dom-module><dom-module id="inkd-img" assetpath="inkd-elements/">
+    </dom-module><dom-module id="inkd-area" assetpath="inkd-elements/image/">
+
+    <template>
+        <style>
+            area {
+                all: inherit;
+            }
+        </style>
+        
+        <area shape="[[shape]]" coords="[[coords]]" alt="[[alt]]" href="#" on-tap="_handleTap">
+    </template>
+
+    </dom-module><dom-module id="inkd-img" assetpath="inkd-elements/image/">
 
     <template>
         <style>
@@ -12858,7 +12870,11 @@ return {
             }
         </style>
         
-        <img id="image" src="[[src]]" style$="width: {{width}}; height: {{height}};" alt="[[alt]]" longdesc="[[longdesc]]" on-load="_handleLoad" on-error="_handleError">
+        <img id="image" src="[[src]]" style$="width: {{width}}; height: {{height}};" alt="[[alt]]" longdesc="[[longdesc]]" on-load="_handleLoad" on-error="_handleError" usemap$="#[[mapId]]">
+        
+        <map id="imageMap" name="[[mapId]]">
+            <content select="inkd-area"></content>
+        </map>
     </template>
 
     </dom-module><dom-module id="inkd-audio" assetpath="inkd-elements/">
@@ -19418,8 +19434,7 @@ return Player;
                 width: 100%;
                 height: 100%;
                 overflow: auto;
-                background-color: rgba(0,0,0,0.4);
-                
+                background-color: rgba(0, 0, 0, 0.4);
                 @apply --background-overlay;
             }
             
@@ -19435,13 +19450,11 @@ return Player;
                 padding: 20px;
                 border: 1px solid #888;
                 width: 80%;
-                
                 @apply --content-wrapper;
             }
             
             .content {
                 overflow: scroll;
-                
                 @apply --content;
             }
             
@@ -19461,18 +19474,421 @@ return Player;
                 background-size: 20px 20px;
                 width: 20px;
                 height: 20px;
-                
                 @apply --close-button;
             }
             
-            .close-button:hover, .close-button:focus {
+            .close-button:hover,
+            .close-button:focus {
                 background-color: #bbb;
-                
                 @apply --close-button-hover;
             }
             
+            @import url("https://fonts.googleapis.com/css?family=Old+Standard+TT");
+            @import url("https://fonts.googleapis.com/css?family=VT323");
+            @import url("https://fonts.googleapis.com/css?family=Space+Mono");
+            .layout-container {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                justify-content: center
+            }
             
-            @import url("https://fonts.googleapis.com/css?family=Old+Standard+TT");@import url("https://fonts.googleapis.com/css?family=VT323");@import url("https://fonts.googleapis.com/css?family=Space+Mono");.layout-container{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}.one-column-layout{display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;padding:1.2em;width:80%;height:auto}@media only screen and (max-width: 870px){.one-column-layout{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;height:auto;margin-top:5em;margin-bottom:2.5em}}@media only screen and (min-width: 1366px){.one-column-layout{height:80vh}}.one-column-layout > inkd-box:first-child{-ms-flex-preferred-size:100%;flex-basis:100%;padding:1em;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.one-column-layout > inkd-box:nth-child(2n){display:block;-ms-flex-preferred-size:100%;flex-basis:100%;margin:0 -1em;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center}@media only screen and (max-width: 870px){.one-column-layout > inkd-box:nth-child(2n){-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-ms-flex-line-pack:justify;align-content:space-between}}.one-column-layout.fullscreen{width:100%;height:100vh}.one-column-layout p{margin-left:0.625em}@media only screen and (max-width: 870px){.one-column-layout p{padding:1em 0}}.one-column-layout inkd-button{width:30%;padding:1em 2em;margin:0 1em;cursor:pointer;font-size:1rem;text-align:center}@media only screen and (max-width: 870px){.one-column-layout inkd-button{width:60%;margin:1em 0}}.one-column-layout img{max-width:100%;height:auto}.two-column-layout{display:-webkit-box;display:-ms-flexbox;display:flex;width:80%;padding:1.2em;overflow:hidden}@media only screen and (max-width: 870px){.two-column-layout{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;margin-top:25em;margin-bottom:2.5em;height:auto}}@media only screen and (min-width: 1366px){.two-column-layout{height:80vh}}.two-column-layout.fullscreen{width:100%;height:100vh}.two-column-layout > inkd-box:first-child{-ms-flex-negative:0;flex-shrink:0;-webkit-box-flex:0;-ms-flex-positive:0;flex-grow:0;padding:1em;min-width:0;-ms-flex-preferred-size:50%;flex-basis:50%;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center}@media only screen and (max-width: 870px){.two-column-layout > inkd-box:first-child{-ms-flex-preferred-size:100%;flex-basis:100%}}.two-column-layout > inkd-box:nth-child(2n){-ms-flex-negative:1;flex-shrink:1;-webkit-box-flex:1;-ms-flex-positive:1;flex-grow:1;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center}@media only screen and (max-width: 870px){.two-column-layout > inkd-box:nth-child(2n){-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-ms-flex-line-pack:justify;align-content:space-between}}.two-column-layout inkd-button{display:inline-block;width:60%;line-height:0;padding:1.2em 2em;margin:1em 0;cursor:pointer;font-size:1rem;text-align:center;zoom:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.two-column-layout p{font-size:1rem;padding-bottom:1em}@media only screen and (max-width: 870px){.two-column-layout p{padding:1em 0}}.two-column-layout img{max-width:100%;height:auto}.three-image-layout{width:100%;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-flow:row wrap;flex-flow:row wrap;-ms-flex-pack:distribute;justify-content:space-around;-webkit-box-align:center;-ms-flex-align:center;align-items:center}@media only screen and (max-width: 870px){.three-image-layout{width:100%;padding:0}}.three-image-layout figure{-webkit-box-flex:1;-ms-flex:auto;flex:auto;margin:.5vw;width:200px}@media only screen and (max-width: 870px){.three-image-layout figure{width:100%;margin:0}}.three-image-layout img{width:100%;height:auto}.old-theme{font-family:Old Standard TT,serif}.old-theme img{-webkit-filter:grayscale(100%);filter:grayscale(100%);border:0.625em solid #fff;border-bottom:2.8125em solid #fff;-webkit-box-shadow:0.1875em 0.1875em 0.1875em #777;box-shadow:0.1875em 0.1875em 0.1875em #777;-webkit-transform:rotate(-8deg) scale(0.98);transform:rotate(-8deg) scale(0.98);margin-left:1em;-webkit-transition:all .3s ease-in-out;transition:all .3s ease-in-out}@media only screen and (max-width: 870px){.old-theme img{margin-left:0}}.old-theme img:hover{-webkit-transform:rotate(-8deg) scale(1);transform:rotate(-8deg) scale(1)}.old-theme p{font-weight:800}.old-theme inkd-button{color:peru;background-color:#fff;-webkit-box-shadow:0.0625em 0.0625em 0.0625em #777;box-shadow:0.0625em 0.0625em 0.0625em #777;border-radius:0.31em;font-size:1em;font-weight:800;-webkit-transition:all .3s ease-in-out;transition:all .3s ease-in-out}.old-theme inkd-button:hover{background-color:peru;color:#fff}.old-theme .three-image-layout{margin-left:-2em}.terminal-theme{background-color:#000;border:0.625em solid #00ff40;font-family:VT323,serif;color:#00ff40;font-size:1em}.terminal-theme img{padding:1em;border:0.0625em solid #00ff40}.terminal-theme p{font-size:1.1rem}.terminal-theme inkd-button{background-color:#2C2C2C;color:#00ff40;border:0.0625em solid #00ff40;font-size:1em}.terminal-theme inkd-button:hover{background-color:#00ff40;color:#2C2C2C}.business-theme{background-color:#2C2C2C;color:#fff;border-top:1em solid #1abc9c;font-family:Space Mono,serif}.business-theme img{border:0.31em solid #1abc9c}.business-theme inkd-button{background-color:#bc9c1a;color:#2C2C2C}.business-theme inkd-button:hover{background-color:#836d12;color:#000}
+            .one-column-layout {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -ms-flex-wrap: wrap;
+                flex-wrap: wrap;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                justify-content: center;
+                padding: 1.2em;
+                width: 80%;
+                height: auto
+            }
+            
+            @media only screen and (max-width: 870px) {
+                .one-column-layout {
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -webkit-box-orient: vertical;
+                    -webkit-box-direction: normal;
+                    -ms-flex-direction: column;
+                    flex-direction: column;
+                    height: auto;
+                    margin-top: 5em;
+                    margin-bottom: 2.5em
+                }
+            }
+            
+            @media only screen and (min-width: 1366px) {
+                .one-column-layout {
+                    height: 80vh
+                }
+            }
+            
+            .one-column-layout > inkd-box:first-child {
+                -ms-flex-preferred-size: 100%;
+                flex-basis: 100%;
+                padding: 1em;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                justify-content: center;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center
+            }
+            
+            .one-column-layout > inkd-box:nth-child(2n) {
+                display: block;
+                -ms-flex-preferred-size: 100%;
+                flex-basis: 100%;
+                margin: 0 -1em;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                justify-content: center;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center
+            }
+            
+            @media only screen and (max-width: 870px) {
+                .one-column-layout > inkd-box: nth-child(2n) {
+                    -webkit-box-orient: vertical;
+                    -webkit-box-direction: normal;
+                    -ms-flex-direction: column;
+                    flex-direction: column;
+                    -webkit-box-pack: center;
+                    -ms-flex-pack: center;
+                    justify-content: center;
+                    -ms-flex-line-pack: justify;
+                    align-content: space-between
+                }
+            }
+            
+            .one-column-layout.fullscreen {
+                width: 100%;
+                height: 100vh
+            }
+            
+            .one-column-layout p {
+                margin-left: 0.625em
+            }
+            
+            @media only screen and (max-width: 870px) {
+                .one-column-layout p {
+                    padding: 1em 0
+                }
+            }
+            
+            .one-column-layout inkd-button {
+                width: 30%;
+                padding: 1em 2em;
+                margin: 0 1em;
+                cursor: pointer;
+                font-size: 1rem;
+                text-align: center
+            }
+            
+            @media only screen and (max-width: 870px) {
+                .one-column-layout inkd-button {
+                    width: 60%;
+                    margin: 1em 0
+                }
+            }
+            
+            .one-column-layout img {
+                max-width: 100%;
+                height: auto
+            }
+            
+            .two-column-layout {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                width: 80%;
+                padding: 1.2em;
+                overflow: hidden
+            }
+            
+            @media only screen and (max-width: 870px) {
+                .two-column-layout {
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -webkit-box-orient: vertical;
+                    -webkit-box-direction: normal;
+                    -ms-flex-direction: column;
+                    flex-direction: column;
+                    margin-top: 25em;
+                    margin-bottom: 2.5em;
+                    height: auto
+                }
+            }
+            
+            @media only screen and (min-width: 1366px) {
+                .two-column-layout {
+                    height: 80vh
+                }
+            }
+            
+            .two-column-layout.fullscreen {
+                width: 100%;
+                height: 100vh
+            }
+            
+            .two-column-layout > inkd-box:first-child {
+                -ms-flex-negative: 0;
+                flex-shrink: 0;
+                -webkit-box-flex: 0;
+                -ms-flex-positive: 0;
+                flex-grow: 0;
+                padding: 1em;
+                min-width: 0;
+                -ms-flex-preferred-size: 50%;
+                flex-basis: 50%;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                justify-content: center;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center
+            }
+            
+            @media only screen and (max-width: 870px) {
+                .two-column-layout > inkd-box:first-child {
+                    -ms-flex-preferred-size: 100%;
+                    flex-basis: 100%
+                }
+            }
+            
+            .two-column-layout > inkd-box:nth-child(2n) {
+                -ms-flex-negative: 1;
+                flex-shrink: 1;
+                -webkit-box-flex: 1;
+                -ms-flex-positive: 1;
+                flex-grow: 1;
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                flex-direction: column;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-pack: center;
+                -ms-flex-pack: center;
+                justify-content: center;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center
+            }
+            
+            @media only screen and (max-width: 870px) {
+                .two-column-layout > inkd-box: nth-child(2n) {
+                    -webkit-box-orient: vertical;
+                    -webkit-box-direction: normal;
+                    -ms-flex-direction: column;
+                    flex-direction: column;
+                    -webkit-box-pack: center;
+                    -ms-flex-pack: center;
+                    justify-content: center;
+                    -ms-flex-line-pack: justify;
+                    align-content: space-between
+                }
+            }
+            
+            .two-column-layout inkd-button {
+                display: inline-block;
+                width: 60%;
+                line-height: 0;
+                padding: 1.2em 2em;
+                margin: 1em 0;
+                cursor: pointer;
+                font-size: 1rem;
+                text-align: center;
+                zoom: 1;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis
+            }
+            
+            .two-column-layout p {
+                font-size: 1rem;
+                padding-bottom: 1em
+            }
+            
+            @media only screen and (max-width: 870px) {
+                .two-column-layout p {
+                    padding: 1em 0
+                }
+            }
+            
+            .two-column-layout img {
+                max-width: 100%;
+                height: auto
+            }
+            
+            .three-image-layout {
+                width: 100%;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-orient: horizontal;
+                -webkit-box-direction: normal;
+                -ms-flex-flow: row wrap;
+                flex-flow: row wrap;
+                -ms-flex-pack: distribute;
+                justify-content: space-around;
+                -webkit-box-align: center;
+                -ms-flex-align: center;
+                align-items: center
+            }
+            
+            @media only screen and (max-width: 870px) {
+                .three-image-layout {
+                    width: 100%;
+                    padding: 0
+                }
+            }
+            
+            .three-image-layout figure {
+                -webkit-box-flex: 1;
+                -ms-flex: auto;
+                flex: auto;
+                margin: .5vw;
+                width: 200px
+            }
+            
+            @media only screen and (max-width: 870px) {
+                .three-image-layout figure {
+                    width: 100%;
+                    margin: 0
+                }
+            }
+            
+            .three-image-layout img {
+                width: 100%;
+                height: auto
+            }
+            
+            .old-theme {
+                font-family: Old Standard TT, serif
+            }
+            
+            .old-theme img {
+                -webkit-filter: grayscale(100%);
+                filter: grayscale(100%);
+                border: 0.625em solid #fff;
+                border-bottom: 2.8125em solid #fff;
+                -webkit-box-shadow: 0.1875em 0.1875em 0.1875em #777;
+                box-shadow: 0.1875em 0.1875em 0.1875em #777;
+                -webkit-transform: rotate(-8deg) scale(0.98);
+                transform: rotate(-8deg) scale(0.98);
+                margin-left: 1em;
+                -webkit-transition: all .3s ease-in-out;
+                transition: all .3s ease-in-out
+            }
+            
+            @media only screen and (max-width: 870px) {
+                .old-theme img {
+                    margin-left: 0
+                }
+            }
+            
+            .old-theme img:hover {
+                -webkit-transform: rotate(-8deg) scale(1);
+                transform: rotate(-8deg) scale(1)
+            }
+            
+            .old-theme p {
+                font-weight: 800
+            }
+            
+            .old-theme inkd-button {
+                color: peru;
+                background-color: #fff;
+                -webkit-box-shadow: 0.0625em 0.0625em 0.0625em #777;
+                box-shadow: 0.0625em 0.0625em 0.0625em #777;
+                border-radius: 0.31em;
+                font-size: 1em;
+                font-weight: 800;
+                -webkit-transition: all .3s ease-in-out;
+                transition: all .3s ease-in-out
+            }
+            
+            .old-theme inkd-button:hover {
+                background-color: peru;
+                color: #fff
+            }
+            
+            .old-theme .three-image-layout {
+                margin-left: -2em
+            }
+            
+            .terminal-theme {
+                background-color: #000;
+                border: 0.625em solid #00ff40;
+                font-family: VT323, serif;
+                color: #00ff40;
+                font-size: 1em
+            }
+            
+            .terminal-theme img {
+                padding: 1em;
+                border: 0.0625em solid #00ff40
+            }
+            
+            .terminal-theme p {
+                font-size: 1.1rem
+            }
+            
+            .terminal-theme inkd-button {
+                background-color: #2C2C2C;
+                color: #00ff40;
+                border: 0.0625em solid #00ff40;
+                font-size: 1em
+            }
+            
+            .terminal-theme inkd-button:hover {
+                background-color: #00ff40;
+                color: #2C2C2C
+            }
+            
+            .business-theme {
+                background-color: #2C2C2C;
+                color: #fff;
+                border-top: 1em solid #1abc9c;
+                font-family: Space Mono, serif
+            }
+            
+            .business-theme img {
+                border: 0.31em solid #1abc9c
+            }
+            
+            .business-theme inkd-button {
+                background-color: #bc9c1a;
+                color: #2C2C2C
+            }
+            
+            .business-theme inkd-button:hover {
+                background-color: #836d12;
+                color: #000
+            }
         </style>
     </template>
 </dom-module><dom-module id="inkd-modal" assetpath="inkd-elements/">
@@ -19903,60 +20319,54 @@ return Player;
     <template>
         <style>
             .list {
-                list-style: none;
+                counter-reset: item;
                 cursor: default;
-                padding-left: 1.5em;
                 
-                @apply --list;
+                @apply --l-list;
             }
             
             .list-item {   
                 display: block;
-                @apply --list-item;
+                
+                @apply --l-list-item;
             }
             
-            .number {
-                @apply --number;
+            .list-item:before { 
+                content: counters(item, ".") ". "; 
+                counter-increment: item;
+                                
+                @apply --l-list-item-before;
             }
             
             .link {
                 cursor: pointer;
                 
-                @apply --link;
+                @apply --l-link;
             }
             
             .link:hover, .link:focus {
-                @apply --link-hover;
+                @apply --l-link-hover;
             }
                         
             .link.visited {
                 color: purple;
-                @apply --list-link-visited;
+                @apply --l-link-visited;
             }
             
             .link.active {
                 color: green;
                 pointer-events: none;
 
-                @apply --list-link-active;
+                @apply --l-link-active;
             }
             
-            .text {                
-                @apply --list-text;
+            .text {                    
+                @apply --l-text;
             }
-            
-            .number {
-                padding-left: 23px;
-                margin: 0;
-            }
-            
-            .toggle-button ~ .number {
-                padding-left: 0;
-            }
-            
+
             .toggle-button {
                 background: url("inkd-images/down.svg");
-                /* By Google Inc., CC BY 4.0, https://commons.wikimedia.org/w/index.php?curid=36333571 */
+                /* By Google Inc., CC BY 4.0, https://commons.wikimedia.org/w/index.php?curid=36333571 */                
             }
             
             .hide-list .toggle-button {
@@ -19977,6 +20387,14 @@ return Player;
                 background-repeat: no-repeat;
             }
             
+            .toggle-button {
+                @apply --l-toggle-button;
+            }
+            
+            .hide-list .toggle-button {
+                @apply --l-toggle-button-hide;
+            }
+            
             .hide-list .sublist {
                 display: none;
             }
@@ -19993,9 +20411,7 @@ return Player;
                     <template is="dom-if" if="[[item.list]]">
                         <button type="button" class="toggle-button"></button>
                     </template>
-                    
-                    <span class="number">[[_getNumber(index)]]</span>
-                    
+                                        
                     <template is="dom-if" if="[[item.link]]">
                         <a href="#" on-tap="_handleLinkTap" class$="[[_getLinkClasses(item.active, item.visited)]]" data-index$="[[index]]" tabindex="0">[[item.text]]</a>
                     </template>
@@ -20004,22 +20420,71 @@ return Player;
                     </template>
                     
                     <template is="dom-if" if="[[item.list]]">
-                        <inkd-list data="[[item.list]]" subindex="[[_getNumber(index)]]" class="sublist"></inkd-list>
+                        <inkd-list data="[[item.list]]" class="sublist"></inkd-list>
                     </template>
                 </li>
             </template>
         </ol>
     </template>
 
-    </dom-module><dom-module id="inkd-outline" assetpath="inkd-elements/">
+    </dom-module><dom-module id="inkd-outline-styles" assetpath="inkd-styles/">
+    <template>
+        <style>
+            inkd-list {
+                --l-list: {
+                    @apply --list;
+                }
+                
+                --l-list-item: {
+                    @apply --list-item;
+                }
+                
+                --l-list-item-before: {
+                    @apply --list-item-before;
+                }
+                
+                --l-link: {
+                    @apply --link;
+                }
+                
+                --l-link-hover: {
+                    @apply --link-hover;
+                }
+                
+                --l-link-visited: {
+                    @apply --link-visited;
+                }
+                
+                --l-link-active: {
+                    @apply --link-active;
+                }
+                
+                --l-text: {
+                    @apply --text;
+                }
+                
+                --l-toggle-button: {
+                    @apply --toggle-button;
+                }
+                
+                --l-toggle-button-hide: {
+                    @apply --toggle-button-hide;
+                }
+            }
+        </style>
+    </template>
+</dom-module><dom-module id="inkd-outline" assetpath="inkd-elements/">
 
     <template>
+        <style include="inkd-outline-styles"></style>
+        
         <content></content>
         <inkd-list data="[[_listData]]"></inkd-list>
     </template>
 
-    </dom-module><style is="custom-style">
+    </dom-module><dom-module id="inkd-timer" assetpath="inkd-elements/">
 
+    </dom-module><style is="custom-style">
     .modal-shown {
         overflow: hidden;
     }
@@ -20029,62 +20494,414 @@ return Player;
         -webkit-animation-fill-mode: both;
         animation-fill-mode: both;
     }
-
-.btn{-webkit-appearance:none;-moz-appearance:none;appearance:none;outline:none;display:inline-block;font-size:16px;font-size:1rem;font-family:inherit;line-height:inherit;text-align:center;text-transform:none;padding:0.5em 1em;margin:0;border:0.06em solid #d5d5d5;cursor:pointer;-webkit-transition:all .2s linear;transition:all .2s linear}.btn:enabled:hover{background-color:#fff;color:#000;border:0.06em solid #000}.btn[hidden]{display:none}.btn-small{font-size:12.8px;font-size:0.8rem;padding:0.250em 0.438em}.btn-medium{font-size:17.6px;font-size:1.1rem;padding:0.375em 0.750em}.btn-large{font-size:22.4px;font-size:1.4rem;padding:0.615em 1.063em}.btn-jumbo{font-size:27.2px;font-size:1.7rem;padding:0.938em 1.37em}.btn-green{background-color:#2ecc71;color:#fff}.btn-green:hover{color:#2ecc71;border-color:#2ecc71;background-color:transparent}.btn-green:enabled:hover{color:#2ecc71;border-color:#2ecc71}.btn-blue{background-color:#3498db;color:#fff}.btn-blue:hover{color:#3498db;border-color:#3498db;background-color:transparent}.btn-blue:enabled:hover{color:#3498db;border-color:#3498db}.btn-red{background-color:#e74c3c;color:#fff}.btn-red:hover{color:#e74c3c;border-color:#e74c3c;background-color:transparent}.btn-red:enabled:hover{color:#e74c3c;border-color:#e74c3c}.btn-black{background-color:#000;color:#fff}.btn-black:hover{color:#000;border-color:#000;background-color:transparent}.btn-black:enabled:hover{color:#000;border-color:#000}.btn-orange{background-color:#e67e22;color:#fff}.btn-orange:hover{color:#e67e22;border-color:#e67e22;background-color:transparent}.btn-orange:enabled:hover{color:#e67e22;border-color:#e67e22}.btn-brown{background-color:#795548;color:#fff}.btn-brown:hover{color:#795548;border-color:#795548;background-color:transparent}.btn-brown:enabled:hover{color:#795548;border-color:#795548}.btn-purple{background-color:#8e44ad;color:#fff}.btn-purple:hover{color:#8e44ad;border-color:#8e44ad;background-color:transparent}.btn-purple:enabled:hover{color:#8e44ad;border-color:#8e44ad}.btn-submit{white-space:nowrap;padding:0.5em 1em 0.5em 1.5em}.btn-submit:before{content:"\2714";float:left;width:1em;text-align:center;font-size:1em;margin:0 0.02em 0 -0.8em;padding:0 .2em;pointer-events:none}.btn-round{border-radius:1em}.btn-radius{border-radius:0.31em}.btn-circle{width:6em;height:6em;border-radius:50%}inkd-ml .node{display:block;position:relative;width:85%;height:auto;background-color:transparent;color:#000;padding:1em;margin:2em auto;border:0.06em solid #d5d5d5;overflow:hidden}.node-center{margin:0 auto}.node-blue{background-color:#3498db;border:0.06em solid #3498db}.node-grey{background-color:#d5d5d5}.node-pink{background-color:pink;border:0.06em solid pink}.node-green{background-color:#2ecc71;border:0.06em solid #2ecc71}.node-yellow{background-color:#f1c40f;border:0.06em solid #f1c40f}.background-node-img{position:absolute;z-index:-1;width:100%;height:auto;min-width:100%;min-height:100%;top:0;left:0;margin:0;padding:0}.node-letter{position:relative;box-shadow:0 8px 10px -6px #000;background:-webkit-linear-gradient(240deg, transparent 1.5em, #ecf0f1 0);background:linear-gradient(-150deg, transparent 1.5em, #ecf0f1 0);border-radius:.5em;border:0 none}.node-letter:before{content:'';position:absolute;top:0;right:0;width:1.73em;height:3em;background:-webkit-linear-gradient(right top, transparent 50%, rgba(0,0,0,0.2) 0, rgba(0,0,0,0.4)) 100% 0 no-repeat;background:linear-gradient(to left bottom, transparent 50%, rgba(0,0,0,0.2) 0, rgba(0,0,0,0.4)) 100% 0 no-repeat;-webkit-transform:translateY(-1.3em) rotate(-30deg);transform:translateY(-1.3em) rotate(-30deg);-webkit-transform-origin:bottom right;transform-origin:bottom right;border-bottom-left-radius:.5em;box-shadow:-0.2em 0.2em 0.3em -0.1em rgba(0,0,0,0.15)}.node-cutcorners{border:0 none;background-color:#3498db;-webkit-clip-path:polygon(20px 0, calc(100% - 20px) 0, 100% 20px, 100% calc(100% - 20px), calc(100% - 20px) 100%, 20px 100%, 0 calc(100% - 20px), 0 20px);clip-path:polygon(20px 0, calc(100% - 20px) 0, 100% 20px, 100% calc(100% - 20px), calc(100% - 20px) 100%, 20px 100%, 0 calc(100% - 20px), 0 20px)}.node-fadein{-webkit-animation:node-fadein .8s ease-out;animation:node-fadein .8s ease-out}@-webkit-keyframes node-fadein{from{opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"}to{opacity:1;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"}}@keyframes node-fadein{from{opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"}to{opacity:1;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"}}.node-fadeout{-webkit-animation:node-fadeout .8s ease-out;animation:node-fadeout .8s ease-out}@-webkit-keyframes node-fadeout{from{opacity:1;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"}to{opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"}}@keyframes node-fadeout{from{opacity:1;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"}to{opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"}}.node-slide{-webkit-animation:slide .8s ease-out;animation:slide .8s ease-out}@-webkit-keyframes slide{from{-webkit-transform:translateX(-100%);transform:translateX(-100%)}to{-webkit-transform:translateX(0);transform:translateX(0)}}@keyframes slide{from{-webkit-transform:translateX(-100%);transform:translateX(-100%)}to{-webkit-transform:translateX(0);transform:translateX(0)}}.node-hinge{-webkit-animation:hinge .8s ease-in-out;animation:hinge .8s ease-in-out}@-webkit-keyframes hinge{0%{opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";-webkit-transform:rotate(60deg);transform:rotate(60deg);-webkit-transform-origin:bottom right;transform-origin:bottom right}20%{-webkit-transform:rotate(80deg);transform:rotate(80deg)}80%{opacity:1;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"}100%{opacity:1;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";-webkit-transform:rotate(0);transform:rotate(0)}}@keyframes hinge{0%{opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";-webkit-transform:rotate(60deg);transform:rotate(60deg);-webkit-transform-origin:bottom right;transform-origin:bottom right}20%{-webkit-transform:rotate(80deg);transform:rotate(80deg)}80%{opacity:1;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"}100%{opacity:1;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";-webkit-transform:rotate(0);transform:rotate(0)}}inkd-ml .node-scale{-webkit-animation:scale .8s ease-in;animation:scale .8s ease-in}@-webkit-keyframes scale{from{-webkit-transform:scale(0);transform:scale(0)}to{-webkit-transform:scale(1);transform:scale(1)}}@keyframes scale{from{-webkit-transform:scale(0);transform:scale(0)}to{-webkit-transform:scale(1);transform:scale(1)}}.rollover-img{position:relative;cursor:pointer;overflow:hidden}.rollover-img-overlay{position:absolute;top:0;bottom:0;left:0;right:0;-webkit-transition:.5s ease;transition:.5s ease}.rollover-img-overlay:hover{opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"}.rollover-img-fadein{opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";-webkit-transition:.5s ease;transition:.5s ease}.rollover-img-fadein:hover{opacity:1;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"}.rollover-img-slide{overflow:hidden;left:0;-webkit-transition:.5s ease-in-out;transition:.5s ease-in-out}.rollover-img-slide:hover{left:-100%}.rollover-blur{-webkit-filter:blur(3px);filter:url("data:image/svg+xml;charset=utf-8,<svg xmlns=http://www.w3.org/2000/svg><filter id=filter><feGaussianBlur stdDeviation=3 /></filter></svg>#filter");filter:blur(3px);-webkit-transition:.3s ease-in-out;transition:.3s ease-in-out}.rollover-blur:hover{-webkit-filter:blur(0);filter:url("data:image/svg+xml;charset=utf-8,<svg xmlns=http://www.w3.org/2000/svg><filter id=filter><feGaussianBlur stdDeviation=0 /></filter></svg>#filter");filter:blur(0)}.rollover-fadein{opacity:0.5;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";-webkit-transition:opacity 1s ease-in-out;transition:opacity 1s ease-in-out}.rollover-fadein:hover{opacity:1.0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";-webkit-transition:opacity .55s ease-in-out;transition:opacity .55s ease-in-out}.rollover-fadeout{opacity:1.0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";-webkit-transition:opacity .55s ease-in-out;transition:opacity .55s ease-in-out}.rollover-fadeout:hover{opacity:0.5;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";-webkit-transition:opacity 1s ease-in-out;transition:opacity 1s ease-in-out}.rollover-gray{-webkit-filter:grayscale(100%);filter:url("data:image/svg+xml;charset=utf-8,<svg xmlns=http://www.w3.org/2000/svg><filter id=filter><feColorMatrix type=matrix color-interpolation-filters=sRGB values=0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0 0 0 1 0 /></filter></svg>#filter");filter:grayscale(100%);-webkit-transition:.3s ease-in-out;transition:.3s ease-in-out}.rollover-gray:hover{-webkit-filter:grayscale(0);filter:url("data:image/svg+xml;charset=utf-8,<svg xmlns=http://www.w3.org/2000/svg><filter id=filter><feColorMatrix type=matrix color-interpolation-filters=sRGB values=1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 /></filter></svg>#filter");filter:grayscale(0)}.rollover-rotate{-webkit-transform:rotate(0) scale(1);transform:rotate(0) scale(1);-webkit-transition:.3s ease-in-out;transition:.3s ease-in-out}.rollover-rotate:hover{-webkit-transform:rotate(360deg) scale(1.4);transform:rotate(360deg) scale(1.4)}
-    .rollover-sepia{-webkit-filter:sepia(100%);filter:url("data:image/svg+xml;charset=utf-8,<svg xmlns=http://www.w3.org/2000/svg><filter id=filter><feColorMatrix type=matrix color-interpolation-filters=sRGB values=0.393 0.769 0.189 0 0 0.349 0.686 0.168 0 0 0.272 0.534 0.131 0 0 0 0 0 1 0 /></filter></svg>#filter");filter:sepia(100%);-webkit-transition:.3s ease-in-out;transition:.3s ease-in-out}.rollover-sepia:hover{-webkit-filter:sepia(0);filter:url("data:image/svg+xml;charset=utf-8,<svg xmlns=http://www.w3.org/2000/svg><filter id=filter><feColorMatrix type=matrix color-interpolation-filters=sRGB values=1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 /></filter></svg>#filter");filter:sepia(0)}.rollover-scale{-webkit-transform:scale(1);transform:scale(1);-webkit-transition:.3s ease-in-out;transition:.3s ease-in-out}.rollover-scale:hover{-webkit-transform:scale(1.3);transform:scale(1.3)}.reset-styles{border:none 0;padding:0;background-color:transparent;color:transparent}.reset-styles:hover{border:none 0;background-color:transparent}.img{border:0 none;outline:none;overflow:hidden}.img-center{display:block;margin:2em auto}.img-fullscreen{display:block;width:100%;max-width:none;max-height:none;height:auto}.img-radius{border-radius:0.31em}.img-round{border-radius:1.5em}.img-circle{width:15em;height:15em;border-radius:50%}.img-normal-border{border:0.31em solid #000}.img-double-border{border:0.31em double #000}.img-sepia{-webkit-filter:sepia(1);filter:url("data:image/svg+xml;charset=utf-8,<svg xmlns=http://www.w3.org/2000/svg><filter id=filter><feColorMatrix type=matrix color-interpolation-filters=sRGB values=0.393 0.769 0.189 0 0 0.349 0.686 0.168 0 0 0.272 0.534 0.131 0 0 0 0 0 1 0 /></filter></svg>#filter");filter:sepia(1)}.img-grayscale{-webkit-filter:grayscale(1);filter:url("data:image/svg+xml;charset=utf-8,<svg xmlns=http://www.w3.org/2000/svg><filter id=filter><feColorMatrix type=matrix color-interpolation-filters=sRGB values=0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0 0 0 1 0 /></filter></svg>#filter");filter:grayscale(1)}.body-text{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:16px;font-size:1rem;font-weight:normal;line-height:1.5}.headline{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:19.2px;font-size:1.2rem;font-weight:800;line-height:1.5}
     
-    @import url("https://fonts.googleapis.com/css?family=Old+Standard+TT");@import url("https://fonts.googleapis.com/css?family=VT323");@import url("https://fonts.googleapis.com/css?family=Space+Mono");.layout-container{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}.one-column-layout{display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;padding:1.2em;width:80%;height:auto}@media only screen and (max-width: 870px){.one-column-layout{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;height:auto;margin-top:5em;margin-bottom:2.5em}}@media only screen and (min-width: 1366px){.one-column-layout{height:80vh}}.one-column-layout > inkd-box:first-child{-ms-flex-preferred-size:100%;flex-basis:100%;padding:1em;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.one-column-layout > inkd-box:nth-child(2n){display:block;-ms-flex-preferred-size:100%;flex-basis:100%;margin:0 -1em;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center}@media only screen and (max-width: 870px){.one-column-layout > inkd-box:nth-child(2n){-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-ms-flex-line-pack:justify;align-content:space-between}}.one-column-layout.fullscreen{width:100%;height:100vh}.one-column-layout p{margin-left:0.625em}@media only screen and (max-width: 870px){.one-column-layout p{padding:1em 0}}.one-column-layout inkd-button{width:30%;padding:1em 2em;margin:0 1em;cursor:pointer;font-size:1rem;text-align:center}@media only screen and (max-width: 870px){.one-column-layout inkd-button{width:60%;margin:1em 0}}.one-column-layout img{max-width:100%;height:auto}.two-column-layout{display:-webkit-box;display:-ms-flexbox;display:flex;width:80%;padding:1.2em;overflow:hidden}@media only screen and (max-width: 870px){.two-column-layout{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;margin-top:25em;margin-bottom:2.5em;height:auto}}@media only screen and (min-width: 1366px){.two-column-layout{height:80vh}}.two-column-layout.fullscreen{width:100%;height:100vh}.two-column-layout > inkd-box:first-child{-ms-flex-negative:0;flex-shrink:0;-webkit-box-flex:0;-ms-flex-positive:0;flex-grow:0;padding:1em;min-width:0;-ms-flex-preferred-size:50%;flex-basis:50%;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center}@media only screen and (max-width: 870px){.two-column-layout > inkd-box:first-child{-ms-flex-preferred-size:100%;flex-basis:100%}}.two-column-layout > inkd-box:nth-child(2n){-ms-flex-negative:1;flex-shrink:1;-webkit-box-flex:1;-ms-flex-positive:1;flex-grow:1;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center}@media only screen and (max-width: 870px){.two-column-layout > inkd-box:nth-child(2n){-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-ms-flex-line-pack:justify;align-content:space-between}}.two-column-layout inkd-button{display:inline-block;width:60%;line-height:0;padding:1.2em 2em;margin:1em 0;cursor:pointer;font-size:1rem;text-align:center;zoom:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.two-column-layout p{font-size:1rem;padding-bottom:1em}@media only screen and (max-width: 870px){.two-column-layout p{padding:1em 0}}.two-column-layout img{max-width:100%;height:auto}.three-image-layout{width:100%;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-flow:row wrap;flex-flow:row wrap;-ms-flex-pack:distribute;justify-content:space-around;-webkit-box-align:center;-ms-flex-align:center;align-items:center}@media only screen and (max-width: 870px){.three-image-layout{width:100%;padding:0}}.three-image-layout figure{-webkit-box-flex:1;-ms-flex:auto;flex:auto;margin:.5vw;width:200px}@media only screen and (max-width: 870px){.three-image-layout figure{width:100%;margin:0}}.three-image-layout img{width:100%;height:auto}.old-theme{font-family:Old Standard TT,serif}.old-theme img{-webkit-filter:grayscale(100%);filter:grayscale(100%);border:0.625em solid #fff;border-bottom:2.8125em solid #fff;-webkit-box-shadow:0.1875em 0.1875em 0.1875em #777;box-shadow:0.1875em 0.1875em 0.1875em #777;-webkit-transform:rotate(-8deg) scale(0.98);transform:rotate(-8deg) scale(0.98);margin-left:1em;-webkit-transition:all .3s ease-in-out;transition:all .3s ease-in-out}@media only screen and (max-width: 870px){.old-theme img{margin-left:0}}.old-theme img:hover{-webkit-transform:rotate(-8deg) scale(1);transform:rotate(-8deg) scale(1)}.old-theme p{font-weight:800}.old-theme inkd-button{color:peru;background-color:#fff;-webkit-box-shadow:0.0625em 0.0625em 0.0625em #777;box-shadow:0.0625em 0.0625em 0.0625em #777;border-radius:0.31em;font-size:1em;font-weight:800;-webkit-transition:all .3s ease-in-out;transition:all .3s ease-in-out}.old-theme inkd-button:hover{background-color:peru;color:#fff}.old-theme .three-image-layout{margin-left:-2em}.terminal-theme{background-color:#000;border:0.625em solid #00ff40;font-family:VT323,serif;color:#00ff40;font-size:1em}.terminal-theme img{padding:1em;border:0.0625em solid #00ff40}.terminal-theme p{font-size:1.1rem}.terminal-theme inkd-button{background-color:#2C2C2C;color:#00ff40;border:0.0625em solid #00ff40;font-size:1em}.terminal-theme inkd-button:hover{background-color:#00ff40;color:#2C2C2C}.business-theme{background-color:#2C2C2C;color:#fff;border-top:1em solid #1abc9c;font-family:Space Mono,serif}.business-theme img{border:0.31em solid #1abc9c}.business-theme inkd-button{background-color:#bc9c1a;color:#2C2C2C}.business-theme inkd-button:hover{background-color:#836d12;color:#000}
+    @import url("https://fonts.googleapis.com/css?family=Old+Standard+TT");
+    @import url("https://fonts.googleapis.com/css?family=VT323");
+    @import url("https://fonts.googleapis.com/css?family=Space+Mono");
+    .layout-container {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center
+    }
     
-    .hotspot__white {
+    .one-column-layout {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        padding: 1.2em;
+        width: 80%;
+        height: auto
+    }
+    
+    @media only screen and (max-width: 870px) {
+        .one-column-layout {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            height: auto;
+            margin-top: 5em;
+            margin-bottom: 2.5em
+        }
+    }
+    
+    @media only screen and (min-width: 1366px) {
+        .one-column-layout {
+            height: 80vh
+        }
+    }
+    
+    .one-column-layout > inkd-box:first-child {
+        -ms-flex-preferred-size: 100%;
+        flex-basis: 100%;
+        padding: 1em;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center
+    }
+    
+    .one-column-layout > inkd-box:nth-child(2n) {
         display: block;
-        padding: 10px;
-        border-radius: 10px;
-        background-color: white;
-        color: black;
+        -ms-flex-preferred-size: 100%;
+        flex-basis: 100%;
+        margin: 0 -1em;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center
+    }
+    
+    @media only screen and (max-width: 870px) {
+        .one-column-layout > inkd-box: nth-child(2n) {
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -ms-flex-line-pack: justify;
+            align-content: space-between
+        }
+    }
+    
+    .one-column-layout.fullscreen {
+        width: 100%;
+        height: 100vh
+    }
+    
+    .one-column-layout p {
+        margin-left: 0.625em
+    }
+    
+    @media only screen and (max-width: 870px) {
+        .one-column-layout p {
+            padding: 1em 0
+        }
+    }
+    
+    .one-column-layout inkd-button {
+        width: 30%;
+        padding: 1em 2em;
+        margin: 0 1em;
+        cursor: pointer;
+        font-size: 1rem;
+        text-align: center
+    }
+    
+    @media only screen and (max-width: 870px) {
+        .one-column-layout inkd-button {
+            width: 60%;
+            margin: 1em 0
+        }
+    }
+    
+    .one-column-layout img {
+        max-width: 100%;
+        height: auto
+    }
+    
+    .two-column-layout {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        width: 80%;
+        padding: 1.2em;
+        overflow: hidden
+    }
+    
+    @media only screen and (max-width: 870px) {
+        .two-column-layout {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            margin-top: 25em;
+            margin-bottom: 2.5em;
+            height: auto
+        }
+    }
+    
+    @media only screen and (min-width: 1366px) {
+        .two-column-layout {
+            height: 80vh
+        }
+    }
+    
+    .two-column-layout.fullscreen {
+        width: 100%;
+        height: 100vh
+    }
+    
+    .two-column-layout > inkd-box:first-child {
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+        -webkit-box-flex: 0;
+        -ms-flex-positive: 0;
+        flex-grow: 0;
+        padding: 1em;
+        min-width: 0;
+        -ms-flex-preferred-size: 50%;
+        flex-basis: 50%;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center
+    }
+    
+    @media only screen and (max-width: 870px) {
+        .two-column-layout > inkd-box:first-child {
+            -ms-flex-preferred-size: 100%;
+            flex-basis: 100%
+        }
+    }
+    
+    .two-column-layout > inkd-box:nth-child(2n) {
+        -ms-flex-negative: 1;
+        flex-shrink: 1;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center
+    }
+    
+    @media only screen and (max-width: 870px) {
+        .two-column-layout > inkd-box: nth-child(2n) {
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -ms-flex-line-pack: justify;
+            align-content: space-between
+        }
+    }
+    
+    .two-column-layout inkd-button {
+        display: inline-block;
+        width: 60%;
+        line-height: 0;
+        padding: 1.2em 2em;
+        margin: 1em 0;
+        cursor: pointer;
+        font-size: 1rem;
         text-align: center;
+        zoom: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis
     }
     
-    .hotspot__black {
-        display: block;
-        padding: 10px;
-        border-radius: 10px;
-        background-color: black;
-        color: white;
-        text-align: center;
+    .two-column-layout p {
+        font-size: 1rem;
+        padding-bottom: 1em
     }
     
-    .hotspot__white[disabled], .hotspot__black[disabled] {
-        cursor: not-allowed;
+    @media only screen and (max-width: 870px) {
+        .two-column-layout p {
+            padding: 1em 0
+        }
     }
     
-    .tooltip {
+    .two-column-layout img {
+        max-width: 100%;
+        height: auto
+    }
+    
+    .three-image-layout {
+        width: 100%;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-flow: row wrap;
+        flex-flow: row wrap;
+        -ms-flex-pack: distribute;
+        justify-content: space-around;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center
+    }
+    
+    @media only screen and (max-width: 870px) {
+        .three-image-layout {
+            width: 100%;
+            padding: 0
+        }
+    }
+    
+    .three-image-layout figure {
+        -webkit-box-flex: 1;
+        -ms-flex: auto;
+        flex: auto;
+        margin: .5vw;
+        width: 200px
+    }
+    
+    @media only screen and (max-width: 870px) {
+        .three-image-layout figure {
+            width: 100%;
+            margin: 0
+        }
+    }
+    
+    .three-image-layout img {
+        width: 100%;
+        height: auto
+    }
+    
+    .old-theme {
+        font-family: Old Standard TT, serif
+    }
+    
+    .old-theme img {
+        -webkit-filter: grayscale(100%);
+        filter: grayscale(100%);
+        border: 0.625em solid #fff;
+        border-bottom: 2.8125em solid #fff;
+        -webkit-box-shadow: 0.1875em 0.1875em 0.1875em #777;
+        box-shadow: 0.1875em 0.1875em 0.1875em #777;
+        -webkit-transform: rotate(-8deg) scale(0.98);
+        transform: rotate(-8deg) scale(0.98);
+        margin-left: 1em;
+        -webkit-transition: all .3s ease-in-out;
+        transition: all .3s ease-in-out
+    }
+    
+    @media only screen and (max-width: 870px) {
+        .old-theme img {
+            margin-left: 0
+        }
+    }
+    
+    .old-theme img:hover {
+        -webkit-transform: rotate(-8deg) scale(1);
+        transform: rotate(-8deg) scale(1)
+    }
+    
+    .old-theme p {
+        font-weight: 800
+    }
+    
+    .old-theme inkd-button {
+        color: peru;
+        background-color: #fff;
+        -webkit-box-shadow: 0.0625em 0.0625em 0.0625em #777;
+        box-shadow: 0.0625em 0.0625em 0.0625em #777;
+        border-radius: 0.31em;
         font-size: 1em;
         font-weight: 800;
-        position: absolute; 
-        border-radius: 0.18em;
-        background-color: rgba(0,0,0,0.8);
-        color: #fff;
-        text-align: center;
-        max-width: 200px;
-        padding: 5px 10px;
-        cursor: pointer;
-    }
-
-    .tooltip:after {
-        content: '';
-        position: absolute;
-        width: 0;
-        height: 0;
-        border-width: 10px;
-        border-style: solid;
-        border-color: rgba(0,0,0,0.8) transparent transparent transparent;
-        bottom: -20px;
-        left: -10px;
-        margin: 0 50%;
+        -webkit-transition: all .3s ease-in-out;
+        transition: all .3s ease-in-out
     }
     
-</style>
-</div><script>'use strict';
+    .old-theme inkd-button:hover {
+        background-color: peru;
+        color: #fff
+    }
+    
+    .old-theme .three-image-layout {
+        margin-left: -2em
+    }
+    
+    .terminal-theme {
+        background-color: #000;
+        border: 0.625em solid #00ff40;
+        font-family: VT323, serif;
+        color: #00ff40;
+        font-size: 1em
+    }
+    
+    .terminal-theme img {
+        padding: 1em;
+        border: 0.0625em solid #00ff40
+    }
+    
+    .terminal-theme p {
+        font-size: 1.1rem
+    }
+    
+    .terminal-theme inkd-button {
+        background-color: #2C2C2C;
+        color: #00ff40;
+        border: 0.0625em solid #00ff40;
+        font-size: 1em
+    }
+    
+    .terminal-theme inkd-button:hover {
+        background-color: #00ff40;
+        color: #2C2C2C
+    }
+    
+    .business-theme {
+        background-color: #2C2C2C;
+        color: #fff;
+        border-top: 1em solid #1abc9c;
+        font-family: Space Mono, serif
+    }
+    
+    .business-theme img {
+        border: 0.31em solid #1abc9c
+    }
+    
+    .business-theme inkd-button {
+        background-color: #bc9c1a;
+        color: #2C2C2C
+    }
+    
+    .business-theme inkd-button:hover {
+        background-color: #836d12;
+        color: #000
+    }
+</style></div><script>'use strict';
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -20107,6 +20924,7 @@ var GlobalBehavior = {
     },
 
     onGlobalReady: function onGlobalReady(handler) {
+        this.globalReady = true;
         if (this.globalElement.isReady) {
             this[handler]();
         } else {
@@ -20115,6 +20933,7 @@ var GlobalBehavior = {
     },
 
     onGlobalAttach: function onGlobalAttach(handler) {
+        this.globalAttached = true;
         if (this.globalElement.isAttached) {
             this[handler]();
         } else {
@@ -20130,6 +20949,10 @@ var GlobalBehavior = {
             this.globalElement.set('propertyData.' + prop, { propValue: propValue, propType: propType });
             this.globalElement.fire('property-changed-' + prop, { prop: prop, value: propValue });
         }
+    },
+
+    unsetGlobalProp: function unsetGlobalProp(prop) {
+        this.globalElement.set('propertyData.' + prop, undefined);
     },
 
     getGlobalProp: function getGlobalProp(prop) {
@@ -20182,6 +21005,28 @@ var GlobalBehavior = {
         }
     },
 
+    getGlobalElements: function getGlobalElements() {
+        for (var _len = arguments.length, tagsArray = Array(_len), _key = 0; _key < _len; _key++) {
+            tagsArray[_key] = arguments[_key];
+        }
+
+        var elements = Polymer.dom(this.globalElement).querySelectorAll(tagsArray.join(', '));
+        return elements;
+    },
+
+    getGlobalParentElement: function getGlobalParentElement(tagsArray, attr) {
+        var parent = Polymer.dom(this).parentNode;
+        while (parent !== null && parent.tagName !== 'HTML') {
+            if (tagsArray.includes(parent.tagName.toLowerCase())) {
+                return parent;
+            } else {
+                parent = Polymer.dom(parent).parentNode;
+            }
+        }
+
+        this.addDebugError(null, 'No element name specified in \'' + attr + '\' and no supported parent element (<' + tagsArray.join('>, <') + '>) found');
+    },
+
     fireGlobalEvent: function fireGlobalEvent(event, detail) {
         this.globalElement.fire(event, detail);
     },
@@ -20190,17 +21035,21 @@ var GlobalBehavior = {
         this.listen(this.globalElement, event, handler);
     },
 
-    updateGlobalHistory: function updateGlobalHistory(nodeName, replaceBoolean) {
+    updateGlobalHistory: function updateGlobalHistory(node, replaceBoolean) {
         if (this.globalElement.bookmark) {
-            var newurl = '' + window.location.origin + window.location.pathname + '?node=' + encodeURIComponent(nodeName);
+            var name = node.name,
+                topic = node.topic;
+
+            var newurl = '' + window.location.origin + window.location.pathname + '?node=' + encodeURIComponent(name);
 
             if (replaceBoolean) {
-                window.history.replaceState({ path: newurl, node: nodeName }, '', newurl);
+                window.history.replaceState({ path: newurl, node: name }, '', newurl);
             } else {
-                window.history.pushState({ path: newurl, node: nodeName }, '', newurl);
+                window.history.pushState({ path: newurl, node: name }, '', newurl);
             }
 
-            document.title = this.globalElement.topic + ' - ' + nodeName;
+            var prefixTitle = this.globalElement.initialPageTitle;
+            document.title = '' + prefixTitle + (prefixTitle ? ' - ' : '') + topic;
         }
     },
 
@@ -20214,10 +21063,10 @@ var GlobalBehavior = {
                 return { value: stringValue.slice(1, -1).replace(/\\([,=:'"])/g, '$1'), type: 'string' };
             } else {
                 var data = this.getGlobalProp(stringValue);
-                if (data) {
-                    return { value: data.propValue, type: data.propType };
+                if (data === undefined) {
+                    return { value: null, type: 'error' };
                 }
-                return { value: null, type: 'error' };
+                return { value: data.propValue, type: data.propType };
             }
         } else {
             if (stringValue === '') {
@@ -20341,8 +21190,8 @@ var DebugBehavior = {
     },
 
     enforceAncestor: function enforceAncestor() {
-        for (var _len = arguments.length, ancestors = Array(_len), _key = 0; _key < _len; _key++) {
-            ancestors[_key] = arguments[_key];
+        for (var _len2 = arguments.length, ancestors = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+            ancestors[_key2] = arguments[_key2];
         }
 
         this._ancestorsToEnforce = ancestors;
@@ -20350,8 +21199,8 @@ var DebugBehavior = {
     },
 
     enforceDirectAncestor: function enforceDirectAncestor() {
-        for (var _len2 = arguments.length, ancestors = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-            ancestors[_key2] = arguments[_key2];
+        for (var _len3 = arguments.length, ancestors = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+            ancestors[_key3] = arguments[_key3];
         }
 
         this._ancestorsToEnforce = ancestors;
@@ -20564,10 +21413,10 @@ var TrackBehavior = {
             }
 
             var info = '';
-            for (var _key3 in newObject) {
-                var value = newObject[_key3];
-                if (!['event', 'time'].includes(_key3)) {
-                    info += _key3 + ': ' + ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' ? JSON.stringify(value) : value) + '\r\n';
+            for (var _key4 in newObject) {
+                var value = newObject[_key4];
+                if (!['event', 'time'].includes(_key4)) {
+                    info += _key4 + ': ' + ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' ? JSON.stringify(value) : value) + '\r\n';
                 }
             }
             var logData = {
@@ -20592,7 +21441,7 @@ var TrackBehavior = {
     },
 
     addTrackDetail: function addTrackDetail(detail, type) {
-        if (this.trackOn) {
+        if (this.trackOn && !this.globalElement.trackDetail[type].includes(detail)) {
             this.globalElement.trackDetail[type].push(detail);
         }
     },
@@ -20717,7 +21566,6 @@ Polymer({
     is: 'inkd-ml',
 
     properties: {
-        topic: String,
         debug: Boolean,
 
         track: Boolean,
@@ -20744,10 +21592,6 @@ Polymer({
 
         this._initiateQueryString();
 
-        if (this.topic === undefined) {
-            this.topic = document.title;
-        }
-
         if (this.debug) {
             this.debugList = [];
         }
@@ -20766,6 +21610,7 @@ Polymer({
         }
 
         if (this.bookmark) {
+            this.initialPageTitle = document.title;
             this.listen(window, 'popstate', '_handleHistory');
         }
 
@@ -20834,9 +21679,9 @@ Polymer({
 
         if (!this.bookmark) {
             var queryArray = [];
-            for (var _key4 in this._queryData) {
-                if (_key4 !== 'node') {
-                    queryArray.push({ key: _key4, value: this._queryData[_key4] });
+            for (var _key5 in this._queryData) {
+                if (_key5 !== 'node') {
+                    queryArray.push({ key: _key5, value: this._queryData[_key5] });
                 }
             }
             if (queryArray.length > 0) {
@@ -20882,12 +21727,14 @@ Polymer({
     },
 
     _initiateUserId: function _initiateUserId() {
-        this._userID = null;
-        if (this.userId) {
-            var match = this.userId.replace(/\s/g, '').match(/^query:(.+)/);
-            if (match) {
-                this._userID = this._queryData[match[1]];
-            }
+        this.userId = this.userId.replace(/\s/g, '');
+        var match = this.userId.match(/^query:(.+)/);
+        if (match) {
+            this._userID = this._queryData[match[1]];
+        } else if (this.userId === 'lti') {
+            this._userID = null;
+        } else {
+            this.addDebugError('user-id', '\'' + this.userId + '\' is not a valid method of specifying user ID');
         }
     },
 
@@ -21080,7 +21927,7 @@ Polymer({
             detail: this.trackDetail,
             events: this.trackedEvents
         };
-        this._sendPostRequest('/saveInkdmlTracking', data);
+        this._sendPostRequest('/module/saveInkdmlTracking', data);
 
         if (this.debug) {
             console.log(data);
@@ -21093,12 +21940,12 @@ Polymer({
             target = event.target;
 
 
-        if (this._userID) {
-            var data = { userID: this._userID, data: detail };
-            this._sendPostRequest('/saveInkdmlData', data);
-        } else {
+        if (this._userID === undefined) {
             this.addDebugWarn('save-remote', 'User ID required for remote saving', target);
             target.saveRemote = false;
+        } else {
+            var data = { userID: this._userID, data: detail };
+            this._sendPostRequest('/module/saveInkdmlData', data);
         }
     },
 
@@ -21110,12 +21957,12 @@ Polymer({
             target = event.target;
 
 
-        if (this._userID) {
-            var data = { userID: this._userID, keys: [].concat(keys) };
-            this._sendPostRequest('/getInkdmlData', data, target[callback].bind(target));
-        } else {
+        if (this._userID === undefined) {
             this.addDebugWarn('save-remote', 'User ID required for remote saving', target);
             target.saveRemote = false;
+        } else {
+            var data = { userID: this._userID, keys: [].concat(keys) };
+            this._sendPostRequest('/module/getInkdmlData', data, target[callback].bind(target));
         }
     },
 
@@ -21132,18 +21979,15 @@ Polymer({
             };
         }
         xhr.send(JSON.stringify(dataObject));
-    },
-
-    _handleCyoa: function _handleCyoa(_ref3) {
-        var detail = _ref3.detail;
-
-        console.log(detail);
     }
 });
 var NameAttribute = {
 
     properties: {
-        name: String
+        name: {
+            type: String,
+            observer: '_handleNameChange'
+        }
     },
 
     ready: function ready() {
@@ -21177,7 +22021,7 @@ var NameAttribute = {
 
                     this._setBuiltinProps(this._tempBuiltinProps);
                 } else {
-                    this.addDebugError('name', 'Name \'' + tempName + '\' already used by another element <' + element.tag + '>');
+                    this.addDebugError('name', 'Name \'' + tempName + '\' already used by another element ' + element.tag);
                     this.name = undefined;
                 }
             } else {
@@ -21190,6 +22034,15 @@ var NameAttribute = {
     _setBuiltinProps: function _setBuiltinProps(propObject) {
         for (var key in propObject) {
             this.setGlobalProp(this.name + '.' + key, propObject[key], 'builtin-property');
+        }
+    },
+
+    _handleNameChange: function _handleNameChange(newValue, oldValue) {
+        if (this.globalReady) {
+            if (oldValue) {
+                this.unsetGlobalProp(oldValue.trim());
+            }
+            this._setName();
         }
     }
 };
@@ -21325,53 +22178,62 @@ var SetPropAttribute = {
                 }
             }
         }
+
+        this._setPropInitiated = true;
+        if (this._handleSetPropCalled) {
+            this.handleSetProp();
+        }
     },
 
     handleSetProp: function handleSetProp() {
-        var _iteratorNormalCompletion11 = true;
-        var _didIteratorError11 = false;
-        var _iteratorError11 = undefined;
+        if (this._setPropInitiated) {
+            var _iteratorNormalCompletion11 = true;
+            var _didIteratorError11 = false;
+            var _iteratorError11 = undefined;
 
-        try {
-            for (var _iterator11 = this._setPropData[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
-                var _step11$value = _step11.value,
-                    key = _step11$value.key,
-                    assigner = _step11$value.assigner,
-                    value = _step11$value.value,
-                    _operator = _step11$value.operator;
-
-                if (assigner === ':') {
-                    if (_operator === 'toggle') {
-                        this._toggleBoolean(key);
-                    } else if (['+', '-', '*', '/'].includes(_operator)) {
-                        var parsedValue = this.parse(value).value;
-                        if (typeof parsedValue === 'number') {
-                            this._operateNumber(key, _operator, value);
-                        } else if (_operator === '+' && typeof parsedValue === 'string') {
-                            this._concatString(key, value);
-                        } else {
-                            this.addDebugError('set-prop', '\'' + value + '\' is not a valid value for \'' + _operator + '\' operation');
-                        }
-                    } else if (_operator === 'random') {
-                        this._setRandomNumber.apply(this, [key].concat(_toConsumableArray(value)));
-                    }
-                } else {
-                    this._assignValue(key, value);
-                }
-            }
-        } catch (err) {
-            _didIteratorError11 = true;
-            _iteratorError11 = err;
-        } finally {
             try {
-                if (!_iteratorNormalCompletion11 && _iterator11.return) {
-                    _iterator11.return();
+                for (var _iterator11 = this._setPropData[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
+                    var _step11$value = _step11.value,
+                        key = _step11$value.key,
+                        assigner = _step11$value.assigner,
+                        value = _step11$value.value,
+                        _operator = _step11$value.operator;
+
+                    if (assigner === ':') {
+                        if (_operator === 'toggle') {
+                            this._toggleBoolean(key);
+                        } else if (['+', '-', '*', '/'].includes(_operator)) {
+                            var parsedValue = this.parse(value).value;
+                            if (typeof parsedValue === 'number') {
+                                this._operateNumber(key, _operator, value);
+                            } else if (_operator === '+' && typeof parsedValue === 'string') {
+                                this._concatString(key, value);
+                            } else {
+                                this.addDebugError('set-prop', '\'' + value + '\' is not a valid value for \'' + _operator + '\' operation');
+                            }
+                        } else if (_operator === 'random') {
+                            this._setRandomNumber.apply(this, [key].concat(_toConsumableArray(value)));
+                        }
+                    } else {
+                        this._assignValue(key, value);
+                    }
                 }
+            } catch (err) {
+                _didIteratorError11 = true;
+                _iteratorError11 = err;
             } finally {
-                if (_didIteratorError11) {
-                    throw _iteratorError11;
+                try {
+                    if (!_iteratorNormalCompletion11 && _iterator11.return) {
+                        _iterator11.return();
+                    }
+                } finally {
+                    if (_didIteratorError11) {
+                        throw _iteratorError11;
+                    }
                 }
             }
+        } else {
+            this._handleSetPropCalled = true;
         }
     },
 
@@ -21485,8 +22347,8 @@ Polymer({
         }
     },
 
-    _getContent: function _getContent(_ref4) {
-        var content = _ref4.detail.content;
+    _getContent: function _getContent(_ref3) {
+        var content = _ref3.detail.content;
 
         this._contentElement = content;
         this._appendContent();
@@ -21552,7 +22414,7 @@ var ConditionBehavior = {
     observers: ['handleConditionChange(_conditionTrue)'],
 
     ready: function ready() {
-        this._conditionData = [];
+        this._conditionData = this._conditionData || [];
     },
 
     attached: function attached() {
@@ -21564,6 +22426,7 @@ var ConditionBehavior = {
     },
 
     initiateCondition: function initiateCondition(attr) {
+        this._conditionData = this._conditionData || [];
         this._conditionAttribute = attr;
         this._conditionOperator = null;
 
@@ -21837,7 +22700,7 @@ Polymer({
     },
 
     attached: function attached() {
-        if (this.getGlobalPropValue(this.prop) == undefined) {
+        if (this.getGlobalPropValue(this.prop) === undefined) {
             this.addDebugError('prop', 'Property \'' + this.prop + '\' does not exist');
         }
     },
@@ -21852,8 +22715,8 @@ Polymer({
         }
     },
 
-    _updateValue: function _updateValue(_ref5) {
-        var value = _ref5.detail.value;
+    _updateValue: function _updateValue(_ref4) {
+        var value = _ref4.detail.value;
 
         this._value = value;
     }
@@ -21861,28 +22724,21 @@ Polymer({
 var NavigateEvent = {
 
     properties: {
-        goto: String,
+        goto: {
+            type: String,
+            observer: '_handleGotoChange'
+        },
         restart: {
             type: String,
-            flagAllowed: true
-        }
-    },
-
-    ready: function ready() {
-        this.goto = this.goto === undefined ? [] : this.goto.replace(/\s/g, '').split(',');
-
-        if (this.restart === undefined) {
-            this.restart = [];
-        } else if (this.restart === '') {
-            this.restart = [''];
-        } else {
-            this.restart = this.restart.replace(/\s/g, '').split(',');
+            flagAllowed: true,
+            value: false,
+            observer: '_handleRestartChange'
         }
     },
 
     fireNavigate: function fireNavigate() {
-        var gotos = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.goto;
-        var restart = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.restart;
+        var gotos = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this._goto;
+        var restart = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._restart;
 
         if (gotos.length > 0) {
             this.fire('goto', { gotoData: [{ element: this, gotos: gotos }] });
@@ -21890,6 +22746,20 @@ var NavigateEvent = {
 
         if (restart.length > 0) {
             this.fire('restart', { restart: restart });
+        }
+    },
+
+    _handleGotoChange: function _handleGotoChange() {
+        this._goto = this.goto === undefined ? [] : this.goto.replace(/\s/g, '').split(',');
+    },
+
+    _handleRestartChange: function _handleRestartChange() {
+        if (this.restart === false) {
+            this._restart = [];
+        } else if (this.restart === '' || this.restart === true) {
+            this._restart = [''];
+        } else {
+            this._restart = this.restart.replace(/\s/g, '').split(',');
         }
     }
 };
@@ -21903,6 +22773,9 @@ var ActionAttributes = {
         pauseVideo: String,
         restartVideo: String,
         setVideoVolume: String,
+        startTimer: String,
+        pauseTimer: String,
+        restartTimer: String,
         showModal: String,
         hideModal: String,
         saveTrack: Boolean
@@ -21965,6 +22838,10 @@ var ActionAttributes = {
             'pause-video': { tags: ['inkd-video'], handler: 'pause', undoHandler: 'play' },
             'restart-video': { tags: ['inkd-video'], handler: 'restart', undoHandler: 'pause' },
             'set-video-volume': { tags: ['inkd-video'], handler: 'setVolume', arguments: [{ desc: 'volume', min: 0, max: 1, required: true }], undoArguments: ['volume'] },
+
+            'start-timer': { tags: ['inkd-timer'], handler: 'start', undoHandler: 'pause' },
+            'pause-timer': { tags: ['inkd-timer'], handler: 'pause', undoHandler: 'start' },
+            'restart-timer': { tags: ['inkd-timer'], handler: 'restart', undoHandler: 'pause' },
 
             'show-modal': { tags: ['inkd-modal'], handler: 'show', undoHandler: 'hide' },
             'hide-modal': { tags: ['inkd-modal'], handler: 'hide', undoHandler: 'show' }
@@ -22115,7 +22992,8 @@ var ButtonBehaviorImpl = {
         disabled: {
             type: String,
             flagAllowed: true,
-            reflectToAttribute: true
+            reflectToAttribute: true,
+            observer: '_handleDisabledChange'
         },
         validate: {
             type: String,
@@ -22138,13 +23016,6 @@ var ButtonBehaviorImpl = {
 
     ready: function ready() {
         this.setBuiltinProp('disabled', this.disabled !== undefined);
-        if (this.disabled !== undefined) {
-            if (this.disabled === '') {
-                this.disabled = true;
-            } else {
-                this.initiateCondition('disabled');
-            }
-        }
 
         this._initialTabIndex = this.tabindex;
 
@@ -22152,7 +23023,7 @@ var ButtonBehaviorImpl = {
     },
 
     click: function click(callbackFunction) {
-        if (!this.disabled) {
+        if (!this._disabled) {
             var _iteratorNormalCompletion19 = true;
             var _didIteratorError19 = false;
             var _iteratorError19 = undefined;
@@ -22220,7 +23091,7 @@ var ButtonBehaviorImpl = {
     },
 
     handleConditionChange: function handleConditionChange(conditionTrue) {
-        this.disabled = conditionTrue;
+        this._disabled = conditionTrue;
         this.setBuiltinProp('disabled', conditionTrue);
         this.tabindex = conditionTrue ? false : this._initialTabIndex;
     },
@@ -22270,18 +23141,9 @@ var ButtonBehaviorImpl = {
                 var name = _step21.value;
 
                 if (name === '') {
-                    var parent = Polymer.dom(this).parentNode;
-                    while (parent !== null && parent.tagName !== 'HTML') {
-                        if (taskTags.includes(parent.tagName.toLowerCase())) {
-                            taskElements.push(parent);
-                            break;
-                        } else {
-                            parent = Polymer.dom(parent).parentNode;
-                        }
-                    }
-
-                    if (parent === null || parent.tagName === 'HTML') {
-                        this.addDebugError(attr, 'No parent task element (<' + taskTags.join('>, <') + '>) found');
+                    var parent = this.getGlobalParentElement(taskTags, attr);
+                    if (parent !== undefined) {
+                        taskElements.push(parent);
                     }
                 } else {
                     var element = this.getGlobalNameElement(name, taskTags, attr);
@@ -22306,6 +23168,14 @@ var ButtonBehaviorImpl = {
         }
 
         return taskElements;
+    },
+
+    _handleDisabledChange: function _handleDisabledChange() {
+        if (this.disabled === '') {
+            this._disabled = true;
+        } else {
+            this.initiateCondition('disabled');
+        }
     }
 };
 
@@ -22324,8 +23194,8 @@ Polymer({
         this.click(this._clickCallback);
     },
 
-    _handleKeypress: function _handleKeypress(_ref6) {
-        var keyCode = _ref6.keyCode;
+    _handleKeypress: function _handleKeypress(_ref5) {
+        var keyCode = _ref5.keyCode;
 
         if (keyCode === 13) {
             this.click(this._clickCallback);
@@ -22350,8 +23220,8 @@ Polymer({
         this.click(this._clickCallback);
     },
 
-    _handleKeypress: function _handleKeypress(_ref7) {
-        var keyCode = _ref7.keyCode;
+    _handleKeypress: function _handleKeypress(_ref6) {
+        var keyCode = _ref6.keyCode;
 
         if (keyCode === 13) {
             this.click(this._clickCallback);
@@ -22473,7 +23343,7 @@ var NavigateHandler = {
 
         if (navigateGotoData.navigate !== null) {
             this.gotoNavigate(navigateGotoData.navigate);
-            this.updateGlobalHistory(navigateGotoData.navigate);
+            this.updateGlobalHistory(this._gotoElements[navigateGotoData.navigate]);
 
             if (!this.isAttached) {
                 this.fire('detached-navigate');
@@ -22530,7 +23400,7 @@ var NavigateHandler = {
 
     _resolveRestart: function _resolveRestart() {
         this.start();
-        this.updateGlobalHistory(this._restartElementName);
+        this.updateGlobalHistory(this._gotoElements[this._restartElementName]);
 
         var _iteratorNormalCompletion25 = true;
         var _didIteratorError25 = false;
@@ -22708,10 +23578,21 @@ var ThemeAttribute = {
     }
 };
 var GotoElement = {
+    properties: {
+        topic: String,
+        number: String
+    },
 
     listeners: {
         'detached-navigate': '_handleDetachedNavigate',
         'track-structure': '_handleTrackStructure'
+    },
+
+    ready: function ready() {
+        this.topic = this.topic || this.name;
+        if (this.number !== undefined && /[^\s\d.]/g.test(this.number)) {
+            this.addDebugError('number', '\'' + this.number + '\' is not a valid outline number (can only contain numbers separated by decimal points)');
+        }
     },
 
     handleInkdmlGoto: function handleInkdmlGoto(gotoData) {
@@ -22729,6 +23610,7 @@ var GotoElement = {
 
         if (!detail.parent) {
             detail.parent = this.name;
+            event.target.parent = this;
         }
         this.addTrackDetail(detail, 'structures');
     }
@@ -22738,8 +23620,6 @@ Polymer({
 
     properties: {
         start: Boolean,
-        topic: String,
-        number: String,
         editorData: Object
     },
 
@@ -22747,11 +23627,6 @@ Polymer({
 
     ready: function ready() {
         this.enforceDirectAncestor('inkd-cyoa');
-
-        this.topic = this.topic || this.name;
-        if (this.number !== undefined && /[^\s\d.]/g.test(this.number)) {
-            this.addDebugError('number', '\'' + this.number + '\' is not a valid outline number (can only contain numbers separated by decimal points)');
-        }
 
         this.visited = 0;
 
@@ -22795,13 +23670,21 @@ Polymer({
     },
 
     attached: function attached() {
-        if (this._initiated && !this._started) {
+        if (!this._started) {
             this.start();
-            this.updateGlobalHistory(this._startNodeName, true);
+            this.updateGlobalHistory(this._nodes[this._startNodeName], true);
         }
     },
 
     start: function start() {
+        if (!this._initiated) {
+            this._initiate();
+
+            if (!this._initiated) {
+                this._tempStart = true;
+                return;
+            }
+        }
         this.setBuiltinProps({ prevNode: null, prevNodeTopic: null });
         this._resetNodesVisited();
 
@@ -22831,8 +23714,8 @@ Polymer({
         return nodeArray;
     },
 
-    _handleChildrenChange: function _handleChildrenChange(_ref8) {
-        var newChildren = _ref8.addedNodes;
+    _handleChildrenChange: function _handleChildrenChange(_ref7) {
+        var newChildren = _ref7.addedNodes;
         var _iteratorNormalCompletion26 = true;
         var _didIteratorError26 = false;
         var _iteratorError26 = undefined;
@@ -22854,6 +23737,7 @@ Polymer({
                         }
                         node.addLayout(this);
                         node.addTheme(this);
+                        Polymer.dom(node).removeAttribute('active-node');
                     } else {
                         this.addDebugError(null, '\'name\' attribute required for cyoa node');
                     }
@@ -22875,6 +23759,10 @@ Polymer({
                 }
             }
         }
+
+        if (this._tempStart) {
+            this.start();
+        }
     },
 
     _initiate: function _initiate() {
@@ -22885,8 +23773,6 @@ Polymer({
 
             this.initiateNavigate(this._nodes, this._startNodeName, ['inkd-cyoa', 'inkd-pano']);
             this._initiated = true;
-        } else {
-            this.addDebugError(null, 'No <inkd-node> children found');
         }
     },
 
@@ -22994,9 +23880,9 @@ var PanoAttributes = {
 
             var degrees = splitResult[0];
             if (degrees === '') {
-                configObject.autoRotate = 1;
+                configObject.autorotate = 1;
             } else if (!isNaN(degrees)) {
-                configObject.autoRotate = Number(degrees);
+                configObject.autorotate = Number(degrees);
             } else {
                 this.addDebugError('autorotate', '\'' + degrees + '\' is not a valid degrees/second value');
             }
@@ -23004,11 +23890,11 @@ var PanoAttributes = {
             if (splitResult[1]) {
                 var delay = splitResult[1];
                 if (delay.endsWith('ms') && !isNaN(delay.slice(0, -2))) {
-                    configObject.autoRotateInactivityDelay = Number(delay.slice(0, -2));
+                    configObject.autorotateInactivityDelay = Number(delay.slice(0, -2));
                 } else if (delay.endsWith('s') && !isNaN(delay.slice(0, -1))) {
-                    configObject.autoRotateInactivityDelay = Number(delay.slice(0, -1)) * 1000;
+                    configObject.autorotateInactivityDelay = Number(delay.slice(0, -1)) * 1000;
                 } else if (!isNaN(time)) {
-                    configObject.autoRotateInactivityDelay = Number(delay) * 1000;
+                    configObject.autorotateInactivityDelay = Number(delay) * 1000;
                 } else {
                     this.addDebugError('autorotate', '\'' + delay + '\' is not a valid inactivity delay value');
                 }
@@ -23162,8 +24048,8 @@ Polymer({
         }
     },
 
-    _handleChildrenChange: function _handleChildrenChange(_ref9) {
-        var newChildren = _ref9.addedNodes;
+    _handleChildrenChange: function _handleChildrenChange(_ref8) {
+        var newChildren = _ref8.addedNodes;
         var _iteratorNormalCompletion28 = true;
         var _didIteratorError28 = false;
         var _iteratorError28 = undefined;
@@ -23288,8 +24174,8 @@ Polymer({
         }
     },
 
-    _handleHotspotClick: function _handleHotspotClick(_ref10) {
-        var detail = _ref10.detail;
+    _handleHotspotClick: function _handleHotspotClick(_ref9) {
+        var detail = _ref9.detail;
 
         detail.sceneElement = this;
     }
@@ -23459,8 +24345,16 @@ Polymer({
         }
     },
 
-    _handleChildrenChange: function _handleChildrenChange(_ref11) {
-        var newChildren = _ref11.addedNodes;
+    get scenes() {
+        var sceneArray = [];
+        for (var name in this._scenes) {
+            sceneArray.push(this._scenes[name]);
+        }
+        return sceneArray;
+    },
+
+    _handleChildrenChange: function _handleChildrenChange(_ref10) {
+        var newChildren = _ref10.addedNodes;
         var _iteratorNormalCompletion32 = true;
         var _didIteratorError32 = false;
         var _iteratorError32 = undefined;
@@ -23581,10 +24475,10 @@ Polymer({
         this.setBuiltinProp('allScenesVisited', false);
     },
 
-    _updateHotspot: function _updateHotspot(_ref12) {
-        var eventType = _ref12.eventType,
-            hotspotElement = _ref12.hotspotElement,
-            sceneElement = _ref12.sceneElement;
+    _updateHotspot: function _updateHotspot(_ref11) {
+        var eventType = _ref11.eventType,
+            hotspotElement = _ref11.hotspotElement,
+            sceneElement = _ref11.sceneElement;
 
         if (eventType === 'add') {
             this._panorama.addHotSpot(hotspotElement.hotspotObject, sceneElement.name);
@@ -23623,7 +24517,7 @@ Polymer({
             this._panoLoaded = true;
 
             this.start();
-            this.updateGlobalHistory(this._tempStartScene ? this._tempStartScene : this._startSceneName, true);
+            this.updateGlobalHistory(this._scenes[this._tempStartScene ? this._tempStartScene : this._startSceneName], true);
         }
     },
 
@@ -23661,6 +24555,107 @@ Polymer({
     }
 });
 Polymer({
+    is: 'inkd-area',
+
+    properties: {
+        shape: String,
+        coords: String,
+        alt: String
+    },
+
+    behaviors: [InkdBehavior, NameAttribute],
+
+    ready: function ready() {
+        this.enforceAncestor('inkd-img');
+
+        if (this.shape) {
+            this.shape = this.shape.replace(/\s/g, '');
+            if (['rect', 'circle', 'poly', 'default'].includes(this.shape)) {
+                this._initiateCoords();
+            } else {
+                this.addDebugError('shape', '\'' + this.shape + '\' is not a valid image area shape (Supported: \'rect\', \'circle\', \'poly\', \'default\')');
+            }
+        } else {
+            this.addDebugError('shape', 'No shape specified for image area');
+        }
+    },
+
+    _initiateCoords: function _initiateCoords() {
+        if (this.coords) {
+            var coords = this.coords.replace(/\s/g, '').split(',');
+            var length = coords.length;
+
+            switch (this.shape) {
+                case 'circle':
+                    if (length < 3) {
+                        this.addDebugError('coords', 'Image area shape \'circle\' needs 3 coordinate values (x,y of center and radius)');
+                    } else if (length > 3) {
+                        this.addDebugWarn('coords', '\'' + coords.slice(3).join(', ') + '\' unused because image area shape \'circle\' needs only 3 coordinate values (x,y of center and radius)');
+                        coords = coords.slice(0, 3);
+                    }
+                    break;
+
+                case 'rect':
+                    if (length < 4) {
+                        this.addDebugError('coords', 'Image area shape \'rect\' needs 4 coordinate values (x,y of top left corner and x,y of bottom right corner)');
+                    } else if (length > 4) {
+                        this.addDebugWarn('coords', '\'' + coords.slice(4).join(', ') + '\' unused because image area shape \'rect\' needs only 4 coordinate values (x,y of top left corner and x,y of bottom right corner)');
+                        coords = coords.slice(0, 4);
+                    }
+                    break;
+
+                case 'poly':
+                    if (length < 6) {
+                        this.addDebugError('coords', 'Image area shape \'poly\' needs atleast 6 coordinate values (x,y of each corner)');
+                    } else if (length % 2 !== 0) {
+                        this.addDebugWarn('coords', '\'' + coords.slice(-1)[0] + '\' unused because the shape \'poly\' needs an even number of coordinate values (x,y of each corner)');
+                        coords = coords.slice(0, -1);
+                    }
+                    break;
+
+                case 'default':
+                    if (length > 0) {
+                        this.addDebugWarn('coords', '\'' + coords.join(', ') + '\' unused because image area shape \'default\' does not need any coordinate values');
+                        coords = [];
+                    }
+            }
+
+            var _iteratorNormalCompletion34 = true;
+            var _didIteratorError34 = false;
+            var _iteratorError34 = undefined;
+
+            try {
+                for (var _iterator34 = coords[Symbol.iterator](), _step34; !(_iteratorNormalCompletion34 = (_step34 = _iterator34.next()).done); _iteratorNormalCompletion34 = true) {
+                    var coord = _step34.value;
+
+                    if (coord === '' || isNaN(coord)) {
+                        this.addDebugWarn('coords', '\'' + coord + '\' is not a valid coordinate value for image area (must be a number)');
+                    }
+                }
+            } catch (err) {
+                _didIteratorError34 = true;
+                _iteratorError34 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion34 && _iterator34.return) {
+                        _iterator34.return();
+                    }
+                } finally {
+                    if (_didIteratorError34) {
+                        throw _iteratorError34;
+                    }
+                }
+            }
+        } else {
+            this.addDebugError('coords', 'No coordinates specified for image area');
+        }
+    },
+
+    _handleTap: function _handleTap(event) {
+        event.preventDefault();
+    }
+});
+Polymer({
     is: 'inkd-img',
 
     properties: {
@@ -23693,23 +24688,10 @@ Polymer({
                 this.addDebugWarn('src', 'Spaces in path \'' + this.src + '\' might cause an issue in loading the file from a server');
             }
 
-            if (this.preload) {
-                var relList = document.createElement('link').relList;
-                var htmlPreloadSupport = relList && relList.supports && relList.supports('preload');
+            this._initiatePreload();
 
-                var preloadElement = void 0;
-                if (htmlPreloadSupport) {
-                    preloadElement = document.createElement('link');
-                    preloadElement.rel = 'preload';
-                    preloadElement.as = 'image';
-                    preloadElement.href = this.src;
-                    document.head.appendChild(preloadElement);
-                } else {
-                    preloadElement = new Image();
-                    preloadElement.src = this.src;
-                }
-
-                this.listen(preloadElement, 'error', '_handleError');
+            if (Polymer.dom(this).querySelector('inkd-area')) {
+                this.onGlobalReady('_initiateMap');
             }
         } else {
             this.addDebugError('src', 'No image files specified');
@@ -23720,6 +24702,31 @@ Polymer({
         if (this._loadError && navigator.userAgent.indexOf('Firefox') !== -1) {
             this.addDebugError('src', 'Error loading image \'' + this.src + '\'');
         }
+    },
+
+    _initiatePreload: function _initiatePreload() {
+        if (this.preload) {
+            var relList = document.createElement('link').relList;
+            var htmlPreloadSupport = relList && relList.supports && relList.supports('preload');
+
+            var preloadElement = void 0;
+            if (htmlPreloadSupport) {
+                preloadElement = document.createElement('link');
+                preloadElement.rel = 'preload';
+                preloadElement.as = 'image';
+                preloadElement.href = this.src;
+                document.head.appendChild(preloadElement);
+            } else {
+                preloadElement = new Image();
+                preloadElement.src = this.src;
+            }
+
+            this.listen(preloadElement, 'error', '_handleError');
+        }
+    },
+
+    _initiateMap: function _initiateMap() {
+        this.mapId = 'inkd-img-map-' + this.getGlobalUniqueId();
     },
 
     _handleLoad: function _handleLoad() {
@@ -24158,8 +25165,8 @@ Polymer({
         }
     },
 
-    _handleYoutubeStateChange: function _handleYoutubeStateChange(_ref13) {
-        var state = _ref13.detail.data;
+    _handleYoutubeStateChange: function _handleYoutubeStateChange(_ref12) {
+        var state = _ref12.detail.data;
 
         if (state === 1) {
             if (this._youtubeSavedTime) {
@@ -24189,8 +25196,8 @@ Polymer({
         this._handlePlay();
     },
 
-    _handleVimeoTimeUpdate: function _handleVimeoTimeUpdate(_ref14) {
-        var seconds = _ref14.seconds;
+    _handleVimeoTimeUpdate: function _handleVimeoTimeUpdate(_ref13) {
+        var seconds = _ref13.seconds;
 
         this._vimeoCurrentTime = seconds;
     }
@@ -24260,13 +25267,13 @@ var EffectAttribute = {
         if (this.effect) {
             var effects = this.effect.replace(/\s/g, '').split(',');
 
-            var _iteratorNormalCompletion34 = true;
-            var _didIteratorError34 = false;
-            var _iteratorError34 = undefined;
+            var _iteratorNormalCompletion35 = true;
+            var _didIteratorError35 = false;
+            var _iteratorError35 = undefined;
 
             try {
-                for (var _iterator34 = effects[Symbol.iterator](), _step34; !(_iteratorNormalCompletion34 = (_step34 = _iterator34.next()).done); _iteratorNormalCompletion34 = true) {
-                    var effect = _step34.value;
+                for (var _iterator35 = effects[Symbol.iterator](), _step35; !(_iteratorNormalCompletion35 = (_step35 = _iterator35.next()).done); _iteratorNormalCompletion35 = true) {
+                    var effect = _step35.value;
 
                     var splitResult = effect.split(':');
                     var name = splitResult[0];
@@ -24304,16 +25311,16 @@ var EffectAttribute = {
                     }
                 }
             } catch (err) {
-                _didIteratorError34 = true;
-                _iteratorError34 = err;
+                _didIteratorError35 = true;
+                _iteratorError35 = err;
             } finally {
                 try {
-                    if (!_iteratorNormalCompletion34 && _iterator34.return) {
-                        _iterator34.return();
+                    if (!_iteratorNormalCompletion35 && _iterator35.return) {
+                        _iterator35.return();
                     }
                 } finally {
-                    if (_didIteratorError34) {
-                        throw _iteratorError34;
+                    if (_didIteratorError35) {
+                        throw _iteratorError35;
                     }
                 }
             }
@@ -24386,13 +25393,13 @@ var AnimationAttribute = {
 
             var delay = 0;
 
-            var _iteratorNormalCompletion35 = true;
-            var _didIteratorError35 = false;
-            var _iteratorError35 = undefined;
+            var _iteratorNormalCompletion36 = true;
+            var _didIteratorError36 = false;
+            var _iteratorError36 = undefined;
 
             try {
-                for (var _iterator35 = animations[Symbol.iterator](), _step35; !(_iteratorNormalCompletion35 = (_step35 = _iterator35.next()).done); _iteratorNormalCompletion35 = true) {
-                    var anim = _step35.value;
+                for (var _iterator36 = animations[Symbol.iterator](), _step36; !(_iteratorNormalCompletion36 = (_step36 = _iterator36.next()).done); _iteratorNormalCompletion36 = true) {
+                    var anim = _step36.value;
 
                     var splitResult = anim.split(':');
 
@@ -24400,13 +25407,13 @@ var AnimationAttribute = {
                     var duration = null;
                     var iteration = null;
 
-                    var _iteratorNormalCompletion36 = true;
-                    var _didIteratorError36 = false;
-                    var _iteratorError36 = undefined;
+                    var _iteratorNormalCompletion37 = true;
+                    var _didIteratorError37 = false;
+                    var _iteratorError37 = undefined;
 
                     try {
-                        for (var _iterator36 = splitResult[Symbol.iterator](), _step36; !(_iteratorNormalCompletion36 = (_step36 = _iterator36.next()).done); _iteratorNormalCompletion36 = true) {
-                            var value = _step36.value;
+                        for (var _iterator37 = splitResult[Symbol.iterator](), _step37; !(_iteratorNormalCompletion37 = (_step37 = _iterator37.next()).done); _iteratorNormalCompletion37 = true) {
+                            var value = _step37.value;
 
 
                             if (this._validAnimationNames.includes(value) || value === 'wait') {
@@ -24438,16 +25445,16 @@ var AnimationAttribute = {
                             }
                         }
                     } catch (err) {
-                        _didIteratorError36 = true;
-                        _iteratorError36 = err;
+                        _didIteratorError37 = true;
+                        _iteratorError37 = err;
                     } finally {
                         try {
-                            if (!_iteratorNormalCompletion36 && _iterator36.return) {
-                                _iterator36.return();
+                            if (!_iteratorNormalCompletion37 && _iterator37.return) {
+                                _iterator37.return();
                             }
                         } finally {
-                            if (_didIteratorError36) {
-                                throw _iteratorError36;
+                            if (_didIteratorError37) {
+                                throw _iteratorError37;
                             }
                         }
                     }
@@ -24475,16 +25482,16 @@ var AnimationAttribute = {
                     }
                 }
             } catch (err) {
-                _didIteratorError35 = true;
-                _iteratorError35 = err;
+                _didIteratorError36 = true;
+                _iteratorError36 = err;
             } finally {
                 try {
-                    if (!_iteratorNormalCompletion35 && _iterator35.return) {
-                        _iterator35.return();
+                    if (!_iteratorNormalCompletion36 && _iterator36.return) {
+                        _iterator36.return();
                     }
                 } finally {
-                    if (_didIteratorError35) {
-                        throw _iteratorError35;
+                    if (_didIteratorError36) {
+                        throw _iteratorError36;
                     }
                 }
             }
@@ -24492,13 +25499,13 @@ var AnimationAttribute = {
     },
 
     _updateAnimations: function _updateAnimations() {
-        var _iteratorNormalCompletion37 = true;
-        var _didIteratorError37 = false;
-        var _iteratorError37 = undefined;
+        var _iteratorNormalCompletion38 = true;
+        var _didIteratorError38 = false;
+        var _iteratorError38 = undefined;
 
         try {
-            for (var _iterator37 = this._animationParameters[Symbol.iterator](), _step37; !(_iteratorNormalCompletion37 = (_step37 = _iterator37.next()).done); _iteratorNormalCompletion37 = true) {
-                var animParam = _step37.value;
+            for (var _iterator38 = this._animationParameters[Symbol.iterator](), _step38; !(_iteratorNormalCompletion38 = (_step38 = _iterator38.next()).done); _iteratorNormalCompletion38 = true) {
+                var animParam = _step38.value;
 
                 var cssArray = [];
                 for (var key in this._currentAnimations) {
@@ -24509,16 +25516,16 @@ var AnimationAttribute = {
                 this.style['-webkit-animation-' + animParam] = cssArray.toString();
             }
         } catch (err) {
-            _didIteratorError37 = true;
-            _iteratorError37 = err;
+            _didIteratorError38 = true;
+            _iteratorError38 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion37 && _iterator37.return) {
-                    _iterator37.return();
+                if (!_iteratorNormalCompletion38 && _iterator38.return) {
+                    _iterator38.return();
                 }
             } finally {
-                if (_didIteratorError37) {
-                    throw _iteratorError37;
+                if (_didIteratorError38) {
+                    throw _iteratorError38;
                 }
             }
         }
@@ -24611,9 +25618,13 @@ Polymer({
 
             overlayElement.fadeTimer = setTimeout(function () {
                 if (transitionData.slideDirection) {
-                    _this10.$.slideContent.removeChild(overlayElement);
+                    if (overlayElement.parentNode === _this10.$.slideContent) {
+                        _this10.$.slideContent.removeChild(overlayElement);
+                    }
                 } else {
-                    _this10.$.overlayContent.removeChild(overlayElement);
+                    if (overlayElement.parentNode === _this10.$.overlayContent) {
+                        _this10.$.overlayContent.removeChild(overlayElement);
+                    }
                 }
             }, _time2);
 
@@ -24641,17 +25652,15 @@ var EventBehaviorImpl = {
             value: '0px'
         },
         transition: String,
-
         noToggle: Boolean
     },
 
     ready: function ready() {
-        this.onGlobalAttach('_initiate');
-
         this.x = '' + this.x + (isNaN(this.x) ? '' : 'px');
         this.y = '' + this.y + (isNaN(this.y) ? '' : 'px');
 
         this._initiateTransition();
+        this.onGlobalAttach('_initiate');
     },
 
     detached: function detached() {
@@ -24667,36 +25676,22 @@ var EventBehaviorImpl = {
 
     _initiate: function _initiate() {
         if (this.box) {
-            var element = this.getGlobalNameElement(this.box, 'inkd-box', 'box');
-            if (element !== undefined) {
-                this.eventBox = element;
-            }
+            this.eventBox = this.getGlobalNameElement(this.box, ['inkd-box', 'inkd-area'], 'box');
         } else {
-            var parent = Polymer.dom(this).parentNode;
-            while (parent !== null) {
-                if (parent.tagName === 'INKD-BOX') {
-                    this.eventBox = parent;
-                    break;
-                } else {
-                    parent = Polymer.dom(parent).parentNode;
-                }
-            }
+            this.eventBox = this.getGlobalParentElement(['inkd-box'], 'box');
+        }
 
-            if (parent === null) {
-                this.addDebugError(null, 'No \'box\' specified for \'' + this.event + '\' event and no parent <inkd-box> found');
+        if (this.on) {
+            this.applyBox = this.getGlobalNameElement(this.on, 'inkd-box', 'on');
+        } else {
+            if (this.eventBox && this.eventBox.tagName === 'INKD-BOX') {
+                this.applyBox = this.eventBox;
+            } else {
+                this.applyBox = this.getGlobalParentElement(['inkd-box'], 'on');
             }
         }
 
-        if (this.eventBox) {
-            this.applyBox = this.eventBox;
-
-            if (this.on) {
-                var _element2 = this.getGlobalNameElement(this.on, 'inkd-box', 'on');
-                if (_element2 !== undefined) {
-                    this.applyBox = _element2;
-                }
-            }
-
+        if (this.eventBox && this.applyBox) {
             this.listen(this.eventBox, this.event, '_handleEvent');
 
             if (!this.noToggle && this.toggleEvent !== this.event) {
@@ -24706,7 +25701,7 @@ var EventBehaviorImpl = {
             if (Polymer.dom(this).childNodes.length > 0) {
                 this.overlayElement = document.createElement('span');
                 this.overlayElement.className = this.className;
-                this.overlayElement.style.cssText = 'position: absolute; opacity: 0;    \n                        transition: opacity ' + this.transitionData.fadeTime + ' ease-in-out, top ' + this.transitionData.slideTime + ', left ' + this.transitionData.slideTime + ';';
+                this.overlayElement.style.cssText = 'position: absolute; opacity: 0; transition: opacity ' + this.transitionData.fadeTime + ' ease-in-out, top ' + this.transitionData.slideTime + ', left ' + this.transitionData.slideTime + '; ' + this.style.cssText;
 
                 switch (this.transitionData.slideDirection) {
                     case 'right':
@@ -24735,13 +25730,13 @@ var EventBehaviorImpl = {
 
         if (this.transition) {
             var splitResult = this.transition.replace(/\s/g, '').split(',');
-            var _iteratorNormalCompletion38 = true;
-            var _didIteratorError38 = false;
-            var _iteratorError38 = undefined;
+            var _iteratorNormalCompletion39 = true;
+            var _didIteratorError39 = false;
+            var _iteratorError39 = undefined;
 
             try {
-                for (var _iterator38 = splitResult[Symbol.iterator](), _step38; !(_iteratorNormalCompletion38 = (_step38 = _iterator38.next()).done); _iteratorNormalCompletion38 = true) {
-                    var splitPart = _step38.value;
+                for (var _iterator39 = splitResult[Symbol.iterator](), _step39; !(_iteratorNormalCompletion39 = (_step39 = _iterator39.next()).done); _iteratorNormalCompletion39 = true) {
+                    var splitPart = _step39.value;
 
                     var match = splitPart.match(/^([^:]+):(.+)$/);
                     if (match) {
@@ -24772,16 +25767,16 @@ var EventBehaviorImpl = {
                     }
                 }
             } catch (err) {
-                _didIteratorError38 = true;
-                _iteratorError38 = err;
+                _didIteratorError39 = true;
+                _iteratorError39 = err;
             } finally {
                 try {
-                    if (!_iteratorNormalCompletion38 && _iterator38.return) {
-                        _iterator38.return();
+                    if (!_iteratorNormalCompletion39 && _iterator39.return) {
+                        _iterator39.return();
                     }
                 } finally {
-                    if (_didIteratorError38) {
-                        throw _iteratorError38;
+                    if (_didIteratorError39) {
+                        throw _iteratorError39;
                     }
                 }
             }
@@ -24880,13 +25875,13 @@ Polymer({
     },
 
     _updatePropsData: function _updatePropsData() {
-        var _iteratorNormalCompletion39 = true;
-        var _didIteratorError39 = false;
-        var _iteratorError39 = undefined;
+        var _iteratorNormalCompletion40 = true;
+        var _didIteratorError40 = false;
+        var _iteratorError40 = undefined;
 
         try {
-            for (var _iterator39 = this.props[Symbol.iterator](), _step39; !(_iteratorNormalCompletion39 = (_step39 = _iterator39.next()).done); _iteratorNormalCompletion39 = true) {
-                var key = _step39.value;
+            for (var _iterator40 = this.props[Symbol.iterator](), _step40; !(_iteratorNormalCompletion40 = (_step40 = _iterator40.next()).done); _iteratorNormalCompletion40 = true) {
+                var key = _step40.value;
 
                 var data = this.getGlobalProp(key);
                 if (data === undefined) {
@@ -24898,16 +25893,16 @@ Polymer({
                 }
             }
         } catch (err) {
-            _didIteratorError39 = true;
-            _iteratorError39 = err;
+            _didIteratorError40 = true;
+            _iteratorError40 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion39 && _iterator39.return) {
-                    _iterator39.return();
+                if (!_iteratorNormalCompletion40 && _iterator40.return) {
+                    _iterator40.return();
                 }
             } finally {
-                if (_didIteratorError39) {
-                    throw _iteratorError39;
+                if (_didIteratorError40) {
+                    throw _iteratorError40;
                 }
             }
         }
@@ -25018,7 +26013,10 @@ Polymer({
             value: 0,
             desc: 'tab order'
         },
-        saveRemote: Boolean
+        saveRemote: {
+            type: String,
+            flagAllowed: true
+        }
     },
 
     behaviors: [InkdBehavior, NameAttribute],
@@ -25030,9 +26028,13 @@ Polymer({
 
         this.setBuiltinProps({ value: this._initialValue, focused: false });
 
-        if (this.saveRemote && this.name === undefined) {
-            this.addDebugError('save-remote', 'Textarea needs a \'name\' for remote saving');
-            this.saveRemote = false;
+        if (this.saveRemote === '') {
+            if (this.name === undefined) {
+                this.addDebugError('save-remote', 'Textarea needs a \'save-remote\' value or \'name\' for remote saving');
+                this.saveRemote = false;
+            } else {
+                this.saveRemote = this.name;
+            }
         }
 
         this.async(function () {
@@ -25042,7 +26044,7 @@ Polymer({
 
     attached: function attached() {
         if (!this._initiated && this.saveRemote) {
-            this.fire('get-remote', { keys: this.name, callback: '_getValue' });
+            this.fire('get-remote', { keys: this.saveRemote, callback: '_getValue' });
             this._initiated = true;
         }
         if (this.autofocus) {
@@ -25063,13 +26065,14 @@ Polymer({
     },
 
     _getValue: function _getValue(data) {
-        this._textareaElement.value = data[this.name] || '';
+        this._textareaElement.value = data[this.saveRemote] || '';
+        this.setBuiltinProp('value', this._textareaElement.value);
     },
 
     _saveValue: function _saveValue() {
         if (this.saveRemote) {
             var data = {};
-            data[this.name] = this._textareaElement.value.trim();
+            data[this.saveRemote] = this._textareaElement.value.trim();
             this.fire('save-remote', data);
         }
         this.addTrackEvent('textarea-save', { textarea: this.name, value: this._textareaElement.value.trim() });
@@ -25096,7 +26099,7 @@ Polymer({
 var TaskBehaviorImpl = {
     properties: {
         goto: String,
-        autoValidate: Boolean
+        autovalidate: Boolean
     },
 
     ready: function ready() {
@@ -25112,29 +26115,29 @@ var TaskBehaviorImpl = {
 
     setTaskDependents: function setTaskDependents(elementArray) {
         this._taskDependents = elementArray;
-        var _iteratorNormalCompletion40 = true;
-        var _didIteratorError40 = false;
-        var _iteratorError40 = undefined;
+        var _iteratorNormalCompletion41 = true;
+        var _didIteratorError41 = false;
+        var _iteratorError41 = undefined;
 
         try {
-            for (var _iterator40 = elementArray[Symbol.iterator](), _step40; !(_iteratorNormalCompletion40 = (_step40 = _iterator40.next()).done); _iteratorNormalCompletion40 = true) {
-                var element = _step40.value;
+            for (var _iterator41 = elementArray[Symbol.iterator](), _step41; !(_iteratorNormalCompletion41 = (_step41 = _iterator41.next()).done); _iteratorNormalCompletion41 = true) {
+                var element = _step41.value;
 
                 this.listen(element, 'done-changed', '_handleDoneChange');
                 this.listen(element, 'correct-changed', '_handleCorrectChange');
                 this.listen(element, 'task-goto', '_handleTaskGoto');
             }
         } catch (err) {
-            _didIteratorError40 = true;
-            _iteratorError40 = err;
+            _didIteratorError41 = true;
+            _iteratorError41 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion40 && _iterator40.return) {
-                    _iterator40.return();
+                if (!_iteratorNormalCompletion41 && _iterator41.return) {
+                    _iterator41.return();
                 }
             } finally {
-                if (_didIteratorError40) {
-                    throw _iteratorError40;
+                if (_didIteratorError41) {
+                    throw _iteratorError41;
                 }
             }
         }
@@ -25147,14 +26150,14 @@ var TaskBehaviorImpl = {
 
             var eventData = { value: value };
             if (value) {
-                if (this.autoValidate) {
+                if (this.autovalidate) {
                     this.validateTask();
                 }
 
                 if (this.goto || this._unresolvedGotoData) {
-                    var _ref15;
+                    var _ref14;
 
-                    var gotoData = (_ref15 = []).concat.apply(_ref15, _toConsumableArray(this._unresolvedGotos || []).concat(_toConsumableArray(this.goto ? [{ element: this, gotos: this.goto }] : [])));
+                    var gotoData = (_ref14 = []).concat.apply(_ref14, _toConsumableArray(this._unresolvedGotos || []).concat(_toConsumableArray(this.goto ? [{ element: this, gotos: this.goto }] : [])));
                     if (this.handleTaskGoto) {
                         var unresolvedData = this.handleTaskGoto(gotoData);
                         if (unresolvedData) {
@@ -25205,37 +26208,6 @@ var TaskBehaviorImpl = {
 
     validateTask: function validateTask() {
         if (this._taskDependents) {
-            var _iteratorNormalCompletion41 = true;
-            var _didIteratorError41 = false;
-            var _iteratorError41 = undefined;
-
-            try {
-                for (var _iterator41 = this._taskDependents[Symbol.iterator](), _step41; !(_iteratorNormalCompletion41 = (_step41 = _iterator41.next()).done); _iteratorNormalCompletion41 = true) {
-                    var element = _step41.value;
-
-                    element.validateTask();
-                }
-            } catch (err) {
-                _didIteratorError41 = true;
-                _iteratorError41 = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion41 && _iterator41.return) {
-                        _iterator41.return();
-                    }
-                } finally {
-                    if (_didIteratorError41) {
-                        throw _iteratorError41;
-                    }
-                }
-            }
-        } else {
-            this.validate();
-        }
-    },
-
-    resetTask: function resetTask() {
-        if (this._taskDependents) {
             var _iteratorNormalCompletion42 = true;
             var _didIteratorError42 = false;
             var _iteratorError42 = undefined;
@@ -25244,7 +26216,7 @@ var TaskBehaviorImpl = {
                 for (var _iterator42 = this._taskDependents[Symbol.iterator](), _step42; !(_iteratorNormalCompletion42 = (_step42 = _iterator42.next()).done); _iteratorNormalCompletion42 = true) {
                     var element = _step42.value;
 
-                    element.resetTask();
+                    element.validateTask();
                 }
             } catch (err) {
                 _didIteratorError42 = true;
@@ -25261,6 +26233,37 @@ var TaskBehaviorImpl = {
                 }
             }
         } else {
+            this.validate();
+        }
+    },
+
+    resetTask: function resetTask() {
+        if (this._taskDependents) {
+            var _iteratorNormalCompletion43 = true;
+            var _didIteratorError43 = false;
+            var _iteratorError43 = undefined;
+
+            try {
+                for (var _iterator43 = this._taskDependents[Symbol.iterator](), _step43; !(_iteratorNormalCompletion43 = (_step43 = _iterator43.next()).done); _iteratorNormalCompletion43 = true) {
+                    var element = _step43.value;
+
+                    element.resetTask();
+                }
+            } catch (err) {
+                _didIteratorError43 = true;
+                _iteratorError43 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion43 && _iterator43.return) {
+                        _iterator43.return();
+                    }
+                } finally {
+                    if (_didIteratorError43) {
+                        throw _iteratorError43;
+                    }
+                }
+            }
+        } else {
             this.reset(false);
         }
     },
@@ -25272,13 +26275,13 @@ var TaskBehaviorImpl = {
         this._feedbackElements = Polymer.dom(this).children.filter(function (el) {
             return el.tagName === 'INKD-FEEDBACK';
         });
-        var _iteratorNormalCompletion43 = true;
-        var _didIteratorError43 = false;
-        var _iteratorError43 = undefined;
+        var _iteratorNormalCompletion44 = true;
+        var _didIteratorError44 = false;
+        var _iteratorError44 = undefined;
 
         try {
-            for (var _iterator43 = this._feedbackElements[Symbol.iterator](), _step43; !(_iteratorNormalCompletion43 = (_step43 = _iterator43.next()).done); _iteratorNormalCompletion43 = true) {
-                var element = _step43.value;
+            for (var _iterator44 = this._feedbackElements[Symbol.iterator](), _step44; !(_iteratorNormalCompletion44 = (_step44 = _iterator44.next()).done); _iteratorNormalCompletion44 = true) {
+                var element = _step44.value;
 
                 if (element.hasAttribute('wrong')) {
                     this._wrongFeedback += element.outerHTML;
@@ -25287,16 +26290,16 @@ var TaskBehaviorImpl = {
                 }
             }
         } catch (err) {
-            _didIteratorError43 = true;
-            _iteratorError43 = err;
+            _didIteratorError44 = true;
+            _iteratorError44 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion43 && _iterator43.return) {
-                    _iterator43.return();
+                if (!_iteratorNormalCompletion44 && _iterator44.return) {
+                    _iterator44.return();
                 }
             } finally {
-                if (_didIteratorError43) {
-                    throw _iteratorError43;
+                if (_didIteratorError44) {
+                    throw _iteratorError44;
                 }
             }
         }
@@ -25311,27 +26314,27 @@ var TaskBehaviorImpl = {
     },
 
     _removeFeedback: function _removeFeedback() {
-        var _iteratorNormalCompletion44 = true;
-        var _didIteratorError44 = false;
-        var _iteratorError44 = undefined;
+        var _iteratorNormalCompletion45 = true;
+        var _didIteratorError45 = false;
+        var _iteratorError45 = undefined;
 
         try {
-            for (var _iterator44 = this._feedbackElements[Symbol.iterator](), _step44; !(_iteratorNormalCompletion44 = (_step44 = _iterator44.next()).done); _iteratorNormalCompletion44 = true) {
-                var element = _step44.value;
+            for (var _iterator45 = this._feedbackElements[Symbol.iterator](), _step45; !(_iteratorNormalCompletion45 = (_step45 = _iterator45.next()).done); _iteratorNormalCompletion45 = true) {
+                var element = _step45.value;
 
                 element.domRemove();
             }
         } catch (err) {
-            _didIteratorError44 = true;
-            _iteratorError44 = err;
+            _didIteratorError45 = true;
+            _iteratorError45 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion44 && _iterator44.return) {
-                    _iterator44.return();
+                if (!_iteratorNormalCompletion45 && _iterator45.return) {
+                    _iterator45.return();
                 }
             } finally {
-                if (_didIteratorError44) {
-                    throw _iteratorError44;
+                if (_didIteratorError45) {
+                    throw _iteratorError45;
                 }
             }
         }
@@ -25415,27 +26418,27 @@ Polymer({
     },
 
     _initiateChildren: function _initiateChildren() {
-        var _iteratorNormalCompletion45 = true;
-        var _didIteratorError45 = false;
-        var _iteratorError45 = undefined;
+        var _iteratorNormalCompletion46 = true;
+        var _didIteratorError46 = false;
+        var _iteratorError46 = undefined;
 
         try {
-            for (var _iterator45 = this._dragElements[Symbol.iterator](), _step45; !(_iteratorNormalCompletion45 = (_step45 = _iterator45.next()).done); _iteratorNormalCompletion45 = true) {
-                var element = _step45.value;
+            for (var _iterator46 = this._dragElements[Symbol.iterator](), _step46; !(_iteratorNormalCompletion46 = (_step46 = _iterator46.next()).done); _iteratorNormalCompletion46 = true) {
+                var element = _step46.value;
 
                 element.dragSectionParent = this;
             }
         } catch (err) {
-            _didIteratorError45 = true;
-            _iteratorError45 = err;
+            _didIteratorError46 = true;
+            _iteratorError46 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion45 && _iterator45.return) {
-                    _iterator45.return();
+                if (!_iteratorNormalCompletion46 && _iterator46.return) {
+                    _iterator46.return();
                 }
             } finally {
-                if (_didIteratorError45) {
-                    throw _iteratorError45;
+                if (_didIteratorError46) {
+                    throw _iteratorError46;
                 }
             }
         }
@@ -25495,15 +26498,15 @@ Polymer({
     _initiateChildren: function _initiateChildren() {
         var _this12 = this;
 
-        var _iteratorNormalCompletion46 = true;
-        var _didIteratorError46 = false;
-        var _iteratorError46 = undefined;
+        var _iteratorNormalCompletion47 = true;
+        var _didIteratorError47 = false;
+        var _iteratorError47 = undefined;
 
         try {
             var _loop4 = function _loop4() {
                 var _element$correct;
 
-                var element = _step46.value;
+                var element = _step47.value;
 
                 element.dropSectionParent = _this12;
                 element.allowMultiple = element.allowMultiple || _this12.allowMultiple;
@@ -25523,27 +26526,27 @@ Polymer({
                 }
             };
 
-            for (var _iterator46 = this._dropElements[Symbol.iterator](), _step46; !(_iteratorNormalCompletion46 = (_step46 = _iterator46.next()).done); _iteratorNormalCompletion46 = true) {
+            for (var _iterator47 = this._dropElements[Symbol.iterator](), _step47; !(_iteratorNormalCompletion47 = (_step47 = _iterator47.next()).done); _iteratorNormalCompletion47 = true) {
                 _loop4();
             }
         } catch (err) {
-            _didIteratorError46 = true;
-            _iteratorError46 = err;
+            _didIteratorError47 = true;
+            _iteratorError47 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion46 && _iterator46.return) {
-                    _iterator46.return();
+                if (!_iteratorNormalCompletion47 && _iterator47.return) {
+                    _iterator47.return();
                 }
             } finally {
-                if (_didIteratorError46) {
-                    throw _iteratorError46;
+                if (_didIteratorError47) {
+                    throw _iteratorError47;
                 }
             }
         }
     },
 
-    _handleReset: function _handleReset(_ref16) {
-        var detail = _ref16.detail;
+    _handleReset: function _handleReset(_ref15) {
+        var detail = _ref15.detail;
 
         detail.sectionElement = this;
     }
@@ -25659,8 +26662,8 @@ Polymer({
         this.splice('dragChildren', index, 1);
     },
 
-    checkIfAllowed: function checkIfAllowed(_ref17) {
-        var name = _ref17.name;
+    checkIfAllowed: function checkIfAllowed(_ref16) {
+        var name = _ref16.name;
 
         if (this.allow.length > 0) {
             return name && this.allow.includes(name);
@@ -25677,44 +26680,15 @@ Polymer({
         if (track) {
             this.fire('reset', { dropElement: this });
         }
-        var _iteratorNormalCompletion47 = true;
-        var _didIteratorError47 = false;
-        var _iteratorError47 = undefined;
-
-        try {
-            for (var _iterator47 = this.dragChildren[Symbol.iterator](), _step47; !(_iteratorNormalCompletion47 = (_step47 = _iterator47.next()).done); _iteratorNormalCompletion47 = true) {
-                var _element3 = _step47.value;
-
-                this.removeDraggable(_element3);
-            }
-        } catch (err) {
-            _didIteratorError47 = true;
-            _iteratorError47 = err;
-        } finally {
-            try {
-                if (!_iteratorNormalCompletion47 && _iterator47.return) {
-                    _iterator47.return();
-                }
-            } finally {
-                if (_didIteratorError47) {
-                    throw _iteratorError47;
-                }
-            }
-        }
-    },
-
-    _initiateChildren: function _initiateChildren() {
         var _iteratorNormalCompletion48 = true;
         var _didIteratorError48 = false;
         var _iteratorError48 = undefined;
 
         try {
-            for (var _iterator48 = this.dragChildren.entries()[Symbol.iterator](), _step48; !(_iteratorNormalCompletion48 = (_step48 = _iterator48.next()).done); _iteratorNormalCompletion48 = true) {
-                var _step48$value = _slicedToArray(_step48.value, 2),
-                    index = _step48$value[0],
-                    _element4 = _step48$value[1];
+            for (var _iterator48 = this.dragChildren[Symbol.iterator](), _step48; !(_iteratorNormalCompletion48 = (_step48 = _iterator48.next()).done); _iteratorNormalCompletion48 = true) {
+                var _element2 = _step48.value;
 
-                _element4.dropParent = this;
+                this.removeDraggable(_element2);
             }
         } catch (err) {
             _didIteratorError48 = true;
@@ -25727,6 +26701,35 @@ Polymer({
             } finally {
                 if (_didIteratorError48) {
                     throw _iteratorError48;
+                }
+            }
+        }
+    },
+
+    _initiateChildren: function _initiateChildren() {
+        var _iteratorNormalCompletion49 = true;
+        var _didIteratorError49 = false;
+        var _iteratorError49 = undefined;
+
+        try {
+            for (var _iterator49 = this.dragChildren.entries()[Symbol.iterator](), _step49; !(_iteratorNormalCompletion49 = (_step49 = _iterator49.next()).done); _iteratorNormalCompletion49 = true) {
+                var _step49$value = _slicedToArray(_step49.value, 2),
+                    index = _step49$value[0],
+                    _element3 = _step49$value[1];
+
+                _element3.dropParent = this;
+            }
+        } catch (err) {
+            _didIteratorError49 = true;
+            _iteratorError49 = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion49 && _iterator49.return) {
+                    _iterator49.return();
+                }
+            } finally {
+                if (_didIteratorError49) {
+                    throw _iteratorError49;
                 }
             }
         }
@@ -25758,29 +26761,29 @@ Polymer({
         }, '');
         this.setBuiltinProp('draggableFeedback', value);
 
-        var _iteratorNormalCompletion49 = true;
-        var _didIteratorError49 = false;
-        var _iteratorError49 = undefined;
+        var _iteratorNormalCompletion50 = true;
+        var _didIteratorError50 = false;
+        var _iteratorError50 = undefined;
 
         try {
-            for (var _iterator49 = this.dragChildren.entries()[Symbol.iterator](), _step49; !(_iteratorNormalCompletion49 = (_step49 = _iterator49.next()).done); _iteratorNormalCompletion49 = true) {
-                var _step49$value = _slicedToArray(_step49.value, 2),
-                    index = _step49$value[0],
-                    _element5 = _step49$value[1];
+            for (var _iterator50 = this.dragChildren.entries()[Symbol.iterator](), _step50; !(_iteratorNormalCompletion50 = (_step50 = _iterator50.next()).done); _iteratorNormalCompletion50 = true) {
+                var _step50$value = _slicedToArray(_step50.value, 2),
+                    index = _step50$value[0],
+                    _element4 = _step50$value[1];
 
-                Polymer.dom(_element5).setAttribute('data-index', index);
+                Polymer.dom(_element4).setAttribute('data-index', index);
             }
         } catch (err) {
-            _didIteratorError49 = true;
-            _iteratorError49 = err;
+            _didIteratorError50 = true;
+            _iteratorError50 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion49 && _iterator49.return) {
-                    _iterator49.return();
+                if (!_iteratorNormalCompletion50 && _iterator50.return) {
+                    _iterator50.return();
                 }
             } finally {
-                if (_didIteratorError49) {
-                    throw _iteratorError49;
+                if (_didIteratorError50) {
+                    throw _iteratorError50;
                 }
             }
         }
@@ -25807,8 +26810,8 @@ Polymer({
         this.fire('dragged-out', { dropElement: this });
     },
 
-    _handleRemove: function _handleRemove(_ref18) {
-        var index = _ref18.target.dataset.index;
+    _handleRemove: function _handleRemove(_ref17) {
+        var index = _ref17.target.dataset.index;
 
         var element = this.dragChildren[index];
         this.removeDraggable(element);
@@ -25867,15 +26870,15 @@ Polymer({
             this.setTaskDependents(dropSections);
 
             if (dragSections.length > 0) {
-                var _iteratorNormalCompletion50 = true;
-                var _didIteratorError50 = false;
-                var _iteratorError50 = undefined;
+                var _iteratorNormalCompletion51 = true;
+                var _didIteratorError51 = false;
+                var _iteratorError51 = undefined;
 
                 try {
-                    for (var _iterator50 = dragSections.entries()[Symbol.iterator](), _step50; !(_iteratorNormalCompletion50 = (_step50 = _iterator50.next()).done); _iteratorNormalCompletion50 = true) {
-                        var _step50$value = _slicedToArray(_step50.value, 2),
-                            index = _step50$value[0],
-                            section = _step50$value[1];
+                    for (var _iterator51 = dragSections.entries()[Symbol.iterator](), _step51; !(_iteratorNormalCompletion51 = (_step51 = _iterator51.next()).done); _iteratorNormalCompletion51 = true) {
+                        var _step51$value = _slicedToArray(_step51.value, 2),
+                            index = _step51$value[0],
+                            section = _step51$value[1];
 
                         Polymer.dom(section).setAttribute('active-section', 'false');
                         if (section.name) {
@@ -25883,16 +26886,16 @@ Polymer({
                         }
                     }
                 } catch (err) {
-                    _didIteratorError50 = true;
-                    _iteratorError50 = err;
+                    _didIteratorError51 = true;
+                    _iteratorError51 = err;
                 } finally {
                     try {
-                        if (!_iteratorNormalCompletion50 && _iterator50.return) {
-                            _iterator50.return();
+                        if (!_iteratorNormalCompletion51 && _iterator51.return) {
+                            _iterator51.return();
                         }
                     } finally {
-                        if (_didIteratorError50) {
-                            throw _iteratorError50;
+                        if (_didIteratorError51) {
+                            throw _iteratorError51;
                         }
                     }
                 }
@@ -25902,15 +26905,15 @@ Polymer({
                 this._sectionsLinked = dragSections.length === dropSections.length;
             }
 
-            var _iteratorNormalCompletion51 = true;
-            var _didIteratorError51 = false;
-            var _iteratorError51 = undefined;
+            var _iteratorNormalCompletion52 = true;
+            var _didIteratorError52 = false;
+            var _iteratorError52 = undefined;
 
             try {
-                for (var _iterator51 = dropSections.entries()[Symbol.iterator](), _step51; !(_iteratorNormalCompletion51 = (_step51 = _iterator51.next()).done); _iteratorNormalCompletion51 = true) {
-                    var _step51$value = _slicedToArray(_step51.value, 2),
-                        index = _step51$value[0],
-                        section = _step51$value[1];
+                for (var _iterator52 = dropSections.entries()[Symbol.iterator](), _step52; !(_iteratorNormalCompletion52 = (_step52 = _iterator52.next()).done); _iteratorNormalCompletion52 = true) {
+                    var _step52$value = _slicedToArray(_step52.value, 2),
+                        index = _step52$value[0],
+                        section = _step52$value[1];
 
                     Polymer.dom(section).setAttribute('active-section', 'false');
                     if (section.name) {
@@ -25918,16 +26921,16 @@ Polymer({
                     }
                 }
             } catch (err) {
-                _didIteratorError51 = true;
-                _iteratorError51 = err;
+                _didIteratorError52 = true;
+                _iteratorError52 = err;
             } finally {
                 try {
-                    if (!_iteratorNormalCompletion51 && _iterator51.return) {
-                        _iterator51.return();
+                    if (!_iteratorNormalCompletion52 && _iterator52.return) {
+                        _iterator52.return();
                     }
                 } finally {
-                    if (_didIteratorError51) {
-                        throw _iteratorError51;
+                    if (_didIteratorError52) {
+                        throw _iteratorError52;
                     }
                 }
             }
@@ -25954,56 +26957,56 @@ Polymer({
         };
 
         var taskGotoData = { drag: null, drop: null, unresolved: [] };
-        var _iteratorNormalCompletion52 = true;
-        var _didIteratorError52 = false;
-        var _iteratorError52 = undefined;
+        var _iteratorNormalCompletion53 = true;
+        var _didIteratorError53 = false;
+        var _iteratorError53 = undefined;
 
         try {
-            for (var _iterator52 = gotoData[Symbol.iterator](), _step52; !(_iteratorNormalCompletion52 = (_step52 = _iterator52.next()).done); _iteratorNormalCompletion52 = true) {
-                var _step52$value = _step52.value,
-                    _element6 = _step52$value.element,
-                    gotos = _step52$value.gotos;
+            for (var _iterator53 = gotoData[Symbol.iterator](), _step53; !(_iteratorNormalCompletion53 = (_step53 = _iterator53.next()).done); _iteratorNormalCompletion53 = true) {
+                var _step53$value = _step53.value,
+                    _element5 = _step53$value.element,
+                    gotos = _step53$value.gotos;
 
-                var elementData = { element: _element6, drag: null, drop: null, unresolved: [] };
-                var _iteratorNormalCompletion53 = true;
-                var _didIteratorError53 = false;
-                var _iteratorError53 = undefined;
+                var elementData = { element: _element5, drag: null, drop: null, unresolved: [] };
+                var _iteratorNormalCompletion54 = true;
+                var _didIteratorError54 = false;
+                var _iteratorError54 = undefined;
 
                 try {
-                    for (var _iterator53 = gotos[Symbol.iterator](), _step53; !(_iteratorNormalCompletion53 = (_step53 = _iterator53.next()).done); _iteratorNormalCompletion53 = true) {
-                        var _goto2 = _step53.value;
+                    for (var _iterator54 = gotos[Symbol.iterator](), _step54; !(_iteratorNormalCompletion54 = (_step54 = _iterator54.next()).done); _iteratorNormalCompletion54 = true) {
+                        var _goto2 = _step54.value;
 
                         var value = this.getGlobalPropValue(_goto2);
                         var gotoName = typeof value === 'string' || value === null ? value : _goto2;
 
                         if (gotoName === null) {
-                            this.addDebugWarn('goto', '\'' + _goto2 + '\' does not exist yet', _element6);
+                            this.addDebugWarn('goto', '\'' + _goto2 + '\' does not exist yet', _element5);
                         } else if (gotoName === 'next' || gotoName === 'prev') {
                             if (data.drag.gotoIndexes[gotoName + '-drag'] === null) {
                                 if (this._sectionsLinked) {
-                                    this.addDebugWarn('goto', '\'' + _goto2 + '\' unused because ' + (gotoName === 'prev' ? 'previous' : 'next') + ' drag-drop linked sections do not exist', _element6);
+                                    this.addDebugWarn('goto', '\'' + _goto2 + '\' unused because ' + (gotoName === 'prev' ? 'previous' : 'next') + ' drag-drop linked sections do not exist', _element5);
                                 } else {
-                                    this.addDebugWarn('goto', '\'' + _goto2 + '\' unused because ' + (gotoName === 'prev' ? 'previous' : 'next') + ' drag section does not exist', _element6);
+                                    this.addDebugWarn('goto', '\'' + _goto2 + '\' unused because ' + (gotoName === 'prev' ? 'previous' : 'next') + ' drag section does not exist', _element5);
                                 }
                             } else {
                                 this._resolveGotoData(_goto2, gotoName + '-drag', 'drag', elementData);
                             }
                             if (!this._sectionsLinked) {
                                 if (data.drop.gotoIndexes[gotoName + '-drop'] === null) {
-                                    this.addDebugWarn('goto', '\'' + _goto2 + '\' unused because ' + (gotoName === 'prev' ? 'previous' : 'next') + ' drop section does not exist', _element6);
+                                    this.addDebugWarn('goto', '\'' + _goto2 + '\' unused because ' + (gotoName === 'prev' ? 'previous' : 'next') + ' drop section does not exist', _element5);
                                 } else {
                                     this._resolveGotoData(_goto2, gotoName + '-drop', 'drop', elementData);
                                 }
                             }
                         } else if (data.drag.gotoIndexes.hasOwnProperty(gotoName)) {
                             if (data.drag.gotoIndexes[gotoName] === null) {
-                                this.addDebugWarn('goto', '\'' + _goto2 + '\' unused because ' + (gotoName.startsWith('prev') ? 'previous' : 'next') + ' drag section does not exist', _element6);
+                                this.addDebugWarn('goto', '\'' + _goto2 + '\' unused because ' + (gotoName.startsWith('prev') ? 'previous' : 'next') + ' drag section does not exist', _element5);
                             } else {
                                 this._resolveGotoData(_goto2, gotoName, 'drag', elementData);
                             }
                         } else if (data.drop.gotoIndexes.hasOwnProperty(gotoName)) {
                             if (data.drop.gotoIndexes[gotoName] === null) {
-                                this.addDebugWarn('goto', '\'' + _goto2 + '\' unused because ' + (gotoName.startsWith('prev') ? 'previous' : 'next') + ' drop section does not exist', _element6);
+                                this.addDebugWarn('goto', '\'' + _goto2 + '\' unused because ' + (gotoName.startsWith('prev') ? 'previous' : 'next') + ' drop section does not exist', _element5);
                             } else {
                                 this._resolveGotoData(_goto2, gotoName, 'drop', elementData);
                             }
@@ -26012,16 +27015,16 @@ Polymer({
                         }
                     }
                 } catch (err) {
-                    _didIteratorError53 = true;
-                    _iteratorError53 = err;
+                    _didIteratorError54 = true;
+                    _iteratorError54 = err;
                 } finally {
                     try {
-                        if (!_iteratorNormalCompletion53 && _iterator53.return) {
-                            _iterator53.return();
+                        if (!_iteratorNormalCompletion54 && _iterator54.return) {
+                            _iterator54.return();
                         }
                     } finally {
-                        if (_didIteratorError53) {
-                            throw _iteratorError53;
+                        if (_didIteratorError54) {
+                            throw _iteratorError54;
                         }
                     }
                 }
@@ -26033,20 +27036,20 @@ Polymer({
                 }
 
                 if (elementData.unresolved.length > 0) {
-                    taskGotoData.unresolved.push({ element: _element6, gotos: elementData.unresolved });
+                    taskGotoData.unresolved.push({ element: _element5, gotos: elementData.unresolved });
                 }
             }
         } catch (err) {
-            _didIteratorError52 = true;
-            _iteratorError52 = err;
+            _didIteratorError53 = true;
+            _iteratorError53 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion52 && _iterator52.return) {
-                    _iterator52.return();
+                if (!_iteratorNormalCompletion53 && _iterator53.return) {
+                    _iterator53.return();
                 }
             } finally {
-                if (_didIteratorError52) {
-                    throw _iteratorError52;
+                if (_didIteratorError53) {
+                    throw _iteratorError53;
                 }
             }
         }
@@ -26127,10 +27130,10 @@ Polymer({
     },
 
 
-    _handleMenuTap: function _handleMenuTap(_ref19) {
-        var _ref19$currentTarget$ = _ref19.currentTarget.dataset,
-            type = _ref19$currentTarget$.type,
-            index = _ref19$currentTarget$.index;
+    _handleMenuTap: function _handleMenuTap(_ref18) {
+        var _ref18$currentTarget$ = _ref18.currentTarget.dataset,
+            type = _ref18$currentTarget$.type,
+            index = _ref18$currentTarget$.index;
 
         this._updateSection(type, Number(index));
         if (this._sectionsLinked) {
@@ -26138,14 +27141,14 @@ Polymer({
         }
     },
 
-    _handleDrag: function _handleDrag(_ref20) {
-        var dragElement = _ref20.detail.dragElement;
+    _handleDrag: function _handleDrag(_ref19) {
+        var dragElement = _ref19.detail.dragElement;
 
         this._draggedElement = dragElement;
     },
 
-    _handleDraggedOver: function _handleDraggedOver(_ref21) {
-        var dropElement = _ref21.detail.dropElement;
+    _handleDraggedOver: function _handleDraggedOver(_ref20) {
+        var dropElement = _ref20.detail.dropElement;
 
         if (!dropElement.checkIfAllowed(this._draggedElement)) {
             Polymer.dom(this._draggedElement).classList.add('not-allowed');
@@ -26153,15 +27156,15 @@ Polymer({
         }
     },
 
-    _handleDraggedOut: function _handleDraggedOut(_ref22) {
-        var dropElement = _ref22.detail.dropElement;
+    _handleDraggedOut: function _handleDraggedOut(_ref21) {
+        var dropElement = _ref21.detail.dropElement;
 
         Polymer.dom(this._draggedElement).classList.remove('not-allowed');
         Polymer.dom(dropElement).classList.remove('not-allowed');
     },
 
-    _handleDrop: function _handleDrop(_ref23) {
-        var dropElement = _ref23.detail.dropElement;
+    _handleDrop: function _handleDrop(_ref22) {
+        var dropElement = _ref22.detail.dropElement;
 
         Polymer.dom(this._draggedElement).classList.remove('not-allowed');
         Polymer.dom(dropElement).classList.remove('not-allowed');
@@ -26198,10 +27201,10 @@ Polymer({
         }
     },
 
-    _handleRemove: function _handleRemove(_ref24) {
-        var _ref24$detail = _ref24.detail,
-            dragElement = _ref24$detail.dragElement,
-            dropElement = _ref24$detail.dropElement;
+    _handleRemove: function _handleRemove(_ref23) {
+        var _ref23$detail = _ref23.detail,
+            dragElement = _ref23$detail.dragElement,
+            dropElement = _ref23$detail.dropElement;
 
         var index = this._dragData.sections.indexOf(dragElement.dragSectionParent);
         this._updateSection('drag', index);
@@ -26295,35 +27298,35 @@ Polymer({
     },
 
     _initiateChildren: function _initiateChildren() {
-        var _iteratorNormalCompletion54 = true;
-        var _didIteratorError54 = false;
-        var _iteratorError54 = undefined;
+        var _iteratorNormalCompletion55 = true;
+        var _didIteratorError55 = false;
+        var _iteratorError55 = undefined;
 
         try {
-            for (var _iterator54 = this._questions[Symbol.iterator](), _step54; !(_iteratorNormalCompletion54 = (_step54 = _iterator54.next()).done); _iteratorNormalCompletion54 = true) {
-                var _element7 = _step54.value;
+            for (var _iterator55 = this._questions[Symbol.iterator](), _step55; !(_iteratorNormalCompletion55 = (_step55 = _iterator55.next()).done); _iteratorNormalCompletion55 = true) {
+                var _element6 = _step55.value;
 
-                _element7.allowMultiple = _element7.allowMultiple || this.allowMultiple;
-                _element7.required = _element7.required || this.required;
+                _element6.allowMultiple = _element6.allowMultiple || this.allowMultiple;
+                _element6.required = _element6.required || this.required;
             }
         } catch (err) {
-            _didIteratorError54 = true;
-            _iteratorError54 = err;
+            _didIteratorError55 = true;
+            _iteratorError55 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion54 && _iterator54.return) {
-                    _iterator54.return();
+                if (!_iteratorNormalCompletion55 && _iterator55.return) {
+                    _iterator55.return();
                 }
             } finally {
-                if (_didIteratorError54) {
-                    throw _iteratorError54;
+                if (_didIteratorError55) {
+                    throw _iteratorError55;
                 }
             }
         }
     },
 
-    _handleReset: function _handleReset(_ref25) {
-        var detail = _ref25.detail;
+    _handleReset: function _handleReset(_ref24) {
+        var detail = _ref24.detail;
 
         detail.sectionElement = this;
     }
@@ -26369,58 +27372,15 @@ Polymer({
         if (track) {
             this.fire('reset', { questionElement: this });
         }
-        var _iteratorNormalCompletion55 = true;
-        var _didIteratorError55 = false;
-        var _iteratorError55 = undefined;
-
-        try {
-            for (var _iterator55 = this._options[Symbol.iterator](), _step55; !(_iteratorNormalCompletion55 = (_step55 = _iterator55.next()).done); _iteratorNormalCompletion55 = true) {
-                var _element8 = _step55.value;
-
-                _element8.reset();
-            }
-        } catch (err) {
-            _didIteratorError55 = true;
-            _iteratorError55 = err;
-        } finally {
-            try {
-                if (!_iteratorNormalCompletion55 && _iterator55.return) {
-                    _iterator55.return();
-                }
-            } finally {
-                if (_didIteratorError55) {
-                    throw _iteratorError55;
-                }
-            }
-        }
-    },
-
-    get disableNext() {
-        return this.required && !this.taskDone;
-    },
-
-    _initiateChildren: function _initiateChildren() {
-        var id = 'mc-' + this.getGlobalUniqueId();
         var _iteratorNormalCompletion56 = true;
         var _didIteratorError56 = false;
         var _iteratorError56 = undefined;
 
         try {
-            for (var _iterator56 = this._options.entries()[Symbol.iterator](), _step56; !(_iteratorNormalCompletion56 = (_step56 = _iterator56.next()).done); _iteratorNormalCompletion56 = true) {
-                var _step56$value = _slicedToArray(_step56.value, 2),
-                    index = _step56$value[0],
-                    _element9 = _step56$value[1];
+            for (var _iterator56 = this._options[Symbol.iterator](), _step56; !(_iteratorNormalCompletion56 = (_step56 = _iterator56.next()).done); _iteratorNormalCompletion56 = true) {
+                var _element7 = _step56.value;
 
-                Object.assign(_element9, { multiple: this.allowMultiple, questionId: id, index: index });
-
-                if (_element9.checked) {
-                    if (!this.allowMultiple && this._selectedOptions.length > 0) {
-                        this.addDebugWarn(null, 'Only one <inkd-mc-option> can have the \'checked\' attribute by default (to allow multiple selection, use the flag \'allow-multiple\')');
-                        Object.assign(_element9, { checked: false, initialChecked: false });
-                    } else {
-                        this.push('_selectedOptions', _element9);
-                    }
-                }
+                _element7.reset();
             }
         } catch (err) {
             _didIteratorError56 = true;
@@ -26433,6 +27393,49 @@ Polymer({
             } finally {
                 if (_didIteratorError56) {
                     throw _iteratorError56;
+                }
+            }
+        }
+    },
+
+    get disableNext() {
+        return this.required && !this.taskDone;
+    },
+
+    _initiateChildren: function _initiateChildren() {
+        var id = 'mc-' + this.getGlobalUniqueId();
+        var _iteratorNormalCompletion57 = true;
+        var _didIteratorError57 = false;
+        var _iteratorError57 = undefined;
+
+        try {
+            for (var _iterator57 = this._options.entries()[Symbol.iterator](), _step57; !(_iteratorNormalCompletion57 = (_step57 = _iterator57.next()).done); _iteratorNormalCompletion57 = true) {
+                var _step57$value = _slicedToArray(_step57.value, 2),
+                    index = _step57$value[0],
+                    _element8 = _step57$value[1];
+
+                Object.assign(_element8, { multiple: this.allowMultiple, questionId: id, index: index });
+
+                if (_element8.checked) {
+                    if (!this.allowMultiple && this._selectedOptions.length > 0) {
+                        this.addDebugWarn(null, 'Only one <inkd-mc-option> can have the \'checked\' attribute by default (to allow multiple selection, use the flag \'allow-multiple\')');
+                        Object.assign(_element8, { checked: false, initialChecked: false });
+                    } else {
+                        this.push('_selectedOptions', _element8);
+                    }
+                }
+            }
+        } catch (err) {
+            _didIteratorError57 = true;
+            _iteratorError57 = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion57 && _iterator57.return) {
+                    _iterator57.return();
+                }
+            } finally {
+                if (_didIteratorError57) {
+                    throw _iteratorError57;
                 }
             }
         }
@@ -26510,27 +27513,27 @@ Polymer({
         this._multimediaElements = Polymer.dom(this).querySelectorAll('inkd-mc-multimedia');
 
         this.multimedia = '';
-        var _iteratorNormalCompletion57 = true;
-        var _didIteratorError57 = false;
-        var _iteratorError57 = undefined;
+        var _iteratorNormalCompletion58 = true;
+        var _didIteratorError58 = false;
+        var _iteratorError58 = undefined;
 
         try {
-            for (var _iterator57 = this._multimediaElements[Symbol.iterator](), _step57; !(_iteratorNormalCompletion57 = (_step57 = _iterator57.next()).done); _iteratorNormalCompletion57 = true) {
-                var _element10 = _step57.value;
+            for (var _iterator58 = this._multimediaElements[Symbol.iterator](), _step58; !(_iteratorNormalCompletion58 = (_step58 = _iterator58.next()).done); _iteratorNormalCompletion58 = true) {
+                var _element9 = _step58.value;
 
-                this.multimedia += _element10.outerHTML;
+                this.multimedia += _element9.outerHTML;
             }
         } catch (err) {
-            _didIteratorError57 = true;
-            _iteratorError57 = err;
+            _didIteratorError58 = true;
+            _iteratorError58 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion57 && _iterator57.return) {
-                    _iterator57.return();
+                if (!_iteratorNormalCompletion58 && _iterator58.return) {
+                    _iterator58.return();
                 }
             } finally {
-                if (_didIteratorError57) {
-                    throw _iteratorError57;
+                if (_didIteratorError58) {
+                    throw _iteratorError58;
                 }
             }
         }
@@ -26545,27 +27548,27 @@ Polymer({
     },
 
     _removeMultimedia: function _removeMultimedia() {
-        var _iteratorNormalCompletion58 = true;
-        var _didIteratorError58 = false;
-        var _iteratorError58 = undefined;
+        var _iteratorNormalCompletion59 = true;
+        var _didIteratorError59 = false;
+        var _iteratorError59 = undefined;
 
         try {
-            for (var _iterator58 = this._multimediaElements[Symbol.iterator](), _step58; !(_iteratorNormalCompletion58 = (_step58 = _iterator58.next()).done); _iteratorNormalCompletion58 = true) {
-                var _element11 = _step58.value;
+            for (var _iterator59 = this._multimediaElements[Symbol.iterator](), _step59; !(_iteratorNormalCompletion59 = (_step59 = _iterator59.next()).done); _iteratorNormalCompletion59 = true) {
+                var _element10 = _step59.value;
 
-                _element11.domRemove();
+                _element10.domRemove();
             }
         } catch (err) {
-            _didIteratorError58 = true;
-            _iteratorError58 = err;
+            _didIteratorError59 = true;
+            _iteratorError59 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion58 && _iterator58.return) {
-                    _iterator58.return();
+                if (!_iteratorNormalCompletion59 && _iterator59.return) {
+                    _iterator59.return();
                 }
             } finally {
-                if (_didIteratorError58) {
-                    throw _iteratorError58;
+                if (_didIteratorError59) {
+                    throw _iteratorError59;
                 }
             }
         }
@@ -26619,32 +27622,32 @@ Polymer({
         } else {
             this.setTaskDependents(this._sections);
 
-            var _iteratorNormalCompletion59 = true;
-            var _didIteratorError59 = false;
-            var _iteratorError59 = undefined;
+            var _iteratorNormalCompletion60 = true;
+            var _didIteratorError60 = false;
+            var _iteratorError60 = undefined;
 
             try {
-                for (var _iterator59 = this._sections.entries()[Symbol.iterator](), _step59; !(_iteratorNormalCompletion59 = (_step59 = _iterator59.next()).done); _iteratorNormalCompletion59 = true) {
-                    var _step59$value = _slicedToArray(_step59.value, 2),
-                        index = _step59$value[0],
-                        _element12 = _step59$value[1];
+                for (var _iterator60 = this._sections.entries()[Symbol.iterator](), _step60; !(_iteratorNormalCompletion60 = (_step60 = _iterator60.next()).done); _iteratorNormalCompletion60 = true) {
+                    var _step60$value = _slicedToArray(_step60.value, 2),
+                        index = _step60$value[0],
+                        _element11 = _step60$value[1];
 
-                    Polymer.dom(_element12).setAttribute('active-section', 'false');
-                    if (_element12.name) {
-                        this._gotoIndexes[_element12.name] = index;
+                    Polymer.dom(_element11).setAttribute('active-section', 'false');
+                    if (_element11.name) {
+                        this._gotoIndexes[_element11.name] = index;
                     }
                 }
             } catch (err) {
-                _didIteratorError59 = true;
-                _iteratorError59 = err;
+                _didIteratorError60 = true;
+                _iteratorError60 = err;
             } finally {
                 try {
-                    if (!_iteratorNormalCompletion59 && _iterator59.return) {
-                        _iterator59.return();
+                    if (!_iteratorNormalCompletion60 && _iterator60.return) {
+                        _iterator60.return();
                     }
                 } finally {
-                    if (_didIteratorError59) {
-                        throw _iteratorError59;
+                    if (_didIteratorError60) {
+                        throw _iteratorError60;
                     }
                 }
             }
@@ -26665,39 +27668,39 @@ Polymer({
 
     handleTaskGoto: function handleTaskGoto(gotoData) {
         var taskGotoData = { section: null, unresolved: [] };
-        var _iteratorNormalCompletion60 = true;
-        var _didIteratorError60 = false;
-        var _iteratorError60 = undefined;
+        var _iteratorNormalCompletion61 = true;
+        var _didIteratorError61 = false;
+        var _iteratorError61 = undefined;
 
         try {
-            for (var _iterator60 = gotoData[Symbol.iterator](), _step60; !(_iteratorNormalCompletion60 = (_step60 = _iterator60.next()).done); _iteratorNormalCompletion60 = true) {
-                var _step60$value = _step60.value,
-                    _element13 = _step60$value.element,
-                    gotos = _step60$value.gotos;
+            for (var _iterator61 = gotoData[Symbol.iterator](), _step61; !(_iteratorNormalCompletion61 = (_step61 = _iterator61.next()).done); _iteratorNormalCompletion61 = true) {
+                var _step61$value = _step61.value,
+                    _element12 = _step61$value.element,
+                    gotos = _step61$value.gotos;
 
                 var elementData = { section: null, unresolved: [] };
-                var _iteratorNormalCompletion61 = true;
-                var _didIteratorError61 = false;
-                var _iteratorError61 = undefined;
+                var _iteratorNormalCompletion62 = true;
+                var _didIteratorError62 = false;
+                var _iteratorError62 = undefined;
 
                 try {
-                    for (var _iterator61 = gotos[Symbol.iterator](), _step61; !(_iteratorNormalCompletion61 = (_step61 = _iterator61.next()).done); _iteratorNormalCompletion61 = true) {
-                        var _goto3 = _step61.value;
+                    for (var _iterator62 = gotos[Symbol.iterator](), _step62; !(_iteratorNormalCompletion62 = (_step62 = _iterator62.next()).done); _iteratorNormalCompletion62 = true) {
+                        var _goto3 = _step62.value;
 
                         var value = this.getGlobalPropValue(_goto3);
                         var gotoName = typeof value === 'string' || value === null ? value : _goto3;
 
                         if (gotoName === null) {
-                            this.addDebugWarn('goto', '\'' + _goto3 + '\' does not exist yet', _element13);
+                            this.addDebugWarn('goto', '\'' + _goto3 + '\' does not exist yet', _element12);
                         } else if (this._gotoIndexes.hasOwnProperty(gotoName)) {
                             if (this._gotoIndexes[gotoName] === null) {
-                                this.addDebugWarn('goto', '\'' + _goto3 + '\' unused because ' + (gotoName === 'prev' ? 'previous' : 'next') + ' multiple choice section does not exist', _element13);
+                                this.addDebugWarn('goto', '\'' + _goto3 + '\' unused because ' + (gotoName === 'prev' ? 'previous' : 'next') + ' multiple choice section does not exist', _element12);
                             } else {
                                 if (elementData.section === null) {
                                     elementData.section = gotoName;
                                     elementData.sectionGoto = _goto3;
                                 } else {
-                                    this.addDebugWarn('goto', '\'' + _goto3 + '\' unused because \'' + elementData.sectionGoto + '\' already refers to a section or question in the same <inkd-mc>', _element13);
+                                    this.addDebugWarn('goto', '\'' + _goto3 + '\' unused because \'' + elementData.sectionGoto + '\' already refers to a section or question in the same <inkd-mc>', _element12);
                                 }
                             }
                         } else {
@@ -26705,16 +27708,16 @@ Polymer({
                         }
                     }
                 } catch (err) {
-                    _didIteratorError61 = true;
-                    _iteratorError61 = err;
+                    _didIteratorError62 = true;
+                    _iteratorError62 = err;
                 } finally {
                     try {
-                        if (!_iteratorNormalCompletion61 && _iterator61.return) {
-                            _iterator61.return();
+                        if (!_iteratorNormalCompletion62 && _iterator62.return) {
+                            _iterator62.return();
                         }
                     } finally {
-                        if (_didIteratorError61) {
-                            throw _iteratorError61;
+                        if (_didIteratorError62) {
+                            throw _iteratorError62;
                         }
                     }
                 }
@@ -26723,20 +27726,20 @@ Polymer({
                     taskGotoData.section = elementData.section;
                 }
                 if (elementData.unresolved.length > 0) {
-                    taskGotoData.unresolved.push({ element: _element13, gotos: elementData.unresolved });
+                    taskGotoData.unresolved.push({ element: _element12, gotos: elementData.unresolved });
                 }
             }
         } catch (err) {
-            _didIteratorError60 = true;
-            _iteratorError60 = err;
+            _didIteratorError61 = true;
+            _iteratorError61 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion60 && _iterator60.return) {
-                    _iterator60.return();
+                if (!_iteratorNormalCompletion61 && _iterator61.return) {
+                    _iterator61.return();
                 }
             } finally {
-                if (_didIteratorError60) {
-                    throw _iteratorError60;
+                if (_didIteratorError61) {
+                    throw _iteratorError61;
                 }
             }
         }
@@ -26862,21 +27865,13 @@ Polymer({
     is: 'inkd-list',
 
     properties: {
-        data: Array,
-        subindex: {
-            type: String,
-            value: ''
-        }
+        data: Array
     },
 
     behaviors: [InkdBehavior],
 
     _getLinkClasses: function _getLinkClasses(active, visited) {
         return 'link ' + (active ? 'active' : '') + ' ' + (visited ? 'visited' : '');
-    },
-
-    _getNumber: function _getNumber(index) {
-        return '' + this.subindex + (index + 1) + '.';
     },
 
     _handleLinkTap: function _handleLinkTap(event) {
@@ -26905,156 +27900,232 @@ Polymer({
 
     properties: {
         cyoa: String,
-        data: String
+        data: String,
+        auto: Boolean
     },
 
     behaviors: [InkdBehavior],
 
-    listeners: {},
-
     ready: function ready() {
-        this.data = this.data ? this.data.match(/(?:\\,|[^,])+/g) : [];
-        var _iteratorNormalCompletion62 = true;
-        var _didIteratorError62 = false;
-        var _iteratorError62 = undefined;
-
-        try {
-            for (var _iterator62 = this.data.entries()[Symbol.iterator](), _step62; !(_iteratorNormalCompletion62 = (_step62 = _iterator62.next()).done); _iteratorNormalCompletion62 = true) {
-                var _step62$value = _slicedToArray(_step62.value, 2),
-                    index = _step62$value[0],
-                    datum = _step62$value[1];
-
-                var match = datum.match(/((?:[\s\d.])+):((?:\\:|[^:])+)/);
-                if (match) {
-                    this.data[index] = {
-                        levels: this._getOutlineLevels(match[1]),
-                        text: match[2].trim().replace(/\\([,:])/g, '$1'),
-                        element: this
-                    };
-                } else {
-                    this.addDebugError('data', '\'' + datum + '\' is not valid outline data (has to be in the form \'outline-number: topic\')');
-                }
-            }
-        } catch (err) {
-            _didIteratorError62 = true;
-            _iteratorError62 = err;
-        } finally {
-            try {
-                if (!_iteratorNormalCompletion62 && _iterator62.return) {
-                    _iterator62.return();
-                }
-            } finally {
-                if (_didIteratorError62) {
-                    throw _iteratorError62;
-                }
-            }
-        }
-
+        this._initiateData();
         this._listData = [];
-
         this.onGlobalAttach('_initiate');
     },
 
+    _initiateData: function _initiateData() {
+        if (this.auto && this.data) {
+            this.addDebugWarn('data', 'Outline data \'' + this.data + '\' unused because \'auto\' flag is used');
+            this.data = [];
+        } else {
+            this.data = this.data ? this.data.match(/(?:\\,|[^,])+/g) : [];
+            var _iteratorNormalCompletion63 = true;
+            var _didIteratorError63 = false;
+            var _iteratorError63 = undefined;
+
+            try {
+                for (var _iterator63 = this.data.entries()[Symbol.iterator](), _step63; !(_iteratorNormalCompletion63 = (_step63 = _iterator63.next()).done); _iteratorNormalCompletion63 = true) {
+                    var _step63$value = _slicedToArray(_step63.value, 2),
+                        index = _step63$value[0],
+                        datum = _step63$value[1];
+
+                    var match = datum.match(/((?:[\s\d.])+):((?:\\:|[^:])+)/);
+                    if (match) {
+                        this.data[index] = {
+                            levels: this._getOutlineLevels(match[1]),
+                            text: match[2].trim().replace(/\\([,:])/g, '$1'),
+                            element: this
+                        };
+                    } else {
+                        this.addDebugError('data', '\'' + datum + '\' is not valid outline data (has to be in the form \'outline-number: topic\')');
+                    }
+                }
+            } catch (err) {
+                _didIteratorError63 = true;
+                _iteratorError63 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion63 && _iterator63.return) {
+                        _iterator63.return();
+                    }
+                } finally {
+                    if (_didIteratorError63) {
+                        throw _iteratorError63;
+                    }
+                }
+            }
+        }
+    },
+
     _initiate: function _initiate() {
-        this.cyoa = this.cyoa.replace(/\s/g, '').split(',');
         this.nodeLevelMap = {};
-        var _iteratorNormalCompletion63 = true;
-        var _didIteratorError63 = false;
-        var _iteratorError63 = undefined;
+        var cyoas = this._getCyoaElements();
+        var nextLevelNumber = {};
 
-        try {
-            for (var _iterator63 = this.cyoa[Symbol.iterator](), _step63; !(_iteratorNormalCompletion63 = (_step63 = _iterator63.next()).done); _iteratorNormalCompletion63 = true) {
-                var cyoaName = _step63.value;
+        while (cyoas.length > 0) {
+            var unresolved = [];
+            var _iteratorNormalCompletion64 = true;
+            var _didIteratorError64 = false;
+            var _iteratorError64 = undefined;
 
-                var cyoaElement = this.getGlobalNameElement(cyoaName, 'inkd-cyoa', 'cyoa');
-                if (cyoaElement !== undefined) {
-                    var data = [];
-                    var _iteratorNormalCompletion64 = true;
-                    var _didIteratorError64 = false;
-                    var _iteratorError64 = undefined;
+            try {
+                for (var _iterator64 = cyoas[Symbol.iterator](), _step64; !(_iteratorNormalCompletion64 = (_step64 = _iterator64.next()).done); _iteratorNormalCompletion64 = true) {
+                    var _element13 = _step64.value;
+
+                    var data = [],
+                        parentLevels = void 0;
+                    if (this.auto) {
+                        parentLevels = _element13.parent ? this.nodeLevelMap[_element13.parent.name] : [];
+                        if (parentLevels) {
+                            var key = parentLevels.join('.');
+                            nextLevelNumber[key] = nextLevelNumber[key] || 1;;
+                        } else {
+                            unresolved.push(_element13);
+                            break;
+                        }
+                    }
+
+                    var nodes = _element13.tagName === 'INKD-CYOA' ? _element13.nodes : _element13.scenes;
+                    var _iteratorNormalCompletion65 = true;
+                    var _didIteratorError65 = false;
+                    var _iteratorError65 = undefined;
 
                     try {
-                        for (var _iterator64 = cyoaElement.nodes[Symbol.iterator](), _step64; !(_iteratorNormalCompletion64 = (_step64 = _iterator64.next()).done); _iteratorNormalCompletion64 = true) {
-                            var node = _step64.value;
+                        for (var _iterator65 = nodes[Symbol.iterator](), _step65; !(_iteratorNormalCompletion65 = (_step65 = _iterator65.next()).done); _iteratorNormalCompletion65 = true) {
+                            var node = _step65.value;
 
-                            if (node.number) {
-                                var name = node.name,
-                                    topic = node.topic,
-                                    number = node.number;
-
-                                var levels = this._getOutlineLevels(number);
-                                data.push({ element: node, levels: levels, text: topic.trim(),
-                                    link: {
-                                        event: 'goto',
-                                        detail: { gotoData: [{ element: this, gotos: [name] }] }
-                                    }
-                                });
-                                this.nodeLevelMap[name] = levels;
+                            var levels = void 0;
+                            if (this.auto) {
+                                var _key6 = parentLevels.join('.');
+                                levels = parentLevels.concat(nextLevelNumber[_key6]);
+                                nextLevelNumber[_key6]++;
+                            } else {
+                                levels = this._getOutlineLevels(node.number);
                             }
+                            data.push(this._getNodeData(node, levels));
                         }
                     } catch (err) {
-                        _didIteratorError64 = true;
-                        _iteratorError64 = err;
+                        _didIteratorError65 = true;
+                        _iteratorError65 = err;
                     } finally {
                         try {
-                            if (!_iteratorNormalCompletion64 && _iterator64.return) {
-                                _iterator64.return();
+                            if (!_iteratorNormalCompletion65 && _iterator65.return) {
+                                _iterator65.return();
                             }
                         } finally {
-                            if (_didIteratorError64) {
-                                throw _iteratorError64;
+                            if (_didIteratorError65) {
+                                throw _iteratorError65;
                             }
                         }
                     }
 
-                    this._addListData(data, 'number');
-                    this.onGlobalChange(cyoaName + '.currentNode', '_handleCurrentNodeChange');
-                    this.onGlobalChange(cyoaName + '.prevNode', '_handlePrevNodeChange');
-                }
-            }
-        } catch (err) {
-            _didIteratorError63 = true;
-            _iteratorError63 = err;
-        } finally {
-            try {
-                if (!_iteratorNormalCompletion63 && _iterator63.return) {
-                    _iterator63.return();
-                }
-            } finally {
-                if (_didIteratorError63) {
-                    throw _iteratorError63;
-                }
-            }
-        }
+                    this._addListData(data, this.auto ? '' : 'number');
 
+                    if (!_element13.name) {
+                        _element13.name = 'inkd-cyoa-' + this.getGlobalUniqueId();
+                    }
+                    var childName = _element13.tagName === 'INKD-CYOA' ? 'Node' : 'Scene';
+                    this.onGlobalChange(_element13.name + '.current' + childName, '_handleCurrentNodeChange');
+                    this.onGlobalChange(_element13.name + '.prev' + childName, '_handlePrevNodeChange');
+                }
+            } catch (err) {
+                _didIteratorError64 = true;
+                _iteratorError64 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion64 && _iterator64.return) {
+                        _iterator64.return();
+                    }
+                } finally {
+                    if (_didIteratorError64) {
+                        throw _iteratorError64;
+                    }
+                }
+            }
+
+            cyoas = unresolved;
+        }
         this._addListData(this.data, 'data');
     },
 
+    _getCyoaElements: function _getCyoaElements() {
+        if (this.cyoa) {
+            this.cyoa = this.cyoa.replace(/\s/g, '').split(',');
+            var cyoaElements = [];
+            var _iteratorNormalCompletion66 = true;
+            var _didIteratorError66 = false;
+            var _iteratorError66 = undefined;
+
+            try {
+                for (var _iterator66 = this.cyoa[Symbol.iterator](), _step66; !(_iteratorNormalCompletion66 = (_step66 = _iterator66.next()).done); _iteratorNormalCompletion66 = true) {
+                    var cyoaName = _step66.value;
+
+                    var _element14 = this.getGlobalNameElement(cyoaName, ['inkd-cyoa', 'inkd-pano'], 'cyoa');
+                    if (_element14 !== undefined) {
+                        cyoaElements.push(_element14);
+                    }
+                }
+            } catch (err) {
+                _didIteratorError66 = true;
+                _iteratorError66 = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion66 && _iterator66.return) {
+                        _iterator66.return();
+                    }
+                } finally {
+                    if (_didIteratorError66) {
+                        throw _iteratorError66;
+                    }
+                }
+            }
+
+            return cyoaElements;
+        } else {
+            return this.getGlobalElements('inkd-cyoa', 'inkd-pano');
+        }
+    },
+
+    _getNodeData: function _getNodeData(node, levels) {
+        var name = node.name,
+            topic = node.topic;
+
+        this.nodeLevelMap[name] = levels;
+        return {
+            element: node,
+            levels: levels,
+            text: topic.trim(),
+            link: {
+                event: 'goto',
+                detail: { gotoData: [{ element: this, gotos: [name] }] }
+            }
+        };
+    },
+
     _addListData: function _addListData(data, attr) {
-        var _iteratorNormalCompletion65 = true;
-        var _didIteratorError65 = false;
-        var _iteratorError65 = undefined;
+        var _iteratorNormalCompletion67 = true;
+        var _didIteratorError67 = false;
+        var _iteratorError67 = undefined;
 
         try {
-            for (var _iterator65 = data[Symbol.iterator](), _step65; !(_iteratorNormalCompletion65 = (_step65 = _iterator65.next()).done); _iteratorNormalCompletion65 = true) {
-                var datum = _step65.value;
+            for (var _iterator67 = data[Symbol.iterator](), _step67; !(_iteratorNormalCompletion67 = (_step67 = _iterator67.next()).done); _iteratorNormalCompletion67 = true) {
+                var datum = _step67.value;
 
                 var levelData = this._listData;
                 var lastIndex = datum.levels.length - 1;
-                var _iteratorNormalCompletion66 = true;
-                var _didIteratorError66 = false;
-                var _iteratorError66 = undefined;
+                var _iteratorNormalCompletion68 = true;
+                var _didIteratorError68 = false;
+                var _iteratorError68 = undefined;
 
                 try {
-                    for (var _iterator66 = datum.levels.entries()[Symbol.iterator](), _step66; !(_iteratorNormalCompletion66 = (_step66 = _iterator66.next()).done); _iteratorNormalCompletion66 = true) {
-                        var _step66$value = _slicedToArray(_step66.value, 2),
-                            index = _step66$value[0],
-                            num = _step66$value[1];
+                    for (var _iterator68 = datum.levels.entries()[Symbol.iterator](), _step68; !(_iteratorNormalCompletion68 = (_step68 = _iterator68.next()).done); _iteratorNormalCompletion68 = true) {
+                        var _step68$value = _slicedToArray(_step68.value, 2),
+                            index = _step68$value[0],
+                            num = _step68$value[1];
 
                         num = num - 1;
                         if (index === lastIndex) {
                             levelData[num] = levelData[num] || {};
-                            if (levelData[num].text) {
+                            if (levelData[num].text && attr) {
                                 this.addDebugWarn(attr, 'Outline number \'' + datum.levels.join('.') + '\' already set to \'' + levelData[num].text + '\'', datum.element);
                             } else {
                                 levelData[num].text = datum.text;
@@ -27067,31 +28138,31 @@ Polymer({
                         }
                     }
                 } catch (err) {
-                    _didIteratorError66 = true;
-                    _iteratorError66 = err;
+                    _didIteratorError68 = true;
+                    _iteratorError68 = err;
                 } finally {
                     try {
-                        if (!_iteratorNormalCompletion66 && _iterator66.return) {
-                            _iterator66.return();
+                        if (!_iteratorNormalCompletion68 && _iterator68.return) {
+                            _iterator68.return();
                         }
                     } finally {
-                        if (_didIteratorError66) {
-                            throw _iteratorError66;
+                        if (_didIteratorError68) {
+                            throw _iteratorError68;
                         }
                     }
                 }
             }
         } catch (err) {
-            _didIteratorError65 = true;
-            _iteratorError65 = err;
+            _didIteratorError67 = true;
+            _iteratorError67 = err;
         } finally {
             try {
-                if (!_iteratorNormalCompletion65 && _iterator65.return) {
-                    _iterator65.return();
+                if (!_iteratorNormalCompletion67 && _iterator67.return) {
+                    _iterator67.return();
                 }
             } finally {
-                if (_didIteratorError65) {
-                    throw _iteratorError65;
+                if (_didIteratorError67) {
+                    throw _iteratorError67;
                 }
             }
         }
@@ -27112,15 +28183,15 @@ Polymer({
         if (levels !== undefined) {
             var path = ['_listData'];
             var lastIndex = levels.length - 1;
-            var _iteratorNormalCompletion67 = true;
-            var _didIteratorError67 = false;
-            var _iteratorError67 = undefined;
+            var _iteratorNormalCompletion69 = true;
+            var _didIteratorError69 = false;
+            var _iteratorError69 = undefined;
 
             try {
-                for (var _iterator67 = levels.entries()[Symbol.iterator](), _step67; !(_iteratorNormalCompletion67 = (_step67 = _iterator67.next()).done); _iteratorNormalCompletion67 = true) {
-                    var _step67$value = _slicedToArray(_step67.value, 2),
-                        index = _step67$value[0],
-                        num = _step67$value[1];
+                for (var _iterator69 = levels.entries()[Symbol.iterator](), _step69; !(_iteratorNormalCompletion69 = (_step69 = _iterator69.next()).done); _iteratorNormalCompletion69 = true) {
+                    var _step69$value = _slicedToArray(_step69.value, 2),
+                        index = _step69$value[0],
+                        num = _step69$value[1];
 
                     path.push(num - 1);
                     if (index !== lastIndex) {
@@ -27128,16 +28199,16 @@ Polymer({
                     }
                 }
             } catch (err) {
-                _didIteratorError67 = true;
-                _iteratorError67 = err;
+                _didIteratorError69 = true;
+                _iteratorError69 = err;
             } finally {
                 try {
-                    if (!_iteratorNormalCompletion67 && _iterator67.return) {
-                        _iterator67.return();
+                    if (!_iteratorNormalCompletion69 && _iterator69.return) {
+                        _iterator69.return();
                     }
                 } finally {
-                    if (_didIteratorError67) {
-                        throw _iteratorError67;
+                    if (_didIteratorError69) {
+                        throw _iteratorError69;
                     }
                 }
             }
@@ -27146,8 +28217,8 @@ Polymer({
         }
     },
 
-    _handleCurrentNodeChange: function _handleCurrentNodeChange(_ref26) {
-        var value = _ref26.detail.value;
+    _handleCurrentNodeChange: function _handleCurrentNodeChange(_ref25) {
+        var value = _ref25.detail.value;
 
         var path = this._getOutlinePath(value);
         if (path) {
@@ -27156,12 +28227,140 @@ Polymer({
         }
     },
 
-    _handlePrevNodeChange: function _handlePrevNodeChange(_ref27) {
-        var value = _ref27.detail.value;
+    _handlePrevNodeChange: function _handlePrevNodeChange(_ref26) {
+        var value = _ref26.detail.value;
 
         var path = this._getOutlinePath(value);
         if (path) {
             this.set(path.concat('active'), false);
         }
+    }
+});
+Polymer({
+    is: 'inkd-timer',
+
+    properties: {
+        duration: String
+    },
+
+    behaviors: [InkdBehavior, NameAttribute, SetPropAttribute, ActionAttributes],
+
+    ready: function ready() {
+        this.setBuiltinProps({ ticking: false, ended: false, daysLeft: null, hoursLeft: null, minutesLeft: null, secondsLeft: null, daysLapsed: null, hoursLapsed: null, minutesLapsed: null, secondsLapsed: null });
+
+        if (this.duration) {
+            this._initiateDuration();
+        } else {
+            this.addDebugError('duration', 'No timer duration specified');
+        }
+    },
+
+    start: function start() {
+        var _this13 = this;
+
+        var updateInterval = 1000;
+        if (!this._startTime) {
+            this._startTime = new Date();
+        }
+        if (this._pauseTime) {
+            this._pausedDuration += Date.parse(new Date()) - Date.parse(this._pauseTime);
+        }
+        this._updateTimer();
+        this._timerInterval = setInterval(function () {
+            _this13._updateTimer();
+        }, updateInterval);
+        this.setBuiltinProps({ ticking: true, ended: false });
+    },
+
+    pause: function pause() {
+        clearInterval(this._timerInterval);
+        this._pauseTime = new Date();
+        this.setBuiltinProp('ticking', false);
+    },
+
+    restart: function restart() {
+        this._resetTimer();
+        this.start();
+    },
+
+    _initiateDuration: function _initiateDuration() {
+        var unitMap = { d: 'days', h: 'hours', m: 'minutes', s: 'seconds', ms: 'milliseconds' };
+        this.duration = this.duration.replace(/\s/g, '').split(':');
+        this._duration = {};
+        var _iteratorNormalCompletion70 = true;
+        var _didIteratorError70 = false;
+        var _iteratorError70 = undefined;
+
+        try {
+            for (var _iterator70 = this.duration[Symbol.iterator](), _step70; !(_iteratorNormalCompletion70 = (_step70 = _iterator70.next()).done); _iteratorNormalCompletion70 = true) {
+                var timeValue = _step70.value;
+
+                var match = timeValue.match(/^(\d+)(d|h|m(?!s)|m?s)$/);
+                if (match) {
+                    var value = Number(match[1]);
+                    var unit = match[2];
+                    var unitKey = unitMap[unit];
+                    if (this._duration[unitKey] === undefined) {
+                        this._duration[unitKey] = value;
+                    } else {
+                        this.addDebugWarn('duration', '\'' + match + '\' unused because because ' + unitKey + ' already set to \'' + this._duration[unitKey] + unit + '\'');
+                    }
+                } else {
+                    this.addDebugError('duration', '\'' + timeValue + '\' is not a valid duration value');
+                }
+            }
+        } catch (err) {
+            _didIteratorError70 = true;
+            _iteratorError70 = err;
+        } finally {
+            try {
+                if (!_iteratorNormalCompletion70 && _iterator70.return) {
+                    _iterator70.return();
+                }
+            } finally {
+                if (_didIteratorError70) {
+                    throw _iteratorError70;
+                }
+            }
+        }
+
+        this._duration = Object.assign({ days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 0 }, this._duration);
+        this._duration.total = this._duration.days * 24 * 60 * 60 * 1000 + this._duration.hours * 60 * 60 * 1000 + this._duration.minutes * 60 * 1000 + this._duration.seconds * 1000 + this._duration.milliseconds;
+
+        this.setBuiltinProps({ daysLeft: this._duration.days, hoursLeft: this._duration.hours, minutesLeft: this._duration.minutes, secondsLeft: this._duration.seconds, daysLapsed: 0, hoursLapsed: 0, minutesLapsed: 0, secondsLapsed: 0 });
+
+        this._resetTimer();
+    },
+
+    _updateTimer: function _updateTimer() {
+        var currentTime = new Date();
+        var millisecondsLapsed = Date.parse(currentTime) - Date.parse(this._startTime) - this._pausedDuration;
+        this.setBuiltinProps({
+            daysLapsed: Math.floor(millisecondsLapsed / (24 * 60 * 60 * 1000)),
+            hoursLapsed: Math.floor(millisecondsLapsed / (60 * 60 * 1000) % 24),
+            minutesLapsed: Math.floor(millisecondsLapsed / (60 * 1000) % 60),
+            secondsLapsed: Math.floor(millisecondsLapsed / 1000 % 60)
+        });
+
+        var millisecondsLeft = this._duration.total - millisecondsLapsed;
+        this.setBuiltinProps({
+            daysLeft: Math.floor(millisecondsLeft / (24 * 60 * 60 * 1000)),
+            hoursLeft: Math.floor(millisecondsLeft / (60 * 60 * 1000) % 24),
+            minutesLeft: Math.floor(millisecondsLeft / (60 * 1000) % 60),
+            secondsLeft: Math.floor(millisecondsLeft / 1000 % 60)
+        });
+        if (millisecondsLeft <= 0) {
+            this._resetTimer();
+            this.handleSetProp();
+            this.handleActions();
+            this.setBuiltinProps({ ticking: false, ended: true });
+        }
+    },
+
+    _resetTimer: function _resetTimer() {
+        clearInterval(this._timerInterval);
+        this._startTime = null;
+        this._pauseTime = null;
+        this._pausedDuration = 0;
     }
 });</script></body></html>

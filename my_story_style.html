@@ -259,4 +259,29 @@
             display: block;
         }
     }
+    
+    .tooltip {
+        width: 300px; 
+        text-align: left; 
+        font-size: 1em;
+        position: absolute; 
+        border-radius: 0.18em;
+        background-color: rgba(0,0,0,0.8);
+        color: #fff;
+        padding: 5px 10px;
+        cursor: pointer;        
+    }
+
+    .tooltip:after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-width: 10px;
+        border-style: solid;
+        border-color: rgba(0,0,0,0.8) transparent transparent transparent;
+        bottom: -20px;
+        left: -10px;
+        margin: 0 50%;
+    }
 </style>
