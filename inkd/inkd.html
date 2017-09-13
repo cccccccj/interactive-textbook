@@ -22740,11 +22740,11 @@ var NavigateEvent = {
         var gotos = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this._goto;
         var restart = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._restart;
 
-        if (gotos.length > 0) {
+        if (gotos && gotos.length > 0) {
             this.fire('goto', { gotoData: [{ element: this, gotos: gotos }] });
         }
 
-        if (restart.length > 0) {
+        if (restart && restart.length > 0) {
             this.fire('restart', { restart: restart });
         }
     },

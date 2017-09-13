@@ -1,12 +1,12 @@
 <meta http-equiv="refresh" content="0; url=index.html">
 <inkd-content name="nodes">
 
-    <inkd-node name="intro" topic = "Order of Execution" number = "1" start>
+    <inkd-node name="intro" topic = "Order of Execution" number = "1" set-prop = "lineTrue = false" start>
         <section class="interactive-container">
             <section class="interactive-column--text">
                 <div class="interactive-column__text"> <!-- JTL changed to div -->
                     <!-- You can change the text here -->
-                    <p>The computer "reads" JavaScript code just like you are reading this text: left-to-right, top-to-bottom. Each <inkd-box><span class="tipper">line of code</span><inkd-click x = "-105px" y = "-95px" class="tooltip"><span>A "line" of code in JavaScript may involve more than one actual line of text. A semi-colon marks the end of almost every line of code.</span></inkd-click></inkd-box> is processed in the order that they appear in the file.</p>
+                    <p>The computer "reads" JavaScript code just like you are reading this text: left-to-right, top-to-bottom. Each line of code &#x2E28<inkd-if rule = "lineTrue == true"><inkd-action set-prop = "lineTrue = false">&#x25B6 A "line" of code in JavaScript may involve more than one actual line of text. A semi-colon marks the end of almost every line of code. &#x25C0</inkd-action><inkd-else><inkd-action set-prop = "lineTrue = true">&#x25C0 ... &#x25B6</inkd-action></inkd-else></inkd-if>&#x2E29 is processed in the order that they appear in the file.</p>
                     
                     <p>The ten-minute YouTube video in the right column here will explain a bit more about where JavaScript fits in to coding the web.</p>
                     
