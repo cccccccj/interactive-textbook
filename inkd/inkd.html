@@ -8706,9 +8706,36 @@ this.fire('dom-change');
         <span inner-h-t-m-l="[[_value]]"></span>        
     </template>
     
-    </dom-module><dom-module id="inkd-button" assetpath="inkd-elements/">
+    </dom-module><dom-module id="inkd-button-styles" assetpath="inkd-styles/">
+    <template>
+        <style>
+            :host {
+                display: inline-block;
+                text-align: center;
+                padding: 0.5em 1em;
+                border: 0.06em solid #d5d5d5;
+                border-radius: 0.31em;
+                background-color: #bdc3c7;
+                cursor: pointer;
+            }
+            
+            :host(:hover:not(.disabled)), :host(:focus:not(.disabled)) {
+                background-color: #fff;
+                color: #000;
+                border: 0.06em solid #000;
+            }
+
+            :host(.disabled) {
+                background-color: #959595;
+                cursor: not-allowed;
+            }
+        </style>
+    </template>
+</dom-module><dom-module id="inkd-button" assetpath="inkd-elements/">
 
     <template>
+        <style include="inkd-button-styles"></style>
+        
         <content></content>
     </template>
 
@@ -8718,10 +8745,30 @@ this.fire('dom-change');
 <dom-module id="inkd-action" assetpath="inkd-elements/">
 
     <template>
+        <style>
+            :host {
+                cursor: pointer;
+            }
+        </style>
+        
         <content></content>
     </template>
 
     </dom-module><dom-module id="inkd-node" assetpath="inkd-elements/cyoa/">
+    
+    <template>
+        <style>
+            :host {
+                display: block;
+                margin: 2em auto;
+                padding: 1.2em;
+                width: 80%;
+                background-color: transparent;
+            }
+        </style>
+        
+        <content></content>
+    </template>
 
     </dom-module><dom-module id="inkd-cyoa" assetpath="inkd-elements/cyoa/">
 
@@ -19426,6 +19473,10 @@ return Player;
     </dom-module><dom-module id="inkd-modal-styles" assetpath="inkd-styles/">
     <template>
         <style>
+            :host[no-fullscreen] .background-overlay {
+                position: absolute;
+            }
+            
             .background-overlay {
                 position: fixed;
                 z-index: 300;
@@ -19435,11 +19486,8 @@ return Player;
                 height: 100%;
                 overflow: auto;
                 background-color: rgba(0, 0, 0, 0.4);
+                
                 @apply --background-overlay;
-            }
-            
-            :host[no-fullscreen] .background-overlay {
-                position: absolute;
             }
             
             .content-wrapper {
@@ -19450,11 +19498,13 @@ return Player;
                 padding: 20px;
                 border: 1px solid #888;
                 width: 80%;
+                
                 @apply --content-wrapper;
             }
             
             .content {
                 overflow: scroll;
+                
                 @apply --content;
             }
             
@@ -19474,12 +19524,14 @@ return Player;
                 background-size: 20px 20px;
                 width: 20px;
                 height: 20px;
+                
                 @apply --close-button;
             }
             
             .close-button:hover,
             .close-button:focus {
                 background-color: #bbb;
+                
                 @apply --close-button-hover;
             }
             
@@ -19923,6 +19975,7 @@ return Player;
                 resize: both;
                 visibility: hidden;
             }
+            
             textarea {
                 all: inherit;
                 visibility: visible;
@@ -21699,7 +21752,7 @@ Polymer({
 
         this._trackSessionID = new Date();
         this.trackDetail = { structures: [], tags: [], data: [] };
-        this.trackedEvents = [{ event: 'tracking-initiated', time: new Date() }];
+        this.trackedEvents = [{ event: 'tracking-initiate', time: new Date() }];
 
         this._pageActive = document.visibilityState === 'visible' && document.hasFocus();
         this._trackPageStatus();
@@ -21731,6 +21784,8 @@ Polymer({
         var match = this.userId.match(/^query:(.+)/);
         if (match) {
             this._userID = this._queryData[match[1]];
+        } else if (this.userId === 'query') {
+            this._userID = this._queryData['user-id'];
         } else if (this.userId === 'lti') {
             this._userID = null;
         } else {
@@ -22434,7 +22489,7 @@ var ConditionBehavior = {
         var andRegex = /\s(?:and|AND|&&)\s/;
         var orRegex = /\s(?:or|OR|\|\|)\s/;
         if (andRegex.test(string) && orRegex.test(string)) {
-            this.addDebugError(attr, 'Both \'AND\' and \'OR\' cannot be used at the same time');
+            this.addDebugError(attr, 'Both \'and\' and \'or\' operators cannot be used at the same time');
         } else {
             var conditionArray = void 0;
             if (andRegex.test(string)) {
@@ -22992,7 +23047,6 @@ var ButtonBehaviorImpl = {
         disabled: {
             type: String,
             flagAllowed: true,
-            reflectToAttribute: true,
             observer: '_handleDisabledChange'
         },
         validate: {
@@ -23015,8 +23069,6 @@ var ButtonBehaviorImpl = {
     },
 
     ready: function ready() {
-        this.setBuiltinProp('disabled', this.disabled !== undefined);
-
         this._initialTabIndex = this.tabindex;
 
         this.onGlobalAttach('_initiate');
@@ -23092,7 +23144,11 @@ var ButtonBehaviorImpl = {
 
     handleConditionChange: function handleConditionChange(conditionTrue) {
         this._disabled = conditionTrue;
-        this.setBuiltinProp('disabled', conditionTrue);
+        if (conditionTrue) {
+            Polymer.dom(this).classList.add('disabled');
+        } else {
+            Polymer.dom(this).classList.remove('disabled');
+        }
         this.tabindex = conditionTrue ? false : this._initialTabIndex;
     },
 
@@ -23173,13 +23229,14 @@ var ButtonBehaviorImpl = {
     _handleDisabledChange: function _handleDisabledChange() {
         if (this.disabled === '') {
             this._disabled = true;
+            Polymer.dom(this).classList.add('disabled');
         } else {
             this.initiateCondition('disabled');
         }
     }
 };
 
-var ButtonBehavior = [InkdBehavior, ConditionBehavior, NameAttribute, SetPropAttribute, NavigateEvent, ActionAttributes, ButtonBehaviorImpl];
+var ButtonBehavior = [InkdBehavior, ConditionBehavior, SetPropAttribute, NavigateEvent, ActionAttributes, ButtonBehaviorImpl];
 Polymer({
     is: 'inkd-button',
 
@@ -23880,9 +23937,9 @@ var PanoAttributes = {
 
             var degrees = splitResult[0];
             if (degrees === '') {
-                configObject.autorotate = 1;
+                configObject.autoRotate = 1;
             } else if (!isNaN(degrees)) {
-                configObject.autorotate = Number(degrees);
+                configObject.autoRotate = Number(degrees);
             } else {
                 this.addDebugError('autorotate', '\'' + degrees + '\' is not a valid degrees/second value');
             }
@@ -24200,7 +24257,7 @@ Polymer({
         }
     },
 
-    behaviors: [InkdBehavior, NameAttribute, ButtonBehavior],
+    behaviors: [InkdBehavior, ButtonBehavior],
 
     ready: function ready() {
         this.enforceAncestor('inkd-pano-scene');
@@ -24682,6 +24739,10 @@ Polymer({
             for (var _i2 = 0; _i2 < _arr2.length; _i2++) {
                 var _prop3 = _arr2[_i2];
                 this[_prop3] = '' + this[_prop3] + (isNaN(this[_prop3]) ? '' : 'px');
+            }
+
+            if (!/.(?:jpe?g|png|gif|bmp|svg)$/.test(this.src.toLowerCase())) {
+                this.addDebugWarn('src', 'Image file/URL \'' + this.src + '\' might not supported in all browsers (.jpg, .jpeg, .png, .gif, .bmp or .svg files are recommended)');
             }
 
             if (/\s/.test(this.src)) {
@@ -25701,7 +25762,7 @@ var EventBehaviorImpl = {
             if (Polymer.dom(this).childNodes.length > 0) {
                 this.overlayElement = document.createElement('span');
                 this.overlayElement.className = this.className;
-                this.overlayElement.style.cssText = 'position: absolute; opacity: 0; transition: opacity ' + this.transitionData.fadeTime + ' ease-in-out, top ' + this.transitionData.slideTime + ', left ' + this.transitionData.slideTime + '; ' + this.style.cssText;
+                this.overlayElement.style.cssText = 'position: absolute; \n                        opacity: 0; \n                        transition: opacity ' + this.transitionData.fadeTime + ' ease-in-out, top ' + this.transitionData.slideTime + ', left ' + this.transitionData.slideTime + '; \n                        width: 100%; \n                        height: 100%; \n                        ' + this.style.cssText;
 
                 switch (this.transitionData.slideDirection) {
                     case 'right':
@@ -25888,6 +25949,8 @@ Polymer({
                     this.addDebugError('props', 'Property \'' + key + '\' has not been set');
                 } else if (data.propType === 'element') {
                     this.addDebugError('props', '\'' + key + '\' refers to \'name\' attribute of an <' + data.propValue.tagName.toLowerCase() + '> element');
+                } else if (data.propType === 'builtin-property') {
+                    this.addDebugError('props', 'Property \'' + key + '\' cannot be passed because it refers to a built-in property');
                 } else {
                     this._propsData[key] = data.propValue;
                 }
@@ -26553,8 +26616,6 @@ Polymer({
 });
 Polymer({
     is: 'inkd-draggable',
-
-    properties: {},
 
     behaviors: [InkdBehavior, TaskBehavior],
 
@@ -28269,13 +28330,16 @@ Polymer({
         this._timerInterval = setInterval(function () {
             _this13._updateTimer();
         }, updateInterval);
+
         this.setBuiltinProps({ ticking: true, ended: false });
+        this.addTrackEvent('timer-start', { timer: this.name, timeLeft: this._timeLeft, timeLapsed: this._timeLapsed });
     },
 
     pause: function pause() {
         clearInterval(this._timerInterval);
         this._pauseTime = new Date();
         this.setBuiltinProp('ticking', false);
+        this.addTrackEvent('timer-pause', { timer: this.name, timeLeft: this._timeLeft, timeLapsed: this._timeLapsed });
     },
 
     restart: function restart() {
@@ -28327,7 +28391,10 @@ Polymer({
         this._duration = Object.assign({ days: 0, hours: 0, minutes: 0, seconds: 0, milliseconds: 0 }, this._duration);
         this._duration.total = this._duration.days * 24 * 60 * 60 * 1000 + this._duration.hours * 60 * 60 * 1000 + this._duration.minutes * 60 * 1000 + this._duration.seconds * 1000 + this._duration.milliseconds;
 
-        this.setBuiltinProps({ daysLeft: this._duration.days, hoursLeft: this._duration.hours, minutesLeft: this._duration.minutes, secondsLeft: this._duration.seconds, daysLapsed: 0, hoursLapsed: 0, minutesLapsed: 0, secondsLapsed: 0 });
+        this._timeLapsed = { days: 0, hours: 0, minutes: 0, seconds: 0 };
+        this._timeLeft = { days: this._duration.days, hours: this._duration.hours, minutes: this._duration.minutes, seconds: this._duration.seconds };
+
+        this._updateBuiltinProps();
 
         this._resetTimer();
     },
@@ -28335,26 +28402,45 @@ Polymer({
     _updateTimer: function _updateTimer() {
         var currentTime = new Date();
         var millisecondsLapsed = Date.parse(currentTime) - Date.parse(this._startTime) - this._pausedDuration;
-        this.setBuiltinProps({
-            daysLapsed: Math.floor(millisecondsLapsed / (24 * 60 * 60 * 1000)),
-            hoursLapsed: Math.floor(millisecondsLapsed / (60 * 60 * 1000) % 24),
-            minutesLapsed: Math.floor(millisecondsLapsed / (60 * 1000) % 60),
-            secondsLapsed: Math.floor(millisecondsLapsed / 1000 % 60)
-        });
+
+        this._timeLapsed = {
+            days: Math.floor(millisecondsLapsed / (24 * 60 * 60 * 1000)),
+            hours: Math.floor(millisecondsLapsed / (60 * 60 * 1000) % 24),
+            minutes: Math.floor(millisecondsLapsed / (60 * 1000) % 60),
+            seconds: Math.floor(millisecondsLapsed / 1000 % 60)
+        };
 
         var millisecondsLeft = this._duration.total - millisecondsLapsed;
-        this.setBuiltinProps({
-            daysLeft: Math.floor(millisecondsLeft / (24 * 60 * 60 * 1000)),
-            hoursLeft: Math.floor(millisecondsLeft / (60 * 60 * 1000) % 24),
-            minutesLeft: Math.floor(millisecondsLeft / (60 * 1000) % 60),
-            secondsLeft: Math.floor(millisecondsLeft / 1000 % 60)
-        });
+
+        this._timeLeft = {
+            days: Math.floor(millisecondsLeft / (24 * 60 * 60 * 1000)),
+            hours: Math.floor(millisecondsLeft / (60 * 60 * 1000) % 24),
+            minutes: Math.floor(millisecondsLeft / (60 * 1000) % 60),
+            seconds: Math.floor(millisecondsLeft / 1000 % 60)
+        };
+
+        this._updateBuiltinProps();
+
         if (millisecondsLeft <= 0) {
             this._resetTimer();
             this.handleSetProp();
             this.handleActions();
             this.setBuiltinProps({ ticking: false, ended: true });
+            this.addTrackEvent('timer-pause', { timer: this.name, timeLeft: this._timeLeft, timeLapsed: this._timeLapsed });
         }
+    },
+
+    _updateBuiltinProps: function _updateBuiltinProps() {
+        this.setBuiltinProps({
+            daysLapsed: this._timeLapsed.days,
+            hoursLapsed: this._timeLapsed.hours,
+            minutesLapsed: this._timeLapsed.minutes,
+            secondsLapsed: this._timeLapsed.seconds,
+            daysLeft: this._timeLeft.days,
+            hoursLeft: this._timeLeft.hours,
+            minutesLeft: this._timeLeft.minutes,
+            secondsLeft: this._timeLeft.seconds
+        });
     },
 
     _resetTimer: function _resetTimer() {

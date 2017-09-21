@@ -9,11 +9,29 @@
     INKDML.
 -->
 
-<style is = "custom-style">
-
+<style is="custom-style">
     /* DEFAULT STYLES */
     
-    *,*:before,*:after,ul,li,a,button,input,h1,h2,h3,h4,h5,h6,p,img,image,svg,path,g {
+    *,
+    *:before,
+    *:after,
+    ul,
+    li,
+    a,
+    button,
+    input,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    img,
+    image,
+    svg,
+    path,
+    g {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
@@ -23,8 +41,9 @@
         font-family: inherit;
         user-select: none;
     }
-
-    html, body {
+    
+    html,
+    body {
         width: 100vw;
         height: 100vh;
         max-width: 100%;
@@ -34,74 +53,34 @@
         overflow: hidden;
     }
     
-    inkd-action {
-        cursor: pointer;
-    }
-    
     inkd-node {
-        /* display: inline-block; */
-        /* margin: 2em auto;
-        padding: 1.5em; */
-        /* border: 0.06em solid #d5d5d5 ; */
+        width: auto;
+        height: 100%;
         background-color: transparent;
     }
-
-    inkd-button {
-        appearance: none;
-        outline: none;
-        display: inline-block;
-        font-size: 1rem;
-        font-family: inherit;
-        font-weight: normal;
-        line-height: inherit;
-        text-align: center;
-        text-transform: none;
-        text-decoration: none;
-        text-indent: 0;
-        padding: 0.5em 1em;
-        margin: 0;
-        border: 0.06em solid #d5d5d5;
-        border-spacing: 0;
-        border-radius: 0.31em;
-        background-color: #bdc3c7;
-        cursor: pointer;
-    }
-
-    inkd-button:not([disabled]):hover {
-        background-color: #fff;
-        color: #000;
-        border: 0.06em solid #000;
-    }
     
-    inkd-button[disabled] {
-        background-color: #959595;
-    }
-    
-    inkd-video {
-        width: 100% !important;
-    }
-
-    ul, ol {
+    ul,
+    ol {
         padding-top: .2em;
         padding-bottom: .2em;
     }
     
-
-    h1, h2, p {
+    h1,
+    h2,
+    p {
         font-family: sans-serif;
     }
-    
     /* p {
         line-height: 1.2em;
         padding-top: .5em;
         padding-bottom: .5em;
         font-size: medium;
     } */
-
     /* New code */
-
+    
     .header {
-        background:#222222; /* JTL */
+        background: #222222;
+        /* JTL */
         color: #fff;
         height: 5em;
         display: flex;
@@ -109,19 +88,23 @@
         justify-content: center;
         align-items: center;
     }
+    
     .header__title {
         font-size: 1.8rem;
         align-self: center;
     }
+    
     .header__burgermenu {
         display: none;
         color: #fff;
         font-size: 1.2rem;
         cursor: pointer;
     }
+    
     .menu:hover .header__menu {
         display: block;
     }
+    
     .header__menu {
         display: none;
         position: absolute;
@@ -133,77 +116,105 @@
         background: #222222;
         z-index: 100;
     }
+    
     .main-container {
         display: flex;
         height: 100%;
         overflow: hidden;
     }
+    
     .main-sidebar {
         display: flex;
         flex-direction: column;
-        /*align-items: center;*/ /* JTL */
+        /*align-items: center;*/
+        /* JTL */
         min-width: 20%;
         height: 100%;
-        background: #bbbbbb; /* JTL */
-        color: #000; /* JTL */
+        background: #bbbbbb;
+        /* JTL */
+        color: #000;
+        /* JTL */
     }
+    
     .main-content {
-        background: #dddddd; /* JTL */
-        color: #000; /* JTL */
+        background: #dddddd;
+        /* JTL */
+        color: #000;
+        /* JTL */
     }
+    
     .main-sidebar__list {
         list-style: none;
     }
+    
     .main-sidebar__list-item {
         font-size: 1rem;
         margin-top: .62em;
     }
+    
     .main-sidebar__list-item:hover {
         text-decoration: underline;
     }
+    
     .interactive-container {
         display: flex;
         flex-wrap: nowrap;
         flex-direction: row;
-        height: 48vh; /* JTL */
+/*        height: 48vh;*/
+        height: 50%;
+        /* JTL */
         overflow: scroll;
     }
+    
     .interactive-column--video {
         width: 50%;
-        background: #aaaaaa; /* JTL */
+        background: #aaaaaa;
+        /* JTL */
         display: flex;
         justify-content: center;
         align-items: center;
         text-align: center;
     }
+    
     .interactive-column--text {
         width: 50%;
         background: 4C9F70;
         padding: .62em;
         overflow: scroll;
     }
+    
     .interactive-column--text h2 {
         font-size: 1.4rem;
     }
+    
     .interactive-column--text p {
         font-size: 1rem;
         line-height: 1.2em;
         padding-top: .5em;
         padding-bottom: .5em;
     }
+    
     .interactive__video {
         width: 100%;
         height: 100%;
     }
+    
     .interactive-bottom {
         min-height: 50%;
+        overflow-y: scroll;
     }
+    
     .interactive-bottom iframe {
-        min-height: min-content; /* needs vendor prefixes */
-        height: 48vh; /* JTL */
-        overflow-y:visible; /* JTL */
+        min-height: min-content;
+        /* needs vendor prefixes */
+        width: 100%;
+        height: 48vh;
+        /* JTL */
+        overflow-y: scroll;
+        /* JTL */
         margin-bottom: 0;
     }
+    
     .navbar {
         display: none;
         width: 100%;
@@ -215,17 +226,20 @@
         z-index: 120;
         background: green;
     }
+    
     .navbar__item {
         font-size: 1rem;
         cursor: pointer;
     }
+    
     .navbar__item:hover {
         color: #000;
     }
+    
     .tipper {
-        text-decoration:underline;
-        text-decoration-style:double;
-        text-decoration-color:crimson;
+        text-decoration: underline;
+        text-decoration-style: double;
+        text-decoration-color: crimson;
         display: inline-block;
     }
     
@@ -262,28 +276,17 @@
         }
     }
     
-    .tooltip {
-        width: 300px; 
-        text-align: left; 
-        font-size: 1em;
-        position: absolute; 
-        border-radius: 0.18em;
-        background-color: rgba(0,0,0,0.8);
-        color: #fff;
-        padding: 5px 10px;
-        cursor: pointer;        
+    .horizontal-divider {
+        width: 100%;
+        height: 5px;
+        background-color: gray;
+        cursor: row-resize;
     }
-
-    .tooltip:after {
-        content: '';
-        position: absolute;
-        width: 0;
-        height: 0;
-        border-width: 10px;
-        border-style: solid;
-        border-color: rgba(0,0,0,0.8) transparent transparent transparent;
-        bottom: -20px;
-        left: -10px;
-        margin: 0 50%;
+    
+    .vertical-divider {
+        height: 100%;
+        width: 5px;
+        background-color: gray;
+        cursor: col-resize;
     }
 </style>
