@@ -48,10 +48,10 @@ function handleDrag() {
     var parent = d3.select(parentElement);
 
     parent.select(data.paneSelectors[0])
-            .style(property, `${factor * total}px`)
+            .style(property, `${factor * 100}%`)
     
     parent.select(data.paneSelectors[1])
-            .style(property, `${(1 - factor) * total}px`)    
+            .style(property, `${(1 - factor) * 100}%`)    
 }
 
 // Fix for 'mouseup' event being called over iframes
