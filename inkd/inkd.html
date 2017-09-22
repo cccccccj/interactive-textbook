@@ -23852,6 +23852,7 @@ Polymer({
             if (!this.noScroll) {
                 window.scrollTo(0, 0);
             }
+            this.fire('node-change', {node: node});
         }
     },
 

@@ -1,0 +1,43 @@
+<meta http-equiv="refresh" content="0; url=index.html">
+
+<inkd-content name="content-order">
+
+    <inkd-node name="order" topic="Order of Execution" number="1" set-prop="lineTrue = false" start>
+        <section class="interactive-container">
+            <section class="interactive-column--text" data-title="Text">
+                <!-- JTL changed to div -->
+                <!-- You can change the text here -->
+                <p>The computer "reads" JavaScript code just like you are reading this text: left-to-right, top-to-bottom. Each line of code &#x2E28
+                    <inkd-if rule="lineTrue == true">
+                        <inkd-action set-prop="lineTrue = false">&#x25B6 A "line" of code in JavaScript may involve more than one actual line of text. A semi-colon marks the end of almost every line of code. &#x25C0</inkd-action>
+                        <inkd-else>
+                            <inkd-action set-prop="lineTrue = true">&#x25C0 ... &#x25B6</inkd-action>
+                        </inkd-else>
+                    </inkd-if>&#x2E29 is processed in the order that they appear in the file.</p>
+
+                <p>The ten-minute YouTube video in the right column here will explain a bit more about where JavaScript fits in to coding the web.</p>
+
+                <p>Look at the JavaScript at the bottom of this page. Then click the "Result" tab to see what happens when this JavaScript runs. Did it do what you expected?</p>
+
+                <p>Finally, click on the "Edit in JSFiddle" button that's on the far right. This will open an editable copy of the code in a browser tab or window. Experiment with the code! It's just a copy, so you can't mess anything up permanently. In fact, if something goes wrong and you want to start over from the original example again, just return to the browser tab that you're reading right now and click on "Edit in JSFiddle" again. Presto! A clean copy for you to work from!</p>
+
+                <p>TIP: Be sure to sign in to your free JSFiddle account in case you want to save a copy of your code experiment! You should also click on the "Fiddle Meta" area on the right of the JSFiddle interface and change the name of the Fiddle. This way, you'll be able to tell your code apart from the class examples! </p>
+            </section>
+
+            <div class="vertical-divider"></div>
+
+            <section class="interactive-column--media" data-title="Video">
+                <!-- You can change the video here -->
+                <inkd-video src="https://www.youtube.com/watch?v=jkTzHEtHd54"></inkd-video>
+            </section>
+        </section>
+
+        <div class="horizontal-divider"></div>
+
+        <section class="interactive-bottom" data-title="Code">
+            <!-- You can change the jsfiddle here -->
+            <iframe src="//jsfiddle.net/jtlaird/ag91otm8/embedded/js,result/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+        </section>
+    </inkd-node>
+
+</inkd-content>

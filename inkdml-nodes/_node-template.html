@@ -1,0 +1,46 @@
+<!-- IMPORT THIS FILE FROM INDEX.HTML USING <link rel="import" href=""> -->
+
+
+<meta http-equiv="refresh" content="0; url=index.html">
+
+<!-- ADD CONTENT NAME - HAS TO BE REFERENCED IN AN <inkd-include content=""> TAG WITHIN <inkd-cyoa> IN INDEX.HTML - SUGGESTED CONVENTION 'content-<node-name>' -->
+<inkd-content name="">
+    
+    <!-- ADD NODE NAME, TOPIC THAT SHOULD APPEAR IN OUTLINE AND HEADING, 
+    AND OUTLINE NUMBER (e.g., "1.3", "3.5.1") -->
+    <inkd-node name="" topic="" number="">
+        
+        <!-- TOP CONTAINER -->
+        <section class="interactive-container">
+            
+            <!-- LEFT SECTION - TEXT -->
+            <section class="interactive-column--text" data-title="">
+                
+                <p></p>
+
+            </section>
+            
+            <div class="vertical-divider"></div>
+
+            <!-- RIGHT SECTION - VIDEO/IMAGE -->
+            <section class="interactive-column--media" data-title="">
+                
+                <inkd-video src=""></inkd-video>
+<!--                <img src="">-->
+                
+            </section>
+            
+        </section>
+
+        <div class="horizontal-divider"></div>
+
+        <!-- BOTTOM SECTION - IFRAME -->
+        <section class="interactive-bottom" data-title="">
+            
+            <iframe src="" frameborder="0"></iframe>
+            
+        </section>
+
+    </inkd-node>
+    
+</inkd-content>

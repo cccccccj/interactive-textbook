@@ -1,4 +1,4 @@
-var dividerData = [
+const dividerData = [
     {
         selector: '.horizontal-divider',
         direction: 'horizontal', 
@@ -8,21 +8,20 @@ var dividerData = [
     {
         selector: '.vertical-divider',
         direction: 'vertical', 
-        paneSelectors: ['.interactive-column--text', '.interactive-column--video'], 
+        paneSelectors: ['.interactive-column--text', '.interactive-column--media'], 
         minFactor: 0.2
     }
 ];
 
-var dragBehavior = d3.drag()
+let dragBehavior = d3.drag()
     .on('start', handleDragStart)
     .on('drag', handleDrag)
     .on('end', handleDragEnd);
 
 // To make sure that 'Polymer.dom' is available
-HTMLImports.whenReady(function() {
-    for (var i = 0; i < dividerData.length; i++) {
-        var data = dividerData[i];
-        var dividerElements = Polymer.dom(document).querySelectorAll(data.selector);
+HTMLImports.whenReady(() => {
+    for (let data of dividerData) {
+        let dividerElements = Polymer.dom(document).querySelectorAll(data.selector);
         d3.selectAll(dividerElements)
             .datum(data)
             .call(dragBehavior);
@@ -30,22 +29,23 @@ HTMLImports.whenReady(function() {
 });
 
 function handleDrag() {
-    var divider = d3.select(this);
-    var data = divider.datum();
-    var parentElement = divider.node().parentNode;
+    let divider = d3.select(this);
+    let data = divider.datum();
+    let parentElement = divider.node().parentNode;
     
+    let total, coord, property;
     if (data.direction === 'horizontal') {
-        var total = parentElement.offsetHeight - this.offsetHeight;
-        var coord = 'y';
-        var property = 'height';
+        total = parentElement.offsetHeight - this.offsetHeight;
+        coord = 'y';
+        property = 'height';
     } else {
-        var total = parentElement.offsetWidth - this.offsetWidth;
-        var coord = 'x';
-        var property = 'width';
+        total = parentElement.offsetWidth - this.offsetWidth;
+        coord = 'x';
+        property = 'width';
     }
     
-    var factor = Math.max(Math.min(d3.event[coord] / total, 1 - data.minFactor), data.minFactor);
-    var parent = d3.select(parentElement);
+    let factor = Math.max(Math.min(d3.event[coord] / total, 1 - data.minFactor), data.minFactor);
+    let parent = d3.select(parentElement);
 
     parent.select(data.paneSelectors[0])
             .style(property, `${factor * 100}%`)

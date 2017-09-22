@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html height="100%">
+<html>
 <meta charset="UTF-8">
 
 <head>
@@ -7,7 +7,6 @@
     <script src="inkd/webcomponents-lite.js" type="application/javascript"></script>
     <link rel="import" href="inkd/inkd.html">
     <link rel="icon" href="inkd/inkd-images/inkd-icon.png" type="image/png">
-    <!--DO NOT CHANGE THE LINES ABOVE HERE-->
 
     <!-- https://github.com/d3/d3-dispatch -->
     <script src="libs/d3-dispatch.min.js" type="application/javascript"></script>
@@ -16,49 +15,59 @@
     <!-- https://github.com/d3/d3-drag -->
     <script src="libs/d3-drag.min.js" type="application/javascript"></script>
     
-    <script src="index.js" type="application/javascript"></script>
-
-    <!--THIS FILE HOLDS YOUR CUSTOM STORY STYLING.
-            YOU CAN EDIT THE FILE NAME, IF YOU WANT.
-        -->
-    <link rel="import" href="my_story_style.html">
-
-    <!--THIS FILE HOLDS YOUR STORY. YOU SHOULD CHANGE
-            THIS FILE NAME (AND THE LINK HERE) TO MATCH
-            YOUR STORY'S NAME (WITHOUT SPACES, OF COURSE!)
-        -->
-    <link rel="import" href="my_story.html">
-
-    <!--CHANGE THE TITLE TO MATCH YOUR STORY'S TITLE
-            AS YOU WANT IT TO APPEAR ON EACH PAGE-->
+    <script src="js/section-divider.js" type="application/javascript"></script>
+    <script src="js/mobile-nav.js" type="application/javascript"></script>
+    
+    <link rel="import" href="styles/main.html">
+    <!--DO NOT CHANGE THE LINES ABOVE HERE-->
+    
     <title>Programming</title>
+    
+
+    <!-- FILES CONTAINING INKD-CONTENT GO HERE -->
+    <link rel="import" href="inkdml-nodes/order-of-execution.html">
+    <link rel="import" href="inkdml-nodes/sim-demo.html">
+    <!------------------------------------------->
 
 </head>
 
 <body>
     <inkd-ml bookmark no-exit-warn>
+        <!-- Header -->
         <header class="header">
+            <!-- Title -->
             <h1 class="header__title"><inkd-value prop = "main.currentNodeTopic"></inkd-value></h1>
-            <section class="menu">
+            
+            <!-- Mobile Menu -->
+            <section class="menu" id="mobile-menu">
                 <a class="header__burgermenu" href="#menu">&#9776;</a>
+                <!-- Mobile Content Outline -->
                 <nav class="header__menu">
                     <inkd-outline cyoa="main"></inkd-outline>
                 </nav>
             </section>
         </header>
+        
         <main class="main-container">
+            <!-- Sidebar - Content Outline -->
             <section class="main-sidebar">
                 <inkd-outline cyoa="main"></inkd-outline>
             </section>
+            <!-- Content Sections -->
             <section class="main-content">
                 <inkd-cyoa name="main">
-                    <inkd-include content="nodes"></inkd-include>
+                    
+                    <!-- CONTENT INCLUDES GO HERE -->
+                    <inkd-include content="content-order"></inkd-include>
+                    <inkd-include content="content-sim"></inkd-include>
+                    <!------------------------------>
+                    
                 </inkd-cyoa>
             </section>
-            <nav class="navbar">
-                <li class="navbar__item">Text</li>
-                <li class="navbar__item">Video</li>
-                <li class="navbar__item">Code</li>
+            <nav class="navbar" id="mobile-nav">
+                <li class="navbar__item"></li>
+                <li class="navbar__item"></li>
+                <li class="navbar__item"></li>
             </nav>
         </main>
     </inkd-ml>
