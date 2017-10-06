@@ -4,8 +4,6 @@ var babel = require('gulp-babel');
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
 var autoprefixer = require('gulp-autoprefixer');
-//var sass = require('gulp-sass');
-
 
 
 gulp.task('transpile-js', function() {
@@ -65,8 +63,7 @@ gulp.task('watch-html', function() {
     return gulp.watch(['index.html', 'indkml-nodes/**/*.html'], gulp.series('reload-browser'));
 });
 
-gulp.task('prefix-css', () =>
-    gulp.src('styles/main.css')
+gulp.task('prefix-css', () => gulp.src('styles/main.css')
         .pipe(autoprefixer({
             browsers: ['last 2 versions'],
             cascade: false
@@ -80,10 +77,3 @@ gulp.task('watch', gulp.parallel('watch-js', 'watch-styles', 'watch-html', 'pref
 
 gulp.task('default', gulp.series('build', 'serve', 'watch'));
 
-
-//gulp.task('sass', function(){
-//	return gulp.src('./src/scss/*.scss')
-//	.pipe(sass().on('error', sass.logError))
-//	.pipe(autoprefixer())
-//	.pipe(gulp.dest('./assets/css'));
-//});

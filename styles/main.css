@@ -43,8 +43,6 @@ body {
     overflow: hidden;
 }
 
-
-
 ul,
 ol {
     padding-top: .2em;
@@ -54,7 +52,7 @@ ol {
 h1,
 h2,
 p {
-font-family: sans-serif;
+    font-family: sans-serif;
 }
 /* p {
 line-height: 1.2em;
