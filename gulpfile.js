@@ -3,8 +3,9 @@ var sourcemaps = require('gulp-sourcemaps');
 var babel = require('gulp-babel');
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
+var autoprefixer = require('gulp-autoprefixer');
 //var sass = require('gulp-sass');
-//var autoprefixer = require('gulp-autoprefixer');
+
 
 
 gulp.task('transpile-js', function() {
@@ -37,7 +38,7 @@ gulp.task('serve', function(c) {
             }
         },
         
-        browser: ['google chrome', 'firefox', 'safari'],
+        browser: ['google chrome'],
         
         server: {
             baseDir: './',
@@ -64,8 +65,17 @@ gulp.task('watch-html', function() {
     return gulp.watch(['index.html', 'indkml-nodes/**/*.html'], gulp.series('reload-browser'));
 });
 
+gulp.task('prefix-css', () =>
+    gulp.src('styles/main.css')
+        .pipe(autoprefixer({
+            browsers: ['last 2 versions'],
+            cascade: false
+    }))
+        .pipe(gulp.dest('styles'))
+);
+
 // Watch tasks
-gulp.task('watch', gulp.parallel('watch-js', 'watch-styles', 'watch-html'));
+gulp.task('watch', gulp.parallel('watch-js', 'watch-styles', 'watch-html', 'prefix-css'));
 
 
 gulp.task('default', gulp.series('build', 'serve', 'watch'));

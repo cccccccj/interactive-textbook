@@ -6,11 +6,12 @@
     "license": "MIT",
     "dependencies": {},
     "devDependencies": {
-        "gulp": "github:gulpjs/gulp#4.0",
-        "gulp-sourcemaps": "^2.6.0",
-        "gulp-babel": "^6.1.2",
         "babel-preset-es2015": "^6.24.1",
-        "browser-sync": "^2.18.11"
+        "browser-sync": "^2.18.11",
+        "gulp": "github:gulpjs/gulp#4.0",
+        "gulp-autoprefixer": "^4.0.0",
+        "gulp-babel": "^6.1.2",
+        "gulp-sourcemaps": "^2.6.0"
     },
     "repository": {
         "type": "git",
