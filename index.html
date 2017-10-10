@@ -17,6 +17,7 @@
     
     <script src="js/section-divider.js" type="application/javascript"></script>
     <script src="js/mobile-nav.js" type="application/javascript"></script>
+    <script src="https://use.fontawesome.com/f67113e9b7.js"></script>
     
     <link rel="import" href="styles/main.html">
     <link rel="stylesheet" href="styles/main.css">
@@ -28,7 +29,6 @@
     <!-- FILES CONTAINING INKD-CONTENT GO HERE -->
     <link rel="import" href="inkdml-nodes/order-of-execution.html">
     <link rel="import" href="inkdml-nodes/sim-demo.html">
-    <!------------------------------------------->
 
 </head>
 
@@ -56,7 +56,7 @@
             </section>
             <!-- Content Sections -->
             <section class="main-content">
-                <inkd-cyoa name="main">
+                <inkd-cyoa name="main" class="main">
                     
                     <!-- CONTENT INCLUDES GO HERE -->
                     <inkd-include content="content-order"></inkd-include>
@@ -64,12 +64,44 @@
                     <!------------------------------>
                     
                 </inkd-cyoa>
+                <section class="scrollbox">
+                    <div class="card">
+                        <header class="card__header">
+                            <h1 class="card__header-title">Some Text</h1>
+                        </header>
+                        <section class="card__body"><p data-height="245" data-theme-id="0" data-slug-hash="NpjQep" data-default-tab="css,result" data-user="tdoria" data-embed-version="2" data-pen-title="Spinning Sun" class="codepen">See the Pen <a href="https://codepen.io/tdoria/pen/NpjQep/">Spinning Sun</a> by Tiago (<a href="https://codepen.io/tdoria">@tdoria</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+                            <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script></section>
+                        <footer class="card__footer">
+                            <button class="close-btn">close</button>
+                            <i class="fa fa-comment-o" aria-hidden="true"></i>
+                        </footer>
+                    </div>    
+                    <div class="card">
+                            <header class="card__header">
+                                <h1 class="card__header-title">Some Text</h1>
+                            </header>
+                            <section class="card__body"><iframe width="100%" height="90%" src="https://www.youtube.com/embed/jkTzHEtHd54" frameborder="0" allowfullscreen></iframe></section>
+                            <footer class="card__footer">
+                                <button class="close-btn">close</button>
+                                <i class="fa fa-comment-o" aria-hidden="true"></i>
+                            </footer>
+                    </div>
+                    <div class="card">
+                        <header class="card__header">
+                            <h1 class="card__header-title">Some Text</h1>
+                        </header>
+                        <section class="card__body"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque tempora quos beatae ducimus magnam cum architecto doloremque aliquid reiciendis, eaque obcaecati numquam autem minus molestias, reprehenderit nulla? Dolore, quod commodi!</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque tempora quos beatae ducimus magnam cum architecto doloremque aliquid reiciendis, eaque obcaecati numquam autem minus molestias, reprehenderit nulla? Dolore, quod commodi!</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque tempora quos beatae ducimus magnam cum architecto doloremque aliquid reiciendis, eaque obcaecati numquam autem minus molestias, reprehenderit nulla? Dolore, quod commodi!</p>
+                        </section>
+                        <footer class="card__footer">
+                            <button class="card__footer-btn">close</button>
+                            <i class="fa fa-comment-o" aria-hidden="true"></i>
+                        </footer>
+                    </div>
+                </section>
             </section>
-            <nav class="navbar" id="mobile-nav">
-                <li class="navbar__item"></li>
-                <li class="navbar__item"></li>
-                <li class="navbar__item"></li>
-            </nav>
+    
         </main>
     </inkd-ml>
 </body>

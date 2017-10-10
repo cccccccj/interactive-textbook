@@ -70,6 +70,8 @@ font-size: medium;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    position: fixed;
+    width: 100%;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
@@ -99,6 +101,14 @@ font-size: medium;
     display: block;
 }
 
+.main {
+    display: block;
+}
+
+.card {
+    display: none;
+}
+
 .header__menu {
     display: none;
     position: absolute;
@@ -117,6 +127,7 @@ font-size: medium;
     display: flex;
     height: 100%;
     overflow: hidden;
+    margin-top: 5em;
 }
 
 .main-sidebar {
@@ -142,6 +153,8 @@ font-size: medium;
     /* JTL */
     color: #000;
     /* JTL */
+    padding: 0;
+    margin: 0;
 }
 
 .main-sidebar__list {
@@ -200,7 +213,7 @@ font-size: medium;
 
 .interactive-column--text {
     width: 50%;
-    background: 4C9F70;
+    background: #4C9F70;
     padding: .62em;
     overflow: scroll;
 }
@@ -285,6 +298,51 @@ font-size: medium;
     text-decoration-color: crimson;
     display: inline-block;
 }
+.scrollbox {
+	overflow: auto;
+	width: 100vw;
+	height: 100vh;
+
+	background:
+		/* Shadow covers */
+		-webkit-gradient(linear, left top, left bottom, color-stop(30%, white), to(rgba(255,255,255,0))),
+		-webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0)), color-stop(70%, white)) 0 100%,
+		
+		/* Shadows */
+		radial-gradient(50% 0, farthest-side, rgba(0,0,0,.2), rgba(0,0,0,0)),
+		radial-gradient(50% 100%,farthest-side, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
+
+	background:
+		/* Shadow covers */
+		linear-gradient(white 30%, rgba(255,255,255,0)),
+		linear-gradient(rgba(255,255,255,0), white 70%) 0 100%,
+		
+		/* Shadows */
+		radial-gradient(50% 0, farthest-side, rgba(0,0,0,.2), rgba(0,0,0,0)),
+		radial-gradient(50% 100%,farthest-side, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
+	background:
+		/* Shadow covers */
+		-webkit-gradient(linear, left top, left bottom, color-stop(30%, white), to(rgba(255,255,255,0))),
+		-webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0)), color-stop(70%, white)) 0 100%,
+		
+		/* Shadows */
+		radial-gradient(farthest-side at 50% 0, rgba(0,0,0,.2), rgba(0,0,0,0)),
+		radial-gradient(farthest-side at 50% 100%, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
+	background:
+		/* Shadow covers */
+		linear-gradient(white 30%, rgba(255,255,255,0)),
+		linear-gradient(rgba(255,255,255,0), white 70%) 0 100%,
+		
+		/* Shadows */
+		radial-gradient(farthest-side at 50% 0, rgba(0,0,0,.2), rgba(0,0,0,0)),
+		radial-gradient(farthest-side at 50% 100%, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
+	background-repeat: no-repeat;
+	background-color: white;
+	background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+	
+	/* Opera doesn't support this in the shorthand */
+	background-attachment: local, local, scroll, scroll;
+}
 
 @media (max-width: 700px) and (orientation: portrait) {
 html, body {
@@ -293,6 +351,7 @@ html, body {
 }
 .main-content {
     width: 100%;
+    overflow: auto;
 }
 .interactive-container {
     -ms-flex-wrap: wrap;
@@ -315,7 +374,7 @@ html, body {
 .navbar {
     display: -webkit-box;
     display: -ms-flexbox;
-    display: flex;
+    display: none;
     -ms-flex-pack: distribute;
     justify-content: space-around;
     -webkit-box-align: center;
@@ -329,6 +388,43 @@ html, body {
     display: none;
 }
 .vertical-divider {
+    display: none;
+}
+.card{
+    display: flex;
+    flex-direction: column;
+    background: #DDDDDD;
+    width: 90%;
+    height: 25em;
+    margin: 1em;
+	box-shadow: 0 8px 20px -6px #000;
+}
+.card__header {
+    background-color: transparent;
+    height: 4em;
+    padding: .62em;
+}
+.card__header-title {
+    font-size: 1.2rem;
+    color: #000;
+}
+.card__body {
+    flex: 1;
+    padding: .62em;
+    font-size: 1rem;
+}
+.card__footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: .62em;
+    background-color: #9A9A9A;
+    color: #000;
+}
+.card__footer-btn {
+    color: #000;
+}
+.main {
     display: none;
 }
 }
